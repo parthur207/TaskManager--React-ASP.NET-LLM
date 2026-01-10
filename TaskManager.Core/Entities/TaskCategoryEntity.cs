@@ -12,7 +12,6 @@ namespace TaskManager.Core.Entities
         public Guid Id { get; private set; }
         //Fk
         public Guid UserId { get; private set; }
-        public 
         public string Name { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get;
