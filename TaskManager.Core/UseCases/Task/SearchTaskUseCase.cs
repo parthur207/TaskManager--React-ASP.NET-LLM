@@ -10,5 +10,11 @@ namespace TaskManager.Core.UseCases.Task
 {
     public class SearchTaskUseCase : ISearchTaskUseCase
     {
+
+        private ISearchTaskPort _searchTaskPort;
+        public SearchTaskUseCase(ISearchTaskPort searchTaskPort)
+        {
+            _searchTaskPort = searchTaskPort;
+        }
     }
 }
