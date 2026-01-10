@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManager.Core.Ports.TaskCategory
+namespace TaskManager.Core.Ports.User
 {
-    public interface IDeleteTaskCategoryPort
+    public interface IUpdateUserPasswordPort
     {
     }
 }

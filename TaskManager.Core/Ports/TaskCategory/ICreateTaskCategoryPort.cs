@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskManager.Core.Ports.TaskCategory
 {
-    internal class ICreateTaskCategoryPort
+    public interface ICreateTaskCategoryPort
     {
     }
 }

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Core.Ports.User;
 
-namespace TaskManager.Core.Ports.TaskCategory
+namespace TaskManager.Adapters.Persistence.User
 {
-    public interface IDeleteTaskCategoryPort
+    internal class CreateUserPort : ICreateUserPort
     {
     }
 }

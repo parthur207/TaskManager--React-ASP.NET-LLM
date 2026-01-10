@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskManager.Core.Ports.TaskCategory
 {
-    public interface IDeleteTaskCategoryPort
+    public interface IUpdateTaskCategoryPort
     {
     }
 }

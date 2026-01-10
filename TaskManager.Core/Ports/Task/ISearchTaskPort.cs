@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskManager.Core.Ports.Task
 {
-    public class ISearchTaskPort
+    public interface ISearchTaskPort
     {
     }
 }
