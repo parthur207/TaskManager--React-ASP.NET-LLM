@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManager.Core.Ports.Task
+namespace TaskManager.Core.UseCases.Task.Interfaces
 {
-    public class ISearchTaskPort
+    public interface ICreateTaskUseCase
     {
     }
 }

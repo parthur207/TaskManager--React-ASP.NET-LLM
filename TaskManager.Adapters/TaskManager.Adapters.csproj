@@ -14,7 +14,8 @@
     <Folder Include="Mappers\" />
     <Folder Include="DTOs\" />
     <Folder Include="Models\" />
-    <Folder Include="Persistence\" />
+    <Folder Include="Persistence\TaskCategory\" />
+    <Folder Include="Persistence\User\" />
   </ItemGroup>
 
 </Project>

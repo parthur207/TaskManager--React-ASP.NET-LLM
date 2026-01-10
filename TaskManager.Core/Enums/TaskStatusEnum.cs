@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManager.Core.Ports.Task
+namespace TaskManager.Core.Enums
 {
-    public class ISearchTaskPort
+    public enum TaskStatusEnum
     {
+        Finished = 1,
+        InProgress = 2,
+        NotStarted = 3,
     }
 }

@@ -4,11 +4,11 @@ using TaskManager.API.Models;
 
 namespace TaskManager.API.Controllers
 {
-    public class HomeController : Controller
+    public class TasksController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<TasksController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public TasksController(ILogger<TasksController> logger)
         {
             _logger = logger;
         }
