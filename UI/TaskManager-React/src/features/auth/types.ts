@@ -1,14 +1,22 @@
-export type ResponseStatus= "Sucess" | "Error" | "NotFound" | "CriticalError";
+  export type ResponseStatus =
+  | "Success"
+  | "Error"
+  | "NotFound"
+  | "CriticalError";
 
-export interface LoginRequest 
-{
+export interface LoginRequest{
   email: string;
   password: string;
 }
 
-export interface ResponsePattern
-{
-  Message?: string;
-  Status: ResponseStatus;
-  Content: string
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface ResponsePattern<T = unknown> {
+  message?: string;
+  status: ResponseStatus;
+  content: T;
 }
