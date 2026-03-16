@@ -1,11 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskManager.Adapters.Persistence.DataBase.Interface;
+﻿using TaskManager.Adapters.Persistence.DataBase.Interface;
 
 namespace TaskManager.Adapters.Persistence.DataBase
 {

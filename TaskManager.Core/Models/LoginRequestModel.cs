@@ -14,7 +14,7 @@ namespace TaskManager.Core.Models
             Password = password;
         }
 
-        public string Email { get; set; }//VO
+        public string Email { get; set; }
         public string Password { get; set; }
 
     }

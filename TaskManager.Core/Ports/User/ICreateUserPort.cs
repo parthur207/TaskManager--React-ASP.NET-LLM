@@ -10,7 +10,6 @@ namespace TaskManager.Core.Ports.User
 {
     public interface ICreateUserPort
     {
-
         Task<SimpleResponseModel> ExecuteAsync(UserEntity entity);
     }
 }

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManager.Core.Models
+namespace TaskManager.Core.Enums
 {
-    public class CreateTaskCategoryModel
+    public enum RoleUserEnum
     {
-        public string Name { get; set; }
+        Admin=0,
+        UserCommom=1
     }
 }

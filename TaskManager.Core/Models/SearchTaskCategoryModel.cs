@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskManager.Core.Models
 {
-    public class CreateTaskCategoryModel
+    public class SearchTaskCategoryModel
     {
         public string Name { get; set; }
     }

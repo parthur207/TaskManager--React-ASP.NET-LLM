@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Core.Ports.TaskCategory;
 using TaskManager.Core.Ports.User;
+using TaskManager.Core.ResposePattern;
 using TaskManager.Core.UseCases.TaskCategory.Interfaces;
 
 namespace TaskManager.Core.UseCases.TaskCategory
@@ -15,6 +16,11 @@ namespace TaskManager.Core.UseCases.TaskCategory
         public DeleteTaskCategoryUseCase(IDeleteTaskCategoryPort deleteTaskCategoryPort)
         {
             _deleteTaskCategoryPort = deleteTaskCategoryPort;
+        }
+
+        public Task<SimpleResponseModel> ExecuteAsync(Guid TaskCategoryId, Guid UserId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

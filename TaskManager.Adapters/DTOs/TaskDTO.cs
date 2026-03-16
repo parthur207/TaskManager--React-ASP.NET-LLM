@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace TaskManager.Adapters.DTOs
 {
-    internal class TaskDTO
+    public class TaskDTO
     {
+
     }
 }

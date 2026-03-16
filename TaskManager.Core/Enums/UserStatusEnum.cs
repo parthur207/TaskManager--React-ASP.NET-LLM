@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManager.Core.Models
+namespace TaskManager.Core.Enums
 {
-    public class CreateTaskCategoryModel
+    public enum UserStatusEnum
     {
-        public string Name { get; set; }
+        Active = 1,
+        Inactive = 2,
+        Suspended = 3
     }
 }

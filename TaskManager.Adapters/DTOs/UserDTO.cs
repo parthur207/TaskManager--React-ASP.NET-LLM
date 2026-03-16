@@ -3,10 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Core.Enums;
 
 namespace TaskManager.Adapters.DTOs
 {
-    internal class UserDTO
+    public class UserDTO
     {
+        public UserDTO(string name, string email, IEnumerable<TaskDTO> tasks, RoleUserEnum role, UserStatusEnum status)
+        {
+            Name = name;
+            Email = email;
+            Tasks = tasks;
+            Role = role;
+            Status = status;
+        }
+
+        public string Name { get; set; }
+        public string Email { get; set; }   
+        public IEnumerable<TaskDTO> Tasks { get; set; }
+        public RoleUserEnum Role { get; set; }
+        public UserStatusEnum Status { get; set; }
     }
 }
