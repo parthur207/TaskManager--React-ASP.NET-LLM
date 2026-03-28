@@ -24,4 +24,8 @@
     <ProjectReference Include="..\TaskManager.Core\TaskManager.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Adapters\SpaceMember\" />
+  </ItemGroup>
+
 </Project>

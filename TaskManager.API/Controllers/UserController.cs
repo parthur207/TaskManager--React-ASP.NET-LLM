@@ -14,7 +14,6 @@ namespace TaskManager.API.Controllers
     [AllowAnonymous]
     public class UserController : Controller
     {
-
         private readonly UserUseCaseFacade _userUseCaseFacade;
         public UserController(UserUseCaseFacade userUseCaseFacade)
         {

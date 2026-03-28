@@ -25,7 +25,7 @@ namespace TaskManager.Adapters.Auth
             _expirationMinutes = int.Parse(configuration["Jwt:ExpirationInMinutes"]);
         }
 
-        public string GenerateToken(int userId, string role)
+        public string GenerateToken(Guid userId, string role)
         {
             var claims = new List<Claim>
             {

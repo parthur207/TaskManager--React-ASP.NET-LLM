@@ -8,6 +8,6 @@ namespace TaskManager.Adapters.Auth
 {
     public interface IJwtGenerator
     {
-        string GenerateToken(int UserId, string Role);
+        string GenerateToken(Guid UserId, string Role);
     }
 }

@@ -9,13 +9,17 @@ namespace TaskManager.Core.Entities
 {
     public sealed class TaskEntity
     {
-        public TaskEntity(string name, string? description, Guid categoryId, Guid userId, DateOnly term)
+        public TaskEntity(string name, string? description, 
+            Guid categoryId, Guid spaceId, Guid ownerId, 
+            Guid responsibleUserId, DateOnly term)
         {
             Id = Guid.NewGuid();
             Name = name;
             Description = description;
             CategoryId = categoryId;
-            UserId = userId;
+            SpaceId = spaceId;
+            OwnerId = ownerId;
+            ResponsibleUserId = responsibleUserId;
             StatusEnum = TaskStatusEnum.NotStarted;
             Term = term;
             CreatedAt = DateTime.UtcNow;
@@ -24,8 +28,10 @@ namespace TaskManager.Core.Entities
         public Guid Id { get; private set; }
         public string Name { get; private set; }
         public string? Description { get; private set; }
-        public Guid UserId { get; set; }
-        public UserEntity User { get; private set; }
+        public Guid OwnerId { get; set; }
+        public UserEntity OwnerUser { get; private set; }
+        public Guid ResponsibleUserId { get; private set; }
+
         public Guid CategoryId { get; private set; }
         public TaskCategoryEntity? Category { get; private set; }
         public Guid SpaceId { get; private set; }
@@ -60,6 +66,15 @@ namespace TaskManager.Core.Entities
                 throw new ArgumentException($"Não é possível atribuir o status de '{newStatus.ToString()}', pois a tarefa se encontra com.");
             }
             StatusEnum = newStatus;
+        }
+
+        public void AssingerResponsibleUser(Guid responsibleUserId)
+        {
+            if (ResponsibleUserId.Equals(responsibleUserId))
+            {
+                throw new ArgumentException("O usuário já é responsável por esta tarefa.");
+            }
+            ResponsibleUserId = responsibleUserId;
         }
     }
 }

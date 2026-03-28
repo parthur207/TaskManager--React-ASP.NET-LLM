@@ -11,27 +11,28 @@ namespace TaskManager.Adapters.Mappers
 {
     public class TaskMapper
     {
-        public TaskEntity ModelToEntity(CreateTaskModel model)
+        public TaskEntity ModelToEntity(
+            CreateTaskModel model,
+            Guid userId)
         {
-            return new TaskEntity
-                (
-                    Name: "",
-                    Description: "",
-                    CategoryId: Guid.NewGuid(),
-                    UserId: Guid.NewGuid()
-                );
+            return new TaskEntity(
+                model.Name,
+                model.Description,
+                model.CategoryId,
+                model.SpaceId,
+                userId,
+                model.Term
+            );
         }
 
         public TaskDTO EntityToDTO(TaskEntity entity)
         {
-            return new TaskDTO
-                (
-                    : entity.Name,
-                    Description: entity.Description,
-                    CategoryId: entity.CategoryId,
-                    UserId: entity.UserId,
-                    StatusEnum: entity.StatusEnum
-                );
+            return new TaskDTO(
+                entity.Name,
+                Description: entity.Description,
+                CategoryId: entity.CategoryId,
+                StatusEnum: entity.StatusEnum
+            );
         }
     }
 }

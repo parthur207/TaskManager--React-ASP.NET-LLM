@@ -9,7 +9,10 @@ namespace TaskManager.Core.Models
     public class CreateTaskModel
     {
         public string Name { get; set; }
-        public string Description { get; set; }
-        public string Category { get; set; }
+        public string? Description { get; set; }
+        public Guid? CategoryId { get; set; }
+        public Guid SpaceId { get; set; }
+        public string? ResponsibleEmail { get; set; }
+        public DateOnly Term { get; set; }
     }
 }

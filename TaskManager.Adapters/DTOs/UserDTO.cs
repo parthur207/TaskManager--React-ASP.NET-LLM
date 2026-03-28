@@ -9,11 +9,12 @@ namespace TaskManager.Adapters.DTOs
 {
     public class UserDTO
     {
-        public UserDTO(string name, string email, IEnumerable<TaskDTO> tasks, RoleUserEnum role, UserStatusEnum status)
+        public UserDTO(string name, string email, IEnumerable<TaskDTO> tasks, IEnumerable<SpaceDTO> spaces, RoleUserEnum role, UserStatusEnum status)
         {
             Name = name;
             Email = email;
             Tasks = tasks;
+            Spaces = spaces;
             Role = role;
             Status = status;
         }
@@ -21,7 +22,7 @@ namespace TaskManager.Adapters.DTOs
         public string Name { get; set; }
         public string Email { get; set; }   
         public IEnumerable<TaskDTO> Tasks { get; set; }
-        public IEnumerable<Space>
+        public IEnumerable<SpaceDTO> Spaces { get; set; }
         public RoleUserEnum Role { get; set; }
         public UserStatusEnum Status { get; set; }
     }

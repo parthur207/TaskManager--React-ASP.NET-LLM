@@ -21,13 +21,22 @@ namespace TaskManager.Adapters.Mappers
                 );
         }
 
+        public static UserEntity LoginModelToEntity(LoginRequestModel model)
+        {
+            return new UserEntity
+                (
+                    model.Email,
+                    model.Password
+                );
+        }
+
         public static UserDTO EntityToDTO(UserEntity entity)
         {
             return new UserDTO
                 (
                     entity.Name,
                     entity.Email.Value,
-                    entity.Tasks,
+                    TaskMapper.EntityToDTO(entity.Tasks),
                     entity.Role,
                     entity.Status
                 );

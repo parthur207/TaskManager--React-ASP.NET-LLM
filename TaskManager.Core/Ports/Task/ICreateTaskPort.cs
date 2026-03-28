@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Core.Entities;
+using TaskManager.Core.Models;
 using TaskManager.Core.ResposePattern;
 
 namespace TaskManager.Core.Ports.Task
 {
     public interface ICreateTaskPort
     {
-        Task<SimpleResponseModel> ExecuteAsync(TaskEntity Entity);
+        Task<SimpleResponseModel> ExecuteAsync(CreateTaskModel model);
     }
 }
