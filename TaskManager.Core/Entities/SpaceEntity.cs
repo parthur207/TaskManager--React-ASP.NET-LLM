@@ -40,5 +40,16 @@ namespace TaskManager.Core.Entities
 
             Members?.Remove(member);
         }
+
+        public void ChangeName(string newName)
+        {
+            if (string.IsNullOrEmpty(newName))
+                throw new ArgumentNullException(nameof(newName), "O nome do espaço não pode ser nulo ou vazio.");
+
+            if(newName.Length > 60)
+               throw new ArgumentNullException(nameof(newName), "O novo nome para o espaço não pode ter mais que 60 caracteres.");
+
+            Name = newName;
+        }
     }
 }

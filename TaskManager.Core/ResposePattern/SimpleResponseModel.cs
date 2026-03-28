@@ -9,7 +9,6 @@ namespace TaskManager.Core.ResposePattern
 {
     public class SimpleResponseModel
     {
-
         public SimpleResponseModel() { }
 
         public ResponseStatusEnum Status { get; set; }

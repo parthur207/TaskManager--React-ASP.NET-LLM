@@ -14,6 +14,7 @@ namespace TaskManager.Core.UseCases.User
     internal class CreateUserUseCase : ICreateUserUseCase
     {
         private readonly ICreateUserPort _createUserPort;
+        
         public CreateUserUseCase(ICreateUserPort createUserPort)
         {
             _createUserPort = createUserPort;
@@ -31,6 +32,15 @@ namespace TaskManager.Core.UseCases.User
             }
 
             var resultRepository= await _createUserPort.ExecuteAsync(model);
+
+            if (resultRepository.Status!=ResponseStatusEnum.Success)
+            {
+                Response.Status=resultRepository.Status;
+                Response.Message = resultRepository.Message;
+                return Response;
+            }
+
+            return Response=resultRepository;
         }
     }
 }

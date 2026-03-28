@@ -16,6 +16,6 @@ namespace TaskManager.Adapters.DTOs
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public DateOnly Term { get; set; }
-        public UserDTO User { get; set; }
+        public UserDTO? User { get; set; }
     }
 }

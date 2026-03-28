@@ -25,24 +25,24 @@ namespace TaskManager.Core.UseCases.User
         public async Task<ResponseModel<string>> ExecuteAsync(LoginRequestModel model)
         {
             var Response = new ResponseModel<string>();
-            try
+            
+            if (model is null)
             {
-                if (model is null)
-                {
-                    Response.Status = ResponseStatusEnum.Error;
-                    Response.Message = "O modelo é nulo.";
-                    return Response;
+                Response.Status = ResponseStatusEnum.Error;
+                Response.Message = "O modelo é nulo.";
+                return Response;
+            }
+
+            _passwordHasher.Hash(model.Password);
+
+            var responseRepository = await _loginUserPort.ExecuteAsync(model);
+            
+            if (responseRepository.Status!=ResponseStatusEnum.Success)
+            {
+                Response.Status = ResponseStatusEnum.Error;
+                Response.Message = "Erro. Login inválido.";
+                return Response;
                 }
-
-                _passwordHasher.Hash(model.Password);
-
-                var user = await _loginUserPort.(model.Email);
-                    if (user is null)
-                    {
-                        Response.Status = ResponseStatusEnum.Error;
-                        Response.Message = "Usuário não encontrado.";
-                        return Response;
-                    }
     
                     if (!_passwordHasher.Verify(model.Password, user.PasswordHash))
                     {

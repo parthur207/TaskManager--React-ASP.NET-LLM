@@ -21,6 +21,7 @@ namespace TaskManager.Adapters.DTOs
         public string Name { get; set; }
         public string Email { get; set; }   
         public IEnumerable<TaskDTO> Tasks { get; set; }
+        public IEnumerable<Space>
         public RoleUserEnum Role { get; set; }
         public UserStatusEnum Status { get; set; }
     }
