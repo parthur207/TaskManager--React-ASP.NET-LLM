@@ -4,8 +4,6 @@
     {
         public string Value { get; }
 
-
-
         public PasswordVO(string password, bool isLogin)
         {
             if (isLogin)
