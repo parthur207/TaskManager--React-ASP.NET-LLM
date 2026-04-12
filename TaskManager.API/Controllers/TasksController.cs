@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 using TaskManager.API.Facades;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Models;
-using TaskManager.Core.Ports.TaskCategory;
 
 namespace TaskManager.API.Controllers
 {
@@ -36,16 +34,16 @@ namespace TaskManager.API.Controllers
                 case ResponseStatusEnum.Success:
                     return Ok(Response);
 
+                case ResponseStatusEnum.Unauthorized:
+                    return Unauthorized(Response);
+
                 case ResponseStatusEnum.CriticalError:
                     return BadRequest(Response);
 
                 default:
                     return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado.");
             }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
     }
 }
+

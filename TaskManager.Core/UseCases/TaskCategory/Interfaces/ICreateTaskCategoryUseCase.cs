@@ -10,7 +10,6 @@ namespace TaskManager.Core.UseCases.TaskCategory.Interfaces
 {
     public interface ICreateTaskCategoryUseCase
     {
-
         Task<SimpleResponseModel> ExecuteAsync(CreateTaskCategoryModel model);
     }
 }

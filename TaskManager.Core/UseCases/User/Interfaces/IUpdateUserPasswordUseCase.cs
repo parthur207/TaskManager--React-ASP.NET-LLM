@@ -7,7 +7,7 @@ using TaskManager.Core.ResposePattern;
 
 namespace TaskManager.Core.UseCases.User.Interfaces
 {
-    public interface IUpdateUserPassworkUseCase
+    public interface IUpdateUserPasswordUseCase
     {
         Task<SimpleResponseModel> ExecuteAsync();
     }

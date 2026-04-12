@@ -4,7 +4,7 @@ namespace TaskManager.API.Facades
 {
     public class UserUseCaseFacade
     {
-        public UserUseCaseFacade(ICreateUserUseCase create, IUpdateUserPassworkUseCase updatePassword, IDeleteUserUseCase delete, ILoginUserUseCase login)
+        public UserUseCaseFacade(ICreateUserUseCase create, IUpdateUserPasswordUseCase updatePassword, IDeleteUserUseCase delete, ILoginUserUseCase login)
         {
             Create = create;
             UpdatePassword = updatePassword;
@@ -13,7 +13,7 @@ namespace TaskManager.API.Facades
         }
 
         public ICreateUserUseCase Create { get; }
-        public IUpdateUserPassworkUseCase UpdatePassword { get; }
+        public IUpdateUserPasswordUseCase UpdatePassword { get; }
         public IDeleteUserUseCase Delete { get; }
         public ILoginUserUseCase Login { get; }
     }

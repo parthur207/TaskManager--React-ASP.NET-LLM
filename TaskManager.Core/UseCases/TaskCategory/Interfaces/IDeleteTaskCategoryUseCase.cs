@@ -9,6 +9,6 @@ namespace TaskManager.Core.UseCases.TaskCategory.Interfaces
 {
     public interface IDeleteTaskCategoryUseCase
     {
-        Task<SimpleResponseModel> ExecuteAsync(Guid TaskCategoryId, Guid UserId);
+        Task<SimpleResponseModel> ExecuteAsync(Guid TaskCategoryId);
     }
 }

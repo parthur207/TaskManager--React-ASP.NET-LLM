@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TaskManager.Core.Enums;
 using TaskManager.Core.Models;
 using TaskManager.Core.Ports.Persistence.TaskCategory;
-using TaskManager.Core.Ports.User;
 using TaskManager.Core.ResposePattern;
 using TaskManager.Core.UseCases.TaskCategory.Interfaces;
 
@@ -19,9 +14,25 @@ namespace TaskManager.Core.UseCases.TaskCategory
             _createTaskCategoryPort = createTaskCategoryPort;
         }
 
-        public Task<SimpleResponseModel> ExecuteAsync(CreateTaskCategoryModel model)
+        public async Task<SimpleResponseModel> ExecuteAsync(CreateTaskCategoryModel model)
         {
-            throw new NotImplementedException();
+            var Response= new SimpleResponseModel();
+
+            if (model == null)
+            {
+                Response.Status=ResponseStatusEnum.Error;
+                Response.Message = "O modelo não pode ser nulo";
+                return Response;
+            }
+
+            var responseRepository= await _createTaskCategoryPort.ExecuteAsync(model);
+
+            if (responseRepository.Status!=ResponseStatusEnum.Success)
+            {
+                return responseRepository;
+            }
+
+            return responseRepository;
         }
     }
 }

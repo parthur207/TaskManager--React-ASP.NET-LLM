@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.API.Facades;
+using TaskManager.Core.Enums;
+using TaskManager.Core.Models;
 
 namespace TaskManager.API.Controllers
 {
@@ -10,20 +12,63 @@ namespace TaskManager.API.Controllers
     [Route("api/tasksCategory")]
     public class TasksCategoryController : Controller
     {
-
-        private readonly TaskUseCaseFacade _taskUseCaseFacade;
-        public TasksCategoryController(TaskUseCaseFacade taskUseCaseFacade)
+        private readonly TaskCategoryUseCaseFacade _taskCategoryUseCaseFacade;
+        public TasksCategoryController(TaskCategoryUseCaseFacade taskCategoryUseCaseFacade)
         {
-            _taskUseCaseFacade = taskUseCaseFacade;
+            _taskCategoryUseCaseFacade = taskCategoryUseCaseFacade;
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateCategory()
+        public async Task<IActionResult> CreateCategory([FromBody] CreateTaskCategoryModel model)
         {
-            var Response = await _taskUseCaseFacade.Create();
-            if ()
+            var Response = await _taskCategoryUseCaseFacade.Create.ExecuteAsync(model);
+            
+            switch (Response.Status)
+            {
+                case ResponseStatusEnum.Error:
+                    return BadRequest(Response);
 
-            return Ok();
+                case ResponseStatusEnum.NotFound:
+                    return NotFound(Response);
+
+                case ResponseStatusEnum.Success:
+                    return Ok(Response);
+
+                case ResponseStatusEnum.Unauthorized:
+                    return Unauthorized(Response);
+
+                case ResponseStatusEnum.CriticalError:
+                    return BadRequest(Response);
+
+                default:
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado.");
+            }
+        }
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateCategory([FromBody] CreateTaskCategoryModel model)
+        {
+            var Response = await _taskCategoryUseCaseFacade.Update.ExecuteAsync(model);
+
+            switch (Response.Status)
+            {
+                case ResponseStatusEnum.Error:
+                    return BadRequest(Response);
+
+                case ResponseStatusEnum.NotFound:
+                    return NotFound(Response);
+
+                case ResponseStatusEnum.Success:
+                    return Ok(Response);
+
+                case ResponseStatusEnum.Unauthorized:
+                    return Unauthorized(Response);
+
+                case ResponseStatusEnum.CriticalError:
+                    return BadRequest(Response);
+
+                default:
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado.");
+            }
         }
     }
 }

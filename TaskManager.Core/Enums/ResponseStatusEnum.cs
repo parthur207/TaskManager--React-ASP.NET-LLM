@@ -11,6 +11,7 @@ namespace TaskManager.Core.Enums
         Success=1,
         Error=2,
         NotFound=3,
-        CriticalError=4
+        Unauthorized = 4,
+        CriticalError=5
     }
 }

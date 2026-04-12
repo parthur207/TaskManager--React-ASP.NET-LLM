@@ -9,9 +9,9 @@ using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.AI;
 using TaskManager.Core.ResposePattern;
 
-namespace TaskManager.Adapters.Adapters.AI
+namespace TaskManager.Adapters.ExternalServices.AI
 {
-    public class OllamaProviderAdapter: IOllamaProviderPort
+    public class OllamaProviderAdapter : IOllamaProviderPort
     {
         private readonly HttpClient _http;
 
@@ -49,12 +49,12 @@ namespace TaskManager.Adapters.Adapters.AI
             if (result is null)
             {
                 Response.Status = ResponseStatusEnum.Error;
-                Response.Message= "Ocorreu um erro ao processar a resposta do Ollama.";
+                Response.Message = "Ocorreu um erro ao processar a resposta do Ollama.";
                 return Response;
             }
 
-            Response.Status= ResponseStatusEnum.Success;
-            Response.Content= result;
+            Response.Status = ResponseStatusEnum.Success;
+            Response.Content = result;
 
             return Response;
         }
