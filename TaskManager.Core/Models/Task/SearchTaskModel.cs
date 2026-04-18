@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Core.Enums;
 
-namespace TaskManager.Core.Models
+namespace TaskManager.Core.Models.Task
 {
     public class SearchTaskModel
     {

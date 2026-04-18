@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.API.Facades;
 using TaskManager.Core.Enums;
-using TaskManager.Core.Models;
+using TaskManager.Core.Models.TaskCategory;
 
 namespace TaskManager.API.Controllers
 {
@@ -44,8 +44,9 @@ namespace TaskManager.API.Controllers
                     return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado.");
             }
         }
+
         [HttpPut("update")]
-        public async Task<IActionResult> UpdateCategory([FromBody] CreateTaskCategoryModel model)
+        public async Task<IActionResult> UpdateCategory([FromBody] UpdateTaskCategoryModel model)
         {
             var Response = await _taskCategoryUseCaseFacade.Update.ExecuteAsync(model);
 

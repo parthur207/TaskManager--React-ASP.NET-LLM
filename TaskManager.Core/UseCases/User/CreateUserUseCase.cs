@@ -1,5 +1,5 @@
 ﻿using TaskManager.Core.Enums;
-using TaskManager.Core.Models;
+using TaskManager.Core.Models.User;
 using TaskManager.Core.Ports.Persistence.User;
 using TaskManager.Core.ResposePattern;
 using TaskManager.Core.UseCases.User.Interfaces;

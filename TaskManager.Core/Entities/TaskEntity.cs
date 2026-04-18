@@ -9,11 +9,11 @@ namespace TaskManager.Core.Entities
 {
     public sealed class TaskEntity
     {
-        public TaskEntity(string name, string? description, 
+        public TaskEntity(string title, string? description, 
             Guid? categoryId, Guid spaceId, Guid ownerId, Guid responsibleUserId, DateOnly term)
         {
             Id = Guid.NewGuid();
-            Name = name;
+            Title = title;
             Description = description;
             CategoryId = categoryId;
             SpaceId = spaceId;
@@ -25,7 +25,7 @@ namespace TaskManager.Core.Entities
         }
 
         public Guid Id { get; private set; }
-        public string Name { get; private set; }
+        public string Title { get; private set; }
         public string? Description { get; private set; }
         public Guid OwnerId { get; set; }
         public UserEntity OwnerUser { get; private set; }
@@ -40,14 +40,14 @@ namespace TaskManager.Core.Entities
         public DateTime UpdatedAt { get; private set; }
         public DateOnly Term { get; private set; }
 
-        public void UpdateNameOrDescription(string newName = null, string newDescription = null)
+        public void UpdateTitleOrDescription(string newTitle = null, string newDescription = null)
         {
-            if (string.IsNullOrEmpty(newName) &&
+            if (string.IsNullOrEmpty(newTitle) &&
                 string.IsNullOrEmpty(Description))
             {
                 throw new ArgumentNullException("Erro. Nome e descrição nulos.");
             }
-            Name = newName;
+            Title = newTitle;
             Description = newDescription;
             UpdatedAt = DateTime.UtcNow;
         }
@@ -67,7 +67,7 @@ namespace TaskManager.Core.Entities
             StatusEnum = newStatus;
         }
 
-        public void AssingerResponsibleUser(Guid responsibleUserId)
+        public void AssignResponsibleUser(Guid responsibleUserId)
         {
             if (ResponsibleUserId.Equals(responsibleUserId))
             {

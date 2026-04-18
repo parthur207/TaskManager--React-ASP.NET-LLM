@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskManager.Core.Models;
+using TaskManager.Core.Enums;
+using TaskManager.Core.Models.TaskCategory;
 using TaskManager.Core.Ports.Persistence.TaskCategory;
 using TaskManager.Core.Ports.Security;
 using TaskManager.Core.ResposePattern;
@@ -35,10 +36,18 @@ namespace TaskManager.Core.UseCases.TaskCategory
             if (model is null)
             {
                 Response.Message = "O novo nome da categoria não pode ser vazio.";
-                Response.Status = Enums.ResponseStatusEnum.Error;
+                Response.Status = ResponseStatusEnum.Error;
                 return Response;
             }
 
+            var responseRepository = await _updateTaskCategoryPort.ExecuteAsync(model);
+
+            if (responseRepository.Status!=ResponseStatusEnum.Success)
+            {
+                return responseRepository;
+            }
+
+            return responseRepository;
         }
     }
 }

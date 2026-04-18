@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 using TaskManager.Core.Enums;
-using TaskManager.Core.Models;
+using TaskManager.Core.Models.Task;
 using TaskManager.Core.Ports.ReadServices;
 using TaskManager.Core.Ports.Security;
 using TaskManager.Core.Ports.Task;
@@ -14,8 +14,8 @@ namespace TaskManager.Core.UseCases.Task
         private readonly ICreateTaskPort _createTaskPort;
         private readonly ICurrentUserPort _currentUserPort;
         private readonly IUserQueryPort _userQuery;
-        private readonly ISpaceMembershipPort _membership;
-        public CreateTaskUseCase(ICreateTaskPort createTaskPort, IUserQueryPort userQuery, ISpaceMembershipPort membership, ICurrentUserPort currentUserPort)
+        private readonly ISpaceMembershipQueryPort _membership;
+        public CreateTaskUseCase(ICreateTaskPort createTaskPort, IUserQueryPort userQuery, ISpaceMembershipQueryPort membership, ICurrentUserPort currentUserPort)
         {
             _createTaskPort = createTaskPort;
             _userQuery = userQuery;

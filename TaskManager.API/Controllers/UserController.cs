@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.API.Facades;
 using TaskManager.Core.Enums;
-using TaskManager.Core.Models;
+using TaskManager.Core.Models.User;
 using TaskManager.Core.ResposePattern;
 
 namespace TaskManager.API.Controllers

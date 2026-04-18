@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Adapters.DTOs;
 using TaskManager.Core.Entities;
-using TaskManager.Core.Models;
+using TaskManager.Core.Models.TaskCategory;
 
 namespace TaskManager.Adapters.Mappers
 {

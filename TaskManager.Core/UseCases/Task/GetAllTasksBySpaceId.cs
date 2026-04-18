@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManager.Core.Models
+namespace TaskManager.Core.UseCases.Task
 {
-    public class CreateSpaceModel
+    public class GetAllTasksBySpaceId
     {
     }
 }

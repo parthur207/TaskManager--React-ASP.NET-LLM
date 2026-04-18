@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManager.Core.Models
+namespace TaskManager.Core.Models.Space
 {
-    public class UpdateTaskCategoryModel
+    public class UpdateSpaceModel
     {
-        public Guid TaskCategoryId { get; set; }
+        public Guid Id { get; set; }
         public string newName { get; set; }
+
     }
 }

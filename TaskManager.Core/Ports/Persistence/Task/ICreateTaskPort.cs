@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Core.Entities;
-using TaskManager.Core.Models;
+using TaskManager.Core.Models.Task;
 using TaskManager.Core.ResposePattern;
 
 namespace TaskManager.Core.Ports.Task

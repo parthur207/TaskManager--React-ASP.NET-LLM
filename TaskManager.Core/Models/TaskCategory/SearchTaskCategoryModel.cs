@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManager.Core.Models
+namespace TaskManager.Core.Models.TaskCategory
 {
-    public class CreateTaskCategoryModel
+    public class SearchTaskCategoryModel
     {
         public string Name { get; set; }
     }

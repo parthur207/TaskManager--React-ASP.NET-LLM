@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManager.Core.Models
+namespace TaskManager.Core.Models.User
 {
     public class CreateUserModel
     {
