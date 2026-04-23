@@ -1,9 +1,9 @@
-﻿using TaskManager.Adapters.DTOs;
-using TaskManager.Adapters.Mappers;
+﻿using TaskManager.Core.DTOs;
 using TaskManager.Core.Enums;
+using TaskManager.Core.Mappers;
 using TaskManager.Core.Models.Task;
+using TaskManager.Core.Ports.Persistence.Task;
 using TaskManager.Core.Ports.Security;
-using TaskManager.Core.Ports.Task;
 using TaskManager.Core.ResposePattern;
 using TaskManager.Core.UseCases.Task.Interfaces;
 

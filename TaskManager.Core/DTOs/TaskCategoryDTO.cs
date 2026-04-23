@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Models.TaskCategory;
 
-namespace TaskManager.Adapters.DTOs
+namespace TaskManager.Core.DTOs
 {
     public sealed class TaskCategoryDTO
     {

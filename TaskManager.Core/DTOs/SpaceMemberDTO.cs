@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace TaskManager.Core.DTOs
 {
-    public class SpaceDTO
+    public class SpaceMemberDTO
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public int QuantityMembers { get; set; }
+        public DateTime JoinedAt { get; set; }
     }
 }

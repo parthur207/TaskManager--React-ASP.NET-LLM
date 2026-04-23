@@ -11,6 +11,7 @@ namespace TaskManager.Core.Entities
 {
     public class UserEntity
     {
+
         public UserEntity(string name, string email, string passwordHash)
         {
             Id = Guid.NewGuid();

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
-using TaskManager.Adapters.DTOs;
+using TaskManager.Core.DTOs;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.AI;
 using TaskManager.Core.ResposePattern;

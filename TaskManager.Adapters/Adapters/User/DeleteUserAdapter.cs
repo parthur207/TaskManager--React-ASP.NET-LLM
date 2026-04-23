@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.Persistence.User;
 using TaskManager.Core.ResposePattern;
 
-namespace TaskManager.Adapters.Persistence.User
+namespace TaskManager.Adapters.Adapters.User
 {
     internal class DeleteUserAdapter : IDeleteUserPort
     {

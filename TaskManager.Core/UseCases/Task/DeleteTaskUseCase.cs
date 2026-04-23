@@ -1,6 +1,6 @@
 ﻿using TaskManager.Core.Enums;
+using TaskManager.Core.Ports.Persistence.Task;
 using TaskManager.Core.Ports.Security;
-using TaskManager.Core.Ports.Task;
 using TaskManager.Core.ResposePattern;
 using TaskManager.Core.UseCases.Task.Interfaces;
 

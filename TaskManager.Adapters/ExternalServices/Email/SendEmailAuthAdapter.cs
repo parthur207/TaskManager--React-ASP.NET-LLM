@@ -11,7 +11,7 @@ namespace TaskManager.Adapters.ExternalServices.Email
     public class SendEmailAuthAdapter
     {
 
-        private readonly SmtpSettings _settings;
+      /*  private readonly SmtpSettings _settings;
 
         public SendEmailAuthAdapter(IOptions<SmtpSettings> settings)
         {
@@ -32,6 +32,6 @@ namespace TaskManager.Adapters.ExternalServices.Email
             await smtp.AuthenticateAsync(_settings.Username, _settings.Password);
             await smtp.SendAsync(message);
             await smtp.DisconnectAsync(quit: true);
-        }
+        }*/
     }
 }

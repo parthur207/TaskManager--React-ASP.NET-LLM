@@ -1,14 +1,17 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
+using TaskManager.Core.Enums;
 using TaskManager.Core.Models.Task;
-using TaskManager.Core.Ports.Task;
+using TaskManager.Core.Ports.Persistence.Task;
 using TaskManager.Core.ResposePattern;
 
-namespace TaskManager.Adapters.Persistence.Task
+namespace TaskManager.Adapters.Adapters.Task
 {
     public class SearchTaskAdapter : ISearchTaskPort
     {
@@ -50,7 +53,6 @@ namespace TaskManager.Adapters.Persistence.Task
                     query = query.Where(t => t.CreatedAt <= model.To.Value);
                 }
 
-                // Filtrar por espaços do usuário
                 var userSpaces = await _context.SpaceMember
                     .Where(sm => sm.UserId == UserId)
                     .Select(sm => sm.SpaceId)

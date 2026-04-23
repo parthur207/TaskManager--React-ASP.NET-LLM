@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Core.Enums;
 
-namespace TaskManager.Adapters.DTOs
+namespace TaskManager.Core.DTOs
 {
     public sealed class TaskDTO
     {

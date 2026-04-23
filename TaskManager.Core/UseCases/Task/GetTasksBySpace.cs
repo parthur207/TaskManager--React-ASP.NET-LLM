@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskManager.Adapters.DTOs;
+using TaskManager.Core.DTOs;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.Security;
 using TaskManager.Core.ResposePattern;

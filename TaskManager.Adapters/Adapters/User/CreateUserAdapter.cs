@@ -5,14 +5,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskManager.Adapters.Mappers;
+using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
+using TaskManager.Core.Mappers;
 using TaskManager.Core.Models.User;
 using TaskManager.Core.Ports.Persistence.User;
 using TaskManager.Core.ResposePattern;
 
-namespace TaskManager.Adapters.Persistence.User
+namespace TaskManager.Adapters.Adapters.User
 {
     public class CreateUserAdapter : ICreateUserPort
     {

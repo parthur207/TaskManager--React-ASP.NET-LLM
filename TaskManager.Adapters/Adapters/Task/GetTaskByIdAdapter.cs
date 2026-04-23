@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
-using TaskManager.Core.Ports.Task;
+using TaskManager.Core.Enums;
+using TaskManager.Core.Ports.Persistence.Task;
 using TaskManager.Core.ResposePattern;
 using TaskManager.Core.UseCases.Task.Interfaces;
 
-namespace TaskManager.Adapters.Persistence.Task
+namespace TaskManager.Adapters.Adapters.Task
 {
     public class GetTaskByIdAdapter : IGetTaskByIdPort
     {
@@ -47,7 +48,6 @@ namespace TaskManager.Adapters.Persistence.Task
                     return Response;
                 }
 
-                // Verifica se o usuário tem permissão (owner ou responsável)
                 if (task.OwnerId != UserId && task.ResponsibleUserId != UserId)
                 {
                     Response.Status = ResponseStatusEnum.Unauthorized;

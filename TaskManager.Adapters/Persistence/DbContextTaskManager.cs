@@ -150,7 +150,7 @@ namespace TaskManager.Adapters.Persistence
                 entity.Property(t => t.Id)
                       .ValueGeneratedNever();
 
-                entity.Property(t => t.Name)
+                entity.Property(t => t.Title)
                       .HasMaxLength(200)
                       .IsRequired();
 

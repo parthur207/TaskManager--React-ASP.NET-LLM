@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using TaskManager.Adapters.Adapters.Task;
 using TaskManager.Adapters.Persistence;
-using TaskManager.Adapters.Persistence.Task;
 using TaskManager.Adapters.Security;
 using TaskManager.API.Facades;
+using TaskManager.Core.Ports.Persistence.Task;
 using TaskManager.Core.Ports.Security;
-using TaskManager.Core.Ports.Task;
 
 namespace TaskManager.API
 {
@@ -59,8 +59,8 @@ namespace TaskManager.API
             });
 
             //banco de dados InMemory
-            builder.Services.AddDbContext<DbContextInMemory>(options =>
-                options.UseInMemoryDatabase("DbContextInMemory"));
+            /*builder.Services.AddDbContext<DbContextInMemory>(options =>
+                options.UseInMemoryDatabase("DbContextInMemory"));*/
 
             //Banco de dados SQL
             /*var cnn = builder.Configuration.GetConnectionString("DefaultConnection");

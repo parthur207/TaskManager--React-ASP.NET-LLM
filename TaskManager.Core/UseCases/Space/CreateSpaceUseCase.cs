@@ -1,5 +1,5 @@
-﻿using TaskManager.Adapters.Mappers;
-using TaskManager.Core.Enums;
+﻿using TaskManager.Core.Enums;
+using TaskManager.Core.Mappers;
 using TaskManager.Core.Models.Space;
 using TaskManager.Core.Ports.Persistence.Space;
 using TaskManager.Core.Ports.ReadServices;

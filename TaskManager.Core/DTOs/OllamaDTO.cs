@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManager.Adapters.DTOs
+namespace TaskManager.Core.DTOs
 {
     public class OllamaDTO
     {

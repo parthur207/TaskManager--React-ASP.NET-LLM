@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskManager.Adapters.DTOs;
+using TaskManager.Core.DTOs;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Models.User;
 
-namespace TaskManager.Adapters.Mappers
+namespace TaskManager.Core.Mappers
 {
     public class UserMapper
     {
@@ -36,10 +36,17 @@ namespace TaskManager.Adapters.Mappers
                 (
                     entity.Name,
                     entity.Email.Value,
-                    TaskMapper.EntityToDTO(entity.Tasks),
+                    TaskMapper.ListEntityToListDTO(entity?.Tasks),
+                    SpaceMemberMapper.ListEntityToListDTO(entity?.Spaces),
                     entity.Role,
                     entity.Status
                 );
+        }
+
+        public static IEnumerable<UserDTO> ListEntityToListDTO(IEnumerable<UserEntity> entities)
+        {
+            if (entities is null) return new List<UserDTO>();
+            return entities.Select(EntityToDTO).ToList();
         }
     }
 }

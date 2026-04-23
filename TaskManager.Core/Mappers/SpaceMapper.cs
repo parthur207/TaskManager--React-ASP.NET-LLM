@@ -1,8 +1,8 @@
-﻿using TaskManager.Adapters.DTOs;
+﻿using TaskManager.Core.DTOs;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Models.Space;
 
-namespace TaskManager.Adapters.Mappers
+namespace TaskManager.Core.Mappers
 {
     public class SpaceMapper
     {
@@ -23,6 +23,12 @@ namespace TaskManager.Adapters.Mappers
                 CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt
             };
+        }
+
+        public static IEnumerable<SpaceDTO> ListEntityToListDTO(IEnumerable<SpaceEntity> entities)
+        {
+            if (entities is null) return new List<SpaceDTO>();
+            return entities.Select(EntityToDTO).ToList();
         }
     }
 }

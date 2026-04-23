@@ -45,4 +45,4 @@ namespace TaskManager.Adapters.Security
     }
 
 }
-}
+

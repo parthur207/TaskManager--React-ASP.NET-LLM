@@ -1,6 +1,7 @@
 ﻿using TaskManager.Core.Enums;
 using TaskManager.Core.Models.TaskCategory;
 using TaskManager.Core.Ports.Persistence.TaskCategory;
+using TaskManager.Core.Ports.Security;
 using TaskManager.Core.ResposePattern;
 using TaskManager.Core.UseCases.TaskCategory.Interfaces;
 
@@ -9,14 +10,25 @@ namespace TaskManager.Core.UseCases.TaskCategory
     internal class CreateTaskCategoryUseCase : ICreateTaskCategoryUseCase
     {
         private readonly ICreateTaskCategoryPort _createTaskCategoryPort;
-        public CreateTaskCategoryUseCase(ICreateTaskCategoryPort createTaskCategoryPort)
+        private readonly ICurrentUserPort _currentUserPort;
+        public CreateTaskCategoryUseCase(ICreateTaskCategoryPort createTaskCategoryPort, ICurrentUserPort currentUserPort)
         {
             _createTaskCategoryPort = createTaskCategoryPort;
+            _currentUserPort = currentUserPort;
         }
 
         public async Task<SimpleResponseModel> ExecuteAsync(CreateTaskCategoryModel model)
         {
-            var Response= new SimpleResponseModel();
+            var Response = new SimpleResponseModel();
+
+
+            if (!_currentUserPort.IsAuthenticated)
+            {
+                Response.Message = "Usuário não autenticado";
+                Response.Status = ResponseStatusEnum.Unauthorized;
+                return Response;
+            }
+
 
             if (model == null)
             {
@@ -25,7 +37,7 @@ namespace TaskManager.Core.UseCases.TaskCategory
                 return Response;
             }
 
-            var responseRepository= await _createTaskCategoryPort.ExecuteAsync(model);
+            var responseRepository= await _createTaskCategoryPort.ExecuteAsync(model, _currentUserPort.UserId);
 
             if (responseRepository.Status!=ResponseStatusEnum.Success)
             {

@@ -7,7 +7,7 @@ using TaskManager.Core.Entities;
 using TaskManager.Core.Models.Task;
 using TaskManager.Core.ResposePattern;
 
-namespace TaskManager.Core.Ports.Task
+namespace TaskManager.Core.Ports.Persistence.Task
 {
     public interface ISearchTaskPort
     {

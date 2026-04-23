@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Core.ResposePattern;
 
-namespace TaskManager.Core.Ports.Task
+namespace TaskManager.Core.Ports.Persistence.Task
 {
     public interface IDeleteTaskPort
     {

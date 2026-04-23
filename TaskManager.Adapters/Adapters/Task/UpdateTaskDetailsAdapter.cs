@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
-using TaskManager.Core.Ports.Task;
+using TaskManager.Core.Ports.Persistence.Task;
 using TaskManager.Core.ResposePattern;
 
-namespace TaskManager.Adapters.Persistence.Task
+namespace TaskManager.Adapters.Adapters.Task
 {
     public class UpdateTaskDetailsAdapter : IUpdateTaskDetailsPort
     {

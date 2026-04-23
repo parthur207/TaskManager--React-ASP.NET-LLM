@@ -10,6 +10,6 @@ namespace TaskManager.Core.Ports.Persistence.TaskCategory
 {
     public interface ICreateTaskCategoryPort
     {
-        Task<SimpleResponseModel> ExecuteAsync(CreateTaskCategoryModel model);
+        Task<SimpleResponseModel> ExecuteAsync(CreateTaskCategoryModel model, Guid userId);
     }
 }

@@ -1,4 +1,4 @@
-﻿using TaskManager.Adapters.DTOs;
+﻿using TaskManager.Core.DTOs;
 using TaskManager.Core.Models.Task;
 using TaskManager.Core.ResposePattern;
 

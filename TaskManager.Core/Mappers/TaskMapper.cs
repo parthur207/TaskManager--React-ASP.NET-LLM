@@ -1,8 +1,8 @@
-﻿using TaskManager.Adapters.DTOs;
+﻿using TaskManager.Core.DTOs;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Models.Task;
 
-namespace TaskManager.Adapters.Mappers
+namespace TaskManager.Core.Mappers
 {
     public class TaskMapper
     {
@@ -39,5 +39,12 @@ namespace TaskManager.Adapters.Mappers
                 ResponsibleUserName = entity.ResponsibleUser?.Name ?? string.Empty
             };
         }
+
+        public static IEnumerable<TaskDTO> ListEntityToListDTO(IEnumerable<TaskEntity> entities)
+        {
+            if (entities is null) return new List<TaskDTO>();
+            return entities.Select(EntityToDTO).ToList();
+        }
     }
 }
+         

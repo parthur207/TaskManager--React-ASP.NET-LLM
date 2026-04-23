@@ -5,11 +5,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.Persistence.TaskCategory;
 using TaskManager.Core.ResposePattern;
 
-namespace TaskManager.Adapters.Persistence.TaskCategory
+namespace TaskManager.Adapters.Adapters.TaskCategory
 {
     public class DeleteTaskCategoryAdapter : IDeleteTaskCategoryPort
     {

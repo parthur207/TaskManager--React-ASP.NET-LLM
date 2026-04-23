@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskManager.Adapters.Mappers;
 using TaskManager.Core.Models.TaskCategory;
 using TaskManager.Core.Ports.Persistence.TaskCategory;
 using TaskManager.Core.ResposePattern;
 using TaskManager.Core.Enums;
+using TaskManager.Core.Mappers;
+using TaskManager.Adapters.Persistence;
 
-namespace TaskManager.Adapters.Persistence.TaskCategory
+namespace TaskManager.Adapters.Adapters.TaskCategory
 {
     public class CreateTaskCategoryAdapter : ICreateTaskCategoryPort
     {
@@ -20,7 +21,7 @@ namespace TaskManager.Adapters.Persistence.TaskCategory
             _context = context;
         }
 
-        public async Task<SimpleResponseModel> ExecuteAsync(CreateTaskCategoryModel model)
+        public async Task<SimpleResponseModel> ExecuteAsync(CreateTaskCategoryModel model, Guid userId)
         {
             var Response = new SimpleResponseModel();
             try
@@ -35,7 +36,7 @@ namespace TaskManager.Adapters.Persistence.TaskCategory
                 // Verifica duplicidade pelo nome e usuário: o usuário será associado no UseCase via port que passa o userId.
                 // Aqui assumimos que o model já foi validado quanto ao usuário ou que o usecase chama o port com contexto correto.
 
-                var entity = TaskCategoryMapper.ModelToEntity(model);
+                var entity = TaskCategoryMapper.ModelToEntity(model, userId);
 
                 if (entity is null)
                 {

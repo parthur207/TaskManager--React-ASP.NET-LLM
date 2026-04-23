@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Models.TaskCategory;
 using TaskManager.Core.Ports.Persistence.TaskCategory;
@@ -12,7 +13,7 @@ using TaskManager.Core.Ports.ReadServices;
 using TaskManager.Core.Ports.Security;
 using TaskManager.Core.ResposePattern;
 
-namespace TaskManager.Adapters.Persistence.TaskCategory
+namespace TaskManager.Adapters.Adapters.TaskCategory
 {
     public class UpdateTaskCategoryAdapter : IUpdateTaskCategoryPort
     {
