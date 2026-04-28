@@ -19,7 +19,7 @@ namespace TaskManager.Core.UseCases.Task
             _currentUserPort = currentUserPort;
         }
 
-        public async Task<ResponseModel<IEnumerable<TaskDTO>>> ExecuteAsync()
+        public async Task<ResponseModel<IEnumerable<TaskDTO>>> ExecuteAsync(Guid spaceId)
         { 
             var Response = new ResponseModel<IEnumerable<TaskDTO>>();
 

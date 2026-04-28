@@ -33,8 +33,4 @@
     <ProjectReference Include="..\TaskManager.Core\TaskManager.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DI\" />
-  </ItemGroup>
-
 </Project>
