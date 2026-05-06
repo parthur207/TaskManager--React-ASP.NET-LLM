@@ -15,5 +15,10 @@ namespace TaskManager.API.Controllers
         {
             _spaceUseCaseFacade = spaceUseCaseFacade;
         }
-    }
+
+        public async Task<IActionResult> GetSpaces()
+        {
+            var spaces = await _spaceUseCaseFacade.();
+            return new OkObjectResult(spaces);
+        }
 }

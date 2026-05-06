@@ -7,9 +7,8 @@ using TaskManager.Core.ResposePattern;
 
 namespace TaskManager.Core.Ports.Persistence.Space
 {
-    public interface IUpdateMembersSpacePort
+    public interface IGetSpaceByUserIdUseCase
     {
-
-        Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, Dictionary<Guid, bool> updateUsers);
+        Task<SimpleResponseModel> ExecuteAsync(Guid userId);
     }
 }
