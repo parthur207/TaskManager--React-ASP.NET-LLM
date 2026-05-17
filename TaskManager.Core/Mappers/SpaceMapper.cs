@@ -20,6 +20,7 @@ namespace TaskManager.Core.Mappers
             {
                 Id = entity.Id,
                 Name = entity.Name,
+                Tasks = entity.Tasks?.Select(TaskMapper.EntityToDTO),
                 CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt
             };

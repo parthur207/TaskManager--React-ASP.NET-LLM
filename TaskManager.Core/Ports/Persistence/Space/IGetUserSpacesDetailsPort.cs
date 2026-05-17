@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Core.DTOs;
 using TaskManager.Core.ResposePattern;
 
 namespace TaskManager.Core.Ports.Persistence.Space
 {
-    public interface IDeleteSpacePort
+    public interface IGetUserSpacesDetailsPort
     {
-        Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, Guid userId);
+        Task<ResponseModel<SpaceDTO>> ExecuteAsync(Guid userId);
     }
 }

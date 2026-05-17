@@ -9,7 +9,6 @@ namespace TaskManager.Core.Ports.Persistence.Space
 {
     public interface IUpdateMembersSpacePort
     {
-
         Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, Dictionary<Guid, bool> updateUsers);
     }
 }

@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Core.ResposePattern;
 
-namespace TaskManager.Core.Ports.Persistence.Space
+namespace TaskManager.Core.UseCases.Space.Interfaces
 {
     public interface IGetSpacesIdByUserIdUseCase
     {
-        Task<ResponseModel<IEnumerable<Guid>>> ExecuteAsync(Guid userId);
+        Task<ResponseModel<IEnumerable<Guid>>> ExecuteAsync();
     }
 }

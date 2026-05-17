@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Core.ResposePattern;
 
 namespace TaskManager.Core.Ports.Persistence.Space
 {
-    internal interface IUpdateNameSpacePort
+    public interface IUpdateNameSpacePort
     {
+        Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, string newName);
     }
 }

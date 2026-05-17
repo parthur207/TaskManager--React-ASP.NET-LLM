@@ -9,7 +9,7 @@ namespace TaskManager.API.Facades
         public IUpdateMembersSpaceUseCase update { get; set; }
         public IUpdateNameSpaceUseCase updateNameSpace { get; set; }
         public IDeleteSpaceUseCase delete { get; set; }
-        public IGetSpacesUseCase getSpaces { get; set; }7
+        public  getSpaces { get; set; }
 
     }
 }

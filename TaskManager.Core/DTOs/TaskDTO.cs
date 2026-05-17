@@ -10,7 +10,7 @@ namespace TaskManager.Core.DTOs
     public sealed class TaskDTO
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Title { get; set; }
         public string? Description { get; set; }
         public string? TaskCategoryName { get; set; }
         public string SpaceName { get; set; }

@@ -112,6 +112,15 @@ namespace TaskManager.Adapters.Adapters.SpaceMember
                     {
                         Id = x.Space.Id,
                         Name = x.Space.Name,
+                        Tasks = x.Space.Tasks.Select(t => new TaskDTO
+                        {
+                            Id = t.Id,
+                            Title = t.Title,
+                            Description = t.Description ?? string.Empty,
+                            Status = t.StatusEnum.ToString(),
+                            CreatedAt = t.CreatedAt,
+                            UpdatedAt = t.UpdatedAt
+                        }).ToList(),
                         CreatedAt = x.Space.CreatedAt,
                         UpdatedAt = x.Space.UpdatedAt
                     })

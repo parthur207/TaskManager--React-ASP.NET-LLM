@@ -7,8 +7,8 @@ using TaskManager.Core.ResposePattern;
 
 namespace TaskManager.Core.Ports.Persistence.Space
 {
-    public interface IGetSpaceByUserIdUseCase
+    public interface IGetUsersBySpaceIdPort
     {
-        Task<SimpleResponseModel> ExecuteAsync(Guid userId);
+        Task<ResponseModel<IEnumerable<string>>> ExecuteAsync(Guid spaceId);
     }
 }

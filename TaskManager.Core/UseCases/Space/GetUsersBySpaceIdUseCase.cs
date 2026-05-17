@@ -11,29 +11,30 @@ using TaskManager.Core.UseCases.Space.Interfaces;
 
 namespace TaskManager.Core.UseCases.Space
 {
-    public class DeleteSpaceUseCase : IDeleteSpaceUseCase
+    public class GetUsersBySpaceIdUseCase : IGetUsersBySpaceIdUseCase
     {
-        private readonly IDeleteSpacePort _deleteSpacePort;
         private readonly ICurrentUserPort _currentUserPort;
-        public DeleteSpaceUseCase(IDeleteSpacePort deleteSpacePort, ICurrentUserPort currentUserPort)
+        private readonly IGetUsersBySpaceIdPort _getUsersBySpaceIdPort;
+        public GetUsersBySpaceIdUseCase(ICurrentUserPort currentUserPort, IGetUsersBySpaceIdPort getUsersBySpaceIdPort)
         {
-            _deleteSpacePort = deleteSpacePort;
             _currentUserPort = currentUserPort;
+            _getUsersBySpaceIdPort = getUsersBySpaceIdPort;
         }
-        public async Task<SimpleResponseModel> ExecuteAsync(Guid spaceId)
+
+        public async Task<ResponseModel<IEnumerable<string>>> ExecuteAsync(Guid spaceId)
         {
-            var Response = new SimpleResponseModel();
+            var Response = new ResponseModel<IEnumerable<string>>();
 
             if (!_currentUserPort.IsAuthenticated)
             {
                 Response.Status = ResponseStatusEnum.Unauthorized;
-                Response.Message = "Você não está autenticado. Efetue o login novamente.";
+                Response.Message = "Erro. Efetue o login novamente.";
                 return Response;
             }
 
-            Response = await _deleteSpacePort.ExecuteAsync(spaceId, _currentUserPort.UserId);
+            var ResponsePort = await _getUsersBySpaceIdPort.ExecuteAsync(spaceId);
 
-            return Response;
+            return ResponsePort;
         }
     }
 }
