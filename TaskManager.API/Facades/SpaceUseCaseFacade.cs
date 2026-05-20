@@ -6,10 +6,11 @@ namespace TaskManager.API.Facades
     {
 
         public ICreateSpaceUseCase create { get; set; }
-        public IUpdateMembersSpaceUseCase update { get; set; }
-        public IUpdateNameSpaceUseCase updateNameSpace { get; set; }
         public IDeleteSpaceUseCase delete { get; set; }
-        public  getSpaces { get; set; }
+        public IGetUsersBySpaceIdUseCase getUsersBySpaceId { get; set; }
+        public IGetSpaceDetailsByIdUseCase getSpaceById { get; set; }
+        public IUpdateMembersSpaceUseCase updateMembers { get; set; }
+        public IUpdateNameSpaceUseCase updateNameSpace { get; set; }
 
     }
 }

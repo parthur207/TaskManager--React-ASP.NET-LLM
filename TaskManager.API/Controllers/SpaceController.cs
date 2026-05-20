@@ -21,13 +21,12 @@ namespace TaskManager.API.Controllers
         [HttpGet("profile")]
         public async Task<IActionResult> GetSpacesProfile()
         {
-            var spaces = await _spaceUseCaseFacade.();
             return new OkObjectResult(spaces);
         }
 
 
         //sidebar
-        [HttpGet()]
+        [HttpGet("sidebar-data")]
         public async Task<IActionResult> GetSpacesMember()
         {
             var spaces = await _spaceUseCaseFacade.();
@@ -35,10 +34,11 @@ namespace TaskManager.API.Controllers
         }
 
 
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSpaceById([FromRoute] Guid id)
         {
-            var space = await _spaceUseCaseFacade.GetById.ExecuteAsync(id);
+            var space = await _spaceUseCaseFacade..ExecuteAsync(id);
           
         }
 
@@ -47,14 +47,26 @@ namespace TaskManager.API.Controllers
         {
             var createdSpace = await _spaceUseCaseFacade.create.ExecuteAsync(space);
 
-            switch
+            switch (createdSpace.Status)
             {
                 case ResponseStatusEnum.Success:
                     return new OkObjectResult(createdSpace);
-                case ResponseStatusEnum.BadRequest:
+                case ResponseStatusEnum.Error:
                     return new BadRequestObjectResult(createdSpace);
+                case ResponseStatusEnum.CriticalError:
+                    return new StatusCodeResult(500);
                 default:
                     return new ObjectResult(createdSpace) { StatusCode = 500 };
             }
+        }
+
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> LeaveSpace([FromRoute] Guid id, [FromBody] UpdateSpaceModel space)
+        {
+            return new OkObjectResult(updatedSpace);
+        }
+
+        [HttpPatch()]
     }
 }

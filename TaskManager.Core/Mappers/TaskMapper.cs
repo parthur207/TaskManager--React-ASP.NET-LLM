@@ -27,7 +27,7 @@ namespace TaskManager.Core.Mappers
             return new TaskDTO
             {
                 Id = entity.Id,
-                Name = entity.Title,
+                Title = entity.Title,
                 Description = entity.Description ?? string.Empty,
                 TaskCategoryName = entity.Category?.Name ?? string.Empty,
                 SpaceName = entity.Space?.Name ?? string.Empty,

@@ -13,7 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// SignalR
 builder.Services.AddSignalR();
 
 builder.Services.AddOpenApiDocument(options =>
@@ -106,8 +105,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-// Endpoint do Hub SignalR
 app.MapHub<TaskHub>("/hubs/tasks");
 
 app.Run();
-
