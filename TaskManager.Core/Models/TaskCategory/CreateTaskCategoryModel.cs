@@ -9,5 +9,6 @@ namespace TaskManager.Core.Models.TaskCategory
     public class CreateTaskCategoryModel
     {
         public string Name { get; set; }
+        public Guid SpaceId { get; set; }
     }
 }

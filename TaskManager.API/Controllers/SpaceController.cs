@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.API.Facades;
 using TaskManager.Core.Enums;
@@ -9,7 +10,7 @@ namespace TaskManager.API.Controllers
     [Authorize]
     [ApiController]
     [Route("api/spaces")]
-    public class SpaceController
+    public class SpaceController : ControllerBase
     {
         private readonly SpaceUseCaseFacade _spaceUseCaseFacade;
 
@@ -21,7 +22,29 @@ namespace TaskManager.API.Controllers
         [HttpGet("profile")]
         public async Task<IActionResult> GetSpacesProfile()
         {
-            return new OkObjectResult(spaces);
+
+            //
+
+            switch (Response.Status)
+            {
+                case ResponseStatusEnum.Error:
+                    return BadRequest(Response);
+
+                case ResponseStatusEnum.NotFound:
+                    return NotFound(Response);
+
+                case ResponseStatusEnum.Success:
+                    return Ok(Response);
+
+                case ResponseStatusEnum.Unauthorized:
+                    return Unauthorized(Response);
+
+                case ResponseStatusEnum.CriticalError:
+                    return BadRequest(Response);
+
+                default:
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado.");
+            }
         }
 
 
@@ -29,17 +52,58 @@ namespace TaskManager.API.Controllers
         [HttpGet("sidebar-data")]
         public async Task<IActionResult> GetSpacesMember()
         {
-            var spaces = await _spaceUseCaseFacade.();
-            return new OkObjectResult(spaces);
+            var Response = await _spaceUseCaseFacade.();
+
+            switch (Response.Status)
+            {
+                case ResponseStatusEnum.Error:
+                    return BadRequest(Response);
+
+                case ResponseStatusEnum.NotFound:
+                    return NotFound(Response);
+
+                case ResponseStatusEnum.Success:
+                    return Ok(Response);
+
+                case ResponseStatusEnum.Unauthorized:
+                    return Unauthorized(Response);
+
+                case ResponseStatusEnum.CriticalError:
+                    return BadRequest(Response);
+
+                default:
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado.");
+            }
         }
 
 
 
-        [HttpGet("{id}")]
+        [HttpGet("space/{id}")]
         public async Task<IActionResult> GetSpaceById([FromRoute] Guid id)
         {
-            var space = await _spaceUseCaseFacade..ExecuteAsync(id);
-          
+            var Response = await _spaceUseCaseFacade.getSpaceById.ExecuteAsync(id);
+
+            switch (Response.Status)
+            {
+                case ResponseStatusEnum.Error:
+                    return BadRequest(Response);
+
+                case ResponseStatusEnum.NotFound:
+                    return NotFound(Response);
+
+                case ResponseStatusEnum.Success:
+                    return Ok(Response);
+
+                case ResponseStatusEnum.Unauthorized:
+                    return Unauthorized(Response);
+
+                case ResponseStatusEnum.CriticalError:
+                    return BadRequest(Response);
+
+                default:
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado.");
+            }
+
         }
 
         [HttpPost]
@@ -61,12 +125,53 @@ namespace TaskManager.API.Controllers
         }
 
 
-        [HttpPatch("{id}")]
+        [HttpPatch("leave/{id}")]
         public async Task<IActionResult> LeaveSpace([FromRoute] Guid id, [FromBody] UpdateSpaceModel space)
         {
-            return new OkObjectResult(updatedSpace);
+
+            //
+
+            switch (Response.Status)
+            {
+                case ResponseStatusEnum.Error:
+                    return BadRequest(Response);
+
+                case ResponseStatusEnum.NotFound:
+                    return NotFound(Response);
+
+                case ResponseStatusEnum.Success:
+                    return Ok(Response);
+
+                case ResponseStatusEnum.Unauthorized:
+                    return Unauthorized(Response);
+
+                case ResponseStatusEnum.CriticalError:
+                    return BadRequest(Response);
+
+                default:
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado.");
+            }
         }
 
-        [HttpPatch()]
-    }
+        [HttpPatch("remove-member")]
+        public async Task<IActionResult> RemoveMemberFromSpace([FromBody] MemberSpaceModel model)
+        {
+            var Response = await _spaceUseCaseFacade.removeMember.ExecuteAsync(model);
+            switch (Response.Status)
+            {
+                case ResponseStatusEnum.Error:
+                    return BadRequest(Response);
+                case ResponseStatusEnum.NotFound:
+                    return NotFound(Response);
+                case ResponseStatusEnum.Success:
+                    return Ok(Response);
+                case ResponseStatusEnum.Unauthorized:
+                    return Unauthorized(Response);
+                case ResponseStatusEnum.CriticalError:
+                    return BadRequest(Response);
+                default:
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado.");
+            }
+
+        }
 }

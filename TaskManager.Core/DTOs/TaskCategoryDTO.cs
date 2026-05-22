@@ -18,6 +18,7 @@ namespace TaskManager.Core.DTOs
             return new TaskCategoryEntity
                 (
                     userId,
+                    model.SpaceId,
                     model.Name
                 );
         }

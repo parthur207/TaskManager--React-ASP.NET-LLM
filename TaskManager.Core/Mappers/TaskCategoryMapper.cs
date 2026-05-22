@@ -22,7 +22,7 @@ namespace TaskManager.Core.Mappers
 
         public static TaskCategoryEntity ModelToEntity(CreateTaskCategoryModel model, Guid userId)
         {
-            return new TaskCategoryEntity(userId, model.Name);
+            return new TaskCategoryEntity(userId, model.SpaceId, model.Name);
         }
 
         public static IEnumerable<TaskCategoryDTO> ListEntityToListDTO(IEnumerable<TaskCategoryEntity> entities)

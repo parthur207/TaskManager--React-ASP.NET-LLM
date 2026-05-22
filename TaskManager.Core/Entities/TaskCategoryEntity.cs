@@ -8,22 +8,25 @@ namespace TaskManager.Core.Entities
 {
     public sealed class TaskCategoryEntity
     {
-        public TaskCategoryEntity(Guid userId, string name)
+        public TaskCategoryEntity(Guid ownerId, Guid spaceId, string name)
         {
             Id = Guid.NewGuid();
-            UserId = userId;
+            OwnerId = ownerId;
             Name = name;
             CreatedAt = DateTime.Now;
             Tasks = new List<TaskEntity>();
+            SpaceId = spaceId;
         }//Criar
 
         public Guid Id { get; private set; }
-        public Guid UserId { get; private set; }
-        public UserEntity? User { get; private set; }
-        public IList<TaskEntity> Tasks { get; private set; }
         public string Name { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; set; }
+        public Guid OwnerId { get; private set; }
+        public UserEntity? UserOwner { get; private set; }
+        public IList<TaskEntity> Tasks { get; private set; }
+        public Guid SpaceId { get; private set; }
+        public SpaceEntity? Space { get; private set; }
 
         public void UpdateCategoryName(string newName)
         {
