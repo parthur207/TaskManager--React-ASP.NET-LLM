@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,6 +10,7 @@ using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.Persistence.TaskCategory;
+using TaskManager.Core.Ports.ReadServices;
 using TaskManager.Core.ResposePattern;
 using TaskManager.Core.UseCases.TaskCategory.Interfaces;
 
@@ -17,9 +19,11 @@ namespace TaskManager.Adapters.Adapters.TaskCategory
     public class GetAllTaskCategoryPort : IGetAllTaskCategoryPort
     {
         private readonly DbContextTaskManager _context;
-        public GetAllTaskCategoryPort(DbContextTaskManager context)
+        private readonly ISpaceMembershipQueryPort _spaceMembershipQueryPort;
+        public GetAllTaskCategoryPort(DbContextTaskManager context, ISpaceMembershipQueryPort spaceMembershipQueryPort)
         {
             _context = context;
+            _spaceMembershipQueryPort = spaceMembershipQueryPort;
         }
 
         public async Task<ResponseModel<IEnumerable<TaskCategoryEntity>>> ExecuteAsync(Guid spaceId, Guid userId)
@@ -34,7 +38,7 @@ namespace TaskManager.Adapters.Adapters.TaskCategory
                     return Response;
                 }
 
-                if (!await _context.SpaceMember.AnyAsync(x => x.SpaceId ==spaceId && x.UserId == userId))
+                if (!_spaceMembershipQueryPort.IsUserMemberAsync(userId, spaceId).Result.Content)
                 {
                     Response.Message = "Você não possui permissão para este espaço.";
                     Response.Status = ResponseStatusEnum.Unauthorized;
@@ -45,15 +49,22 @@ namespace TaskManager.Adapters.Adapters.TaskCategory
                     .Where(x => x.SpaceId == spaceId)
                     .ToListAsync();
 
+                if (taskCategories is null || !taskCategories.Any())
+                {
+                    Response.Message = "Nenhuma categoria de tarefa encontrada para o espaço especificado.";
+                    Response.Status = ResponseStatusEnum.NotFound;
+                    return Response;
+                }
 
+                Response.Status= ResponseStatusEnum.Success;
+                Response.Content = taskCategories;
+                return Response;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine("Ocorreu um erro inesperado: "+ex);
                 throw new Exception("Ocorreu um erro inesperado ao tentar coletar as categorias de tarefas deste espaço.");
             }
-
-            return Response;
         }
     }
 }

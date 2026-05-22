@@ -3,11 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace TaskManager.Core.Entities
 {
     public class SpaceEntity
     {
+
+        public SpaceEntity(string name, DateTime createdAt)
+        { 
+            Name=name;
+            CreatedAt=createdAt;
+            Members?.Count();
+        }
+            
         public SpaceEntity(string name, Guid ownerId, IList<SpaceMemberEntity>? members)
         {
             Id = Guid.NewGuid();
@@ -15,6 +24,7 @@ namespace TaskManager.Core.Entities
             Name = name;
             OwnerId = ownerId;
             Members = members?.ToList() ?? new List<SpaceMemberEntity>();
+            TaskCategories = [];
             Members.Add(new SpaceMemberEntity(Id, ownerId));
             CreatedAt= DateTime.Now;
         }
@@ -25,6 +35,7 @@ namespace TaskManager.Core.Entities
         public Guid OwnerId { get; set; } 
         public UserEntity Owner { get; set; }
         public IList<SpaceMemberEntity>? Members { get; set; }
+        public IList<TaskCategoryEntity>? TaskCategories { get; set; }
         public DateTime CreatedAt { get; private set; } 
         public DateTime UpdatedAt { get; private set; }
 

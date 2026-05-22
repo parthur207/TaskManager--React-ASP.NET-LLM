@@ -19,35 +19,7 @@ namespace TaskManager.API.Controllers
             _spaceUseCaseFacade = spaceUseCaseFacade;
         }
 
-        [HttpGet("profile")]
-        public async Task<IActionResult> GetSpacesProfile()
-        {
-
-            //
-
-            switch (Response.Status)
-            {
-                case ResponseStatusEnum.Error:
-                    return BadRequest(Response);
-
-                case ResponseStatusEnum.NotFound:
-                    return NotFound(Response);
-
-                case ResponseStatusEnum.Success:
-                    return Ok(Response);
-
-                case ResponseStatusEnum.Unauthorized:
-                    return Unauthorized(Response);
-
-                case ResponseStatusEnum.CriticalError:
-                    return BadRequest(Response);
-
-                default:
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado.");
-            }
-        }
-
-
+       
         //sidebar
         [HttpGet("sidebar-data")]
         public async Task<IActionResult> GetSpacesMember()
@@ -106,7 +78,7 @@ namespace TaskManager.API.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateSpace([FromBody] CreateSpaceModel space)
         {
             var createdSpace = await _spaceUseCaseFacade.create.ExecuteAsync(space);
@@ -124,6 +96,33 @@ namespace TaskManager.API.Controllers
             }
         }
 
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteSpace([FromRoute] Guid id)
+        {
+            var Response = await _spaceUseCaseFacade.delete.ExecuteAsync(id);
+
+            switch (Response.Status)
+            {
+                case ResponseStatusEnum.Error:
+                    return BadRequest(Response);
+
+                case ResponseStatusEnum.NotFound:
+                    return NotFound(Response);
+
+                case ResponseStatusEnum.Success:
+                    return Ok(Response);
+
+                case ResponseStatusEnum.Unauthorized:
+                    return Unauthorized(Response);
+
+                case ResponseStatusEnum.CriticalError:
+                    return BadRequest(Response);
+
+                default:
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado.");
+            }
+        }
 
         [HttpPatch("leave/{id}")]
         public async Task<IActionResult> LeaveSpace([FromRoute] Guid id, [FromBody] UpdateSpaceModel space)
@@ -174,4 +173,5 @@ namespace TaskManager.API.Controllers
             }
 
         }
+    }
 }

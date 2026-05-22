@@ -26,6 +26,18 @@ namespace TaskManager.Core.Mappers
             };
         }
 
+        public static IEnumerable<SpaceItemDTO> ListEntityToListItemDTO(IEnumerable<SpaceEntity> entities)
+        {
+            if (entities is null) return new List<SpaceItemDTO>();
+            return entities.Select(e => new SpaceItemDTO
+            {
+                Name = e.Name,
+                CreatedAt = e.CreatedAt,
+                MembersCount = e.Members?.Count() ?? 0
+            }).ToList() ?? new List<SpaceItemDTO>();
+        }
+
+
         public static IEnumerable<SpaceDTO> ListEntityToListDTO(IEnumerable<SpaceEntity> entities)
         {
             if (entities is null) return new List<SpaceDTO>();

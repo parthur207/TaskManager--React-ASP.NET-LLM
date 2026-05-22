@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace TaskManager.Core.DTOs
 {
-    internal class SpaceItemDTO
+    public class SpaceItemDTO
     {
+        public string Name { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public int MembersCount { get; set; }
     }
 }

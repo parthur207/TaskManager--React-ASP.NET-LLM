@@ -12,7 +12,7 @@ using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.ReadServices;
 using TaskManager.Core.ResposePattern;
 
-namespace TaskManager.Adapters.Adapters.SpaceMember
+namespace TaskManager.Adapters.Adapters.ReadServices
 {
     public class SpaceMembershipQueryAdapter : ISpaceMembershipQueryPort
     {

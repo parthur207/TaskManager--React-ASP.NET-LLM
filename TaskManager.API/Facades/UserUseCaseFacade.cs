@@ -16,5 +16,6 @@ namespace TaskManager.API.Facades
         public IUpdateUserPasswordUseCase UpdatePassword { get; }
         public IDeleteUserUseCase Delete { get; }
         public ILoginUserUseCase Login { get; }
+        public IGetDataUserProfileUseCase GetDatasProfile { get; }
     }
 }

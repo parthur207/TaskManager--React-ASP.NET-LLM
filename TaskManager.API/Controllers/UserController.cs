@@ -39,17 +39,16 @@ namespace TaskManager.API.Controllers
                 case ResponseStatusEnum.CriticalError:
                     return BadRequest(Response);
 
-                default: 
+                default:
                     return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado.");
             }
         }
 
         [AllowAnonymous]
-
         [HttpPost("register")]
         public async Task<ActionResult> Register([FromForm] CreateUserModel model)
         {
-            var Response= await _userUseCaseFacade.Create.ExecuteAsync(model);
+            var Response = await _userUseCaseFacade.Create.ExecuteAsync(model);
 
             switch (Response.Status)
             {
@@ -94,5 +93,33 @@ namespace TaskManager.API.Controllers
                     return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado.");
             }
         }
+
+        [Authorize]
+        [HttpGet("profile")]
+        public async Task<IActionResult> GetDataProfile()
+        {
+            var Response = await _userUseCaseFacade.GetDatasProfile.ExecuteAsync();
+
+            switch (Response.Status)
+            {
+                case ResponseStatusEnum.Error:
+                    return BadRequest(Response);
+
+                case ResponseStatusEnum.NotFound:
+                    return NotFound(Response);
+
+                case ResponseStatusEnum.Success:
+                    return Ok(Response);
+
+                case ResponseStatusEnum.Unauthorized:
+                    return Unauthorized(Response);
+
+                case ResponseStatusEnum.CriticalError:
+                    return BadRequest(Response);
+
+                default:
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado.");
+            }
+        } 
     }
 }

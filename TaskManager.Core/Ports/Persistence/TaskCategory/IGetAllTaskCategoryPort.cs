@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Core.DTOs;
 using TaskManager.Core.Entities;
+using TaskManager.Core.ResposePattern;
 
 namespace TaskManager.Core.Ports.Persistence.TaskCategory
 {
     public interface IGetAllTaskCategoryPort
     {
-        Task<IEnumerable<TaskCategoryEntity>> ExecuteAsync(Guid spaceId, Guid userId);
-
+        Task<ResponseModel<IEnumerable<TaskCategoryEntity>>> ExecuteAsync(Guid spaceId, Guid userId);
     }
 }

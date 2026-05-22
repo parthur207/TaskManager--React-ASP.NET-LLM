@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace TaskManager.Core.DTOs
 {
-    public class SpaceDTO
+    public class UserProfileDTO
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
-        public IEnumerable<TaskDTO>? Tasks { get; set; }
+        public string Email { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public IEnumerable<SpaceItemDTO>? MySpaces { get; set; }
+        public IEnumerable<SpaceItemDTO>? SpacesMember { get; set; }
     }
 }

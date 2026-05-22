@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Core.DTOs;
@@ -11,6 +12,25 @@ namespace TaskManager.Core.Mappers
 {
     public class UserMapper
     {
+        public static UserProfileDTO ListEntityToListProfileDTO(UserEntity entity)
+        {
+            return new UserProfileDTO
+            {
+                Name = entity.Name,
+                Email = entity.Email.Value,
+                CreatedAt = entity.CreatedAt,
+                MySpaces = SpaceMapper.ListEntityToListItemDTO(
+                    entity.Spaces?
+                        .Where(y => y.Space.OwnerId != entity.Id)
+                        .Select(y => y.Space)
+                        ?? Enumerable.Empty<SpaceEntity>()),
+                SpacesMember = SpaceMapper.ListEntityToListItemDTO(
+                    entity.Spaces?
+                        .Select(y => y.Space)
+                        ?? Enumerable.Empty<SpaceEntity>())
+            } ?? new UserProfileDTO();
+        }
+        
         public static UserEntity ModelToEntity(CreateUserModel model)
         {
             return new UserEntity

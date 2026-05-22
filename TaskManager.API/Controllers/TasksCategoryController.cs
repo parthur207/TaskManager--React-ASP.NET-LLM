@@ -20,7 +20,8 @@ namespace TaskManager.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCategories([FromQuery] Guid SpaceId)
         {
-            var Response = await _taskCategoryUseCaseFacade.Get.ExecuteAsync(SpaceId);
+            var Response = await _taskCategoryUseCaseFacade.GetAll.ExecuteAsync(SpaceId);
+
             switch (Response.Status)
             {
                 case ResponseStatusEnum.Error:

@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TaskManager.Adapters.Adapters.ReadServices;
 using TaskManager.Adapters.Adapters.Space;
-using TaskManager.Adapters.Adapters.SpaceMember;
 using TaskManager.Adapters.Adapters.Task;
 using TaskManager.Adapters.Adapters.TaskCategory;
 using TaskManager.Adapters.Adapters.User;
