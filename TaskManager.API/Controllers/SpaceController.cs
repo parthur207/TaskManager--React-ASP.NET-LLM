@@ -19,12 +19,11 @@ namespace TaskManager.API.Controllers
             _spaceUseCaseFacade = spaceUseCaseFacade;
         }
 
-       
         //sidebar
         [HttpGet("sidebar-data")]
-        public async Task<IActionResult> GetSpacesMember()
+        public async Task<IActionResult> GetSpacesData()
         {
-            var Response = await _spaceUseCaseFacade.();
+            var Response = await _spaceUseCaseFacade.getSpaceDataSideBar.ExecuteAsync();
 
             switch (Response.Status)
             {
@@ -49,11 +48,10 @@ namespace TaskManager.API.Controllers
         }
 
 
-
         [HttpGet("space/{id}")]
-        public async Task<IActionResult> GetSpaceById([FromRoute] Guid id)
+        public async Task<IActionResult> GetSpaceById([FromRoute] Guid SpaceId)
         {
-            var Response = await _spaceUseCaseFacade.getSpaceById.ExecuteAsync(id);
+            var Response = await _spaceUseCaseFacade.getSpaceById.ExecuteAsync(SpaceId);
 
             switch (Response.Status)
             {
@@ -172,6 +170,33 @@ namespace TaskManager.API.Controllers
                     return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado.");
             }
 
+        }
+
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdateSpace([FromRoute] Guid id, [FromBody] UpdateSpaceModel space)
+        {
+            var Response = await _spaceUseCaseFacade.update.ExecuteAsync(id, space.NewName);
+
+            switch (Response.Status)
+            {
+                case ResponseStatusEnum.Error:
+                    return BadRequest(Response);
+
+                case ResponseStatusEnum.NotFound:
+                    return NotFound(Response);
+
+                case ResponseStatusEnum.Success:
+                    return Ok(Response);
+
+                case ResponseStatusEnum.Unauthorized:
+                    return Unauthorized(Response);
+
+                case ResponseStatusEnum.CriticalError:
+                    return BadRequest(Response);
+
+                default:
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado.");
+            }
         }
     }
 }

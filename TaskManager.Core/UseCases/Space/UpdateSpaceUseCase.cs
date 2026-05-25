@@ -8,8 +8,9 @@ using TaskManager.Core.UseCases.Space.Interfaces;
 
 namespace TaskManager.Core.UseCases.Space
 {
-    internal class UpdateNameSpaceUseCase : IUpdateNameSpaceUseCase
+    public class UpdateSpaceUseCase : IUpdateSpaceUseCase
     {
+        private readonly IUpda
         public Task<SimpleResponseModel> ExecuteAsync(Guid SpaceId)
         {
             throw new NotImplementedException();

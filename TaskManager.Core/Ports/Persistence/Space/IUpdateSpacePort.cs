@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Core.ResposePattern;
 
-namespace TaskManager.Core.UseCases.Space.Interfaces
+namespace TaskManager.Core.Ports.Persistence.Space
 {
-    public interface IUpdateNameSpaceUseCase
+    public interface IUpdateSpacePort
     {
-        Task<SimpleResponseModel> ExecuteAsync(Guid SpaceId);
+        Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, string newName);
     }
 }

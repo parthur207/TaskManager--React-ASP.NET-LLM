@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TaskManager.Core.DTOs;
+using TaskManager.Core.ResposePattern;
+
+namespace TaskManager.Core.UseCases.Space.Interfaces
+{
+    public interface IGetSpaceDataSideBarUseCase
+    {
+
+        Task<ResponseModel<IEnumerable<SpaceItemDTO>>> ExecuteAsync();
+    }
+}

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.DTOs;
+using TaskManager.Core.Entities;
 using TaskManager.Core.Ports.Persistence.Space;
 using TaskManager.Core.ResposePattern;
 
@@ -20,9 +21,9 @@ namespace TaskManager.Adapters.Adapters.Space
             _context = context;
         }
 
-        public async Task<ResponseModel<SpaceDTO>> ExecuteAsync(Guid userId)
+        public async Task<ResponseModel<SpaceEntity>> ExecuteAsync(Guid userId, Guid spaceId)
         {
-            var Response = new ResponseModel<SpaceDTO>();
+            var Response = new ResponseModel<SpaceEntity>();
           
             try
             {

@@ -41,7 +41,7 @@ namespace TaskManager.Core.UseCases.Task
                 return response;
             }
 
-            if (string.IsNullOrWhiteSpace(model.Title))
+            if (model.)
             {
                 response.Message = "O título da tarefa não pode ser vazio.";
                 response.Status = ResponseStatusEnum.Error;
@@ -61,7 +61,7 @@ namespace TaskManager.Core.UseCases.Task
 
             try
             {
-                entity.UpdateTitleOrDescription(model.Title);
+                entity.UpdateTitleOrDescription(model.Title.Keys);
             }
             catch (ArgumentException ex)
             {
