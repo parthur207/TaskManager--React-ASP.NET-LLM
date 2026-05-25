@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
+using TaskManager.Core.Models.Task;
 using TaskManager.Core.Ports.Persistence.Task;
 using TaskManager.Core.ResposePattern;
 
@@ -20,7 +21,7 @@ namespace TaskManager.Adapters.Adapters.Task
             _context = context;
         }
 
-        public async Task<SimpleResponseModel> ExecuteAsync(TaskEntity entity)
+        public async Task<SimpleResponseModel> ExecuteAsync(Guid userId, TaskEntity entity)
         {
             var Response = new SimpleResponseModel();
             try

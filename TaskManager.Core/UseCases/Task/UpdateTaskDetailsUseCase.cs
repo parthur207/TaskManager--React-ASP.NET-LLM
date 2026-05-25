@@ -25,52 +25,41 @@ namespace TaskManager.Core.UseCases.Task
 
         public async Task<SimpleResponseModel> ExecuteAsync(UpdateTaskModel model)
         {
-            var response = new SimpleResponseModel();
+            var Response = new SimpleResponseModel();
 
             if (!_currentUserPort.IsAuthenticated)
             {
-                response.Message = "Login expirado.";
-                response.Status = ResponseStatusEnum.Unauthorized;
-                return response;
+                Response.Message = "Login expirado.";
+                Response.Status = ResponseStatusEnum.Unauthorized;
+                return Response;
             }
 
-            if (model is null || model.Id == Guid.Empty)
+            var properties = model.GetType().GetProperties();
+
+            foreach (var property in properties)
             {
-                response.Message = "Dados da tarefa inválidos.";
-                response.Status = ResponseStatusEnum.Error;
-                return response;
+                if (property.Name == nameof(model.Id))
+                    continue;
+
+                var value = property.GetValue(model);
+
+                if (value is IDictionary<bool, string> stringDict)
+                {
+                    if (stringDict.TryGetValue(true, out var fieldValue))
+                    {
+                        Response = await _updateTaskDetailsPort
+                            .UpdateTaskDetailAsync(model.Id, property.Name, fieldValue);
+                    }
+                }
+
+                if (value is IDictionary<bool, DateTime> dateDict)
+                {
+                    if (dateDict.TryGetValue(true, out var fieldValue))
+                    {
+
+                    }
+                }
             }
-
-            if (model.)
-            {
-                response.Message = "O título da tarefa não pode ser vazio.";
-                response.Status = ResponseStatusEnum.Error;
-                return response;
-            }
-
-            var taskResponse = await _getTaskByIdPort.ExecuteAsync(model.Id, _currentUserPort.UserId);
-
-            if (taskResponse.Status != ResponseStatusEnum.Success)
-            {
-                response.Status = taskResponse.Status;
-                response.Message = taskResponse.Message;
-                return response;
-            }
-
-            var entity = taskResponse.Content!;
-
-            try
-            {
-                entity.UpdateTitleOrDescription(model.Title.Keys);
-            }
-            catch (ArgumentException ex)
-            {
-                response.Message = ex.Message;
-                response.Status = ResponseStatusEnum.Error;
-                return response;
-            }
-
-            return await _updateTaskDetailsPort.ExecuteAsync(entity);
         }
     }
 }
