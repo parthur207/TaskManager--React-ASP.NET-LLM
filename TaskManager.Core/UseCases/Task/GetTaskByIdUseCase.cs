@@ -3,7 +3,7 @@ using TaskManager.Core.Enums;
 using TaskManager.Core.Mappers;
 using TaskManager.Core.Ports.Persistence.Task;
 using TaskManager.Core.Ports.Security;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 using TaskManager.Core.UseCases.Task.Interfaces;
 
 namespace TaskManager.Core.UseCases.Task

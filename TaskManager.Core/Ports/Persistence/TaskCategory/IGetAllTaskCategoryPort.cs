@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Core.DTOs;
 using TaskManager.Core.Entities;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Core.Ports.Persistence.TaskCategory
 {

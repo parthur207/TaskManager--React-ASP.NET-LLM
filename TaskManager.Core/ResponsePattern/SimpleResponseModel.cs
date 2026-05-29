@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Core.Enums;
 
-namespace TaskManager.Core.ResposePattern
+namespace TaskManager.Core.ResponsePattern
 {
     public class SimpleResponseModel
     {

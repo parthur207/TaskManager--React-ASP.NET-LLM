@@ -8,7 +8,7 @@ using TaskManager.Core.Enums;
 using TaskManager.Core.Mappers;
 using TaskManager.Core.Ports.Persistence.User;
 using TaskManager.Core.Ports.Security;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 using TaskManager.Core.UseCases.User.Interfaces;
 
 namespace TaskManager.Core.UseCases.User

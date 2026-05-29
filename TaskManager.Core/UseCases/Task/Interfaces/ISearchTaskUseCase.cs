@@ -1,6 +1,6 @@
 ﻿using TaskManager.Core.DTOs;
 using TaskManager.Core.Models.Task;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Core.UseCases.Task.Interfaces
 {

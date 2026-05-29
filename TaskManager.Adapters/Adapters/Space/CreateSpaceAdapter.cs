@@ -3,7 +3,7 @@ using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.Persistence.Space;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Adapters.Adapters.Space
 {

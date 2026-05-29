@@ -9,7 +9,7 @@ using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.ReadServices;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 using TaskManager.Core.ValueObjects;
 
 namespace TaskManager.Adapters.Adapters.ReadServices

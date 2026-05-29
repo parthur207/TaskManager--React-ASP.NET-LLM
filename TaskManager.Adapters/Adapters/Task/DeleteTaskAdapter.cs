@@ -2,7 +2,7 @@
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.Persistence.Task;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Adapters.Adapters.Task
 {

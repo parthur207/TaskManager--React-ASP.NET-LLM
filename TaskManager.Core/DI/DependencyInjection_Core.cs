@@ -17,8 +17,8 @@ namespace TaskManager.Core.DI
             //Space 
             services.AddScoped<ICreateSpaceUseCase, CreateSpaceUseCase>();
             services.AddScoped<IDeleteSpaceUseCase, DeleteSpaceUseCase>();
-            services.AddScoped<IUpdateMembersSpaceUseCase, UpdateMembersSpaceUseCase>();
-            services.AddScoped<IUpdateNameSpaceUseCase, UpdateSpaceUseCase>();
+            services.AddScoped<IAddMembersSpaceUseCase, AddMembersSpaceUseCase>();
+            services.AddScoped<IRemoveMembersSpaceUseCase, RemoveMembersSpaceUseCase>();
 
             //Task
             services.AddScoped<ICreateTaskUseCase, CreateTaskUseCase>();

@@ -21,8 +21,9 @@ namespace TaskManager.API.Facades
         public IGetUsersBySpaceIdUseCase getUsersBySpaceId { get; set; }
         public IGetSpaceDetailsByIdUseCase getSpaceById { get; set; } //infos de um space específico
         public IGetSpaceDataSideBarUseCase getSpaceDataSideBar { get; set; } //infos para o sidebar
-        public IUpdateMembersSpaceUseCase updateMembers { get; set; }
-        public IUpdateNameSpaceUseCase updateNameSpace { get; set; }
+        public IAddMembersSpaceUseCase addMembers { get; set; }
+        public IRemoveMembersSpaceUseCase removeMembers { get; set; }
+        public ILeaveSpaceUseCase leave { get; set; }
 
     }
 }

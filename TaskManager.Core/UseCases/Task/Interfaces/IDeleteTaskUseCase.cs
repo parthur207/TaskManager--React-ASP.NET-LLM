@@ -1,4 +1,4 @@
-﻿using TaskManager.Core.ResposePattern;
+﻿using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Core.UseCases.Task.Interfaces
 {

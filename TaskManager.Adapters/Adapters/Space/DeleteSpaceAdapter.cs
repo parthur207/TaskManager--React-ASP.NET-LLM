@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.Persistence.Space;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Adapters.Adapters.Space
 {
@@ -27,6 +28,17 @@ namespace TaskManager.Adapters.Adapters.Space
             var Response = new SimpleResponseModel();
             try
             {
+
+                var spaceExists = await _context.Space
+                .AnyAsync(x => x.Id == spaceId);
+
+                if (!spaceExists)
+                {
+                    Response.Status = ResponseStatusEnum.Error;
+                    Response.Message = "Espaço não encontrado.";
+                    return Response;
+                }
+
                 if (!await _context.Space.AnyAsync(x => x.Id == spaceId && x.OwnerId == userId))
                 {
                     Response.Status = ResponseStatusEnum.Unauthorized;

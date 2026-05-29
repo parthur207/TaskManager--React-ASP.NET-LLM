@@ -7,7 +7,7 @@ using TaskManager.Core.Enums;
 using TaskManager.Core.Models.TaskCategory;
 using TaskManager.Core.Ports.Persistence.TaskCategory;
 using TaskManager.Core.Ports.Security;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 using TaskManager.Core.UseCases.TaskCategory.Interfaces;
 
 namespace TaskManager.Core.UseCases.TaskCategory

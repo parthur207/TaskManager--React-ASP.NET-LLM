@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Adapters.Adapters.Space
 {
@@ -27,7 +27,7 @@ namespace TaskManager.Adapters.Adapters.Space
             {
                 var MembersIds = new HashSet<Guid>();
 
-                if (Members != null || !Members.Any())
+                if (Members is null || !Members.Any())
                 {
                     Response.Message= "Nenhum membro para remover.";
                     Response.Status = ResponseStatusEnum.Error;    

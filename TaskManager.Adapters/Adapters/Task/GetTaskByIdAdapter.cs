@@ -8,7 +8,7 @@ using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.Persistence.Task;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 using TaskManager.Core.UseCases.Task.Interfaces;
 
 namespace TaskManager.Adapters.Adapters.Task

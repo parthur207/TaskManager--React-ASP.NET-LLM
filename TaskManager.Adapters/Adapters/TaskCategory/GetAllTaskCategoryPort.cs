@@ -11,7 +11,7 @@ using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.Persistence.TaskCategory;
 using TaskManager.Core.Ports.ReadServices;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 using TaskManager.Core.UseCases.TaskCategory.Interfaces;
 
 namespace TaskManager.Adapters.Adapters.TaskCategory

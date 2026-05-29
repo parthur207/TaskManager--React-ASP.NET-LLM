@@ -1,10 +1,11 @@
-﻿using TaskManager.Core.Enums;
+﻿using TaskManager.Core.Entities;
+using TaskManager.Core.Enums;
 using TaskManager.Core.Mappers;
 using TaskManager.Core.Models.Space;
 using TaskManager.Core.Ports.Persistence.Space;
 using TaskManager.Core.Ports.ReadServices;
 using TaskManager.Core.Ports.Security;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 using TaskManager.Core.UseCases.Space.Interfaces;
 
 namespace TaskManager.Core.UseCases.Space
@@ -43,7 +44,7 @@ namespace TaskManager.Core.UseCases.Space
                 return response;
             }
 
-            var memberIds = new List<Core.Entities.SpaceMemberEntity>();
+            var memberIds = new List<SpaceMemberEntity>();
 
             if (model.MembersEmails is not null && model.MembersEmails.Any())
             {
@@ -61,7 +62,7 @@ namespace TaskManager.Core.UseCases.Space
                         return response;
                     }
 
-                    memberIds.Add(new Core.Entities.SpaceMemberEntity(Guid.Empty, userResponse.Content.Id));
+                    memberIds.Add(new SpaceMemberEntity(Guid.Empty, userResponse.Content.Id));
                 }
             }
 

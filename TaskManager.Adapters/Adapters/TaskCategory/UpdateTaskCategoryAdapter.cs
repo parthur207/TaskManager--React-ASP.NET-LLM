@@ -11,7 +11,7 @@ using TaskManager.Core.Models.TaskCategory;
 using TaskManager.Core.Ports.Persistence.TaskCategory;
 using TaskManager.Core.Ports.ReadServices;
 using TaskManager.Core.Ports.Security;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Adapters.Adapters.TaskCategory
 {

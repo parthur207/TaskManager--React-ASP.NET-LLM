@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.Persistence.Space;
 using TaskManager.Core.Ports.ReadServices;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Adapters.Adapters.Space
 {
@@ -51,9 +52,10 @@ namespace TaskManager.Adapters.Adapters.Space
                 Response.Status = ResponseStatusEnum.Success;
                 return Response;
             }
-            catch()
+            catch(Exception ex)
             {
-                
+                Debug.Assert(false, "erro: "+ex.Message);
+                throw new Exception("Ocorreu um erro inesperado.");
             }
         }
     }

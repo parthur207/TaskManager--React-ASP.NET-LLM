@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Core.UseCases.Space.Interfaces
 {
-    public interface IUpdateMembersSpaceUseCase
+    public interface IAddMembersSpaceUseCase
     {
-        Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, IEnumerable<string> memberIds);
+        Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, ICollection<string> MembersEmails);
     }
 }

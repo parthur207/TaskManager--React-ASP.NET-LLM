@@ -5,7 +5,7 @@ using TaskManager.Core.Mappers;
 using TaskManager.Core.Models.User;
 using TaskManager.Core.Ports.Persistence.User;
 using TaskManager.Core.Ports.Security;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Adapters.Adapters.User
 {

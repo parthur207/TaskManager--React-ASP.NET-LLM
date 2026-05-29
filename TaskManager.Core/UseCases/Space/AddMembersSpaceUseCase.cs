@@ -1,0 +1,40 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+using TaskManager.Core.Enums;
+using TaskManager.Core.Ports.Persistence.Space;
+using TaskManager.Core.Ports.Security;
+using TaskManager.Core.ResponsePattern;
+using TaskManager.Core.UseCases.Space.Interfaces;
+
+namespace TaskManager.Core.UseCases.Space
+{
+    public class AddMembersSpaceUseCase : IAddMembersSpaceUseCase
+    {
+        private readonly ICurrentUserPort _currentUserPort;
+        private readonly IAddMembersSpacePort _addMembersSpacePort;
+        public AddMembersSpaceUseCase(ICurrentUserPort currentUserPort, IAddMembersSpacePort addMembersSpacePort)
+        {
+            _currentUserPort = currentUserPort;
+            _addMembersSpacePort = addMembersSpacePort;
+        }
+
+        public async Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, ICollection<string> MembersEmails)
+        {
+            var Response = new SimpleResponseModel();
+            if (!_currentUserPort.IsAuthenticated)
+            {
+                Response.Message = "Sessão expirada. Efetue o login novamente.";
+                Response.Status = ResponseStatusEnum.Unauthorized;
+                return Response;
+            }
+
+            var responseRepository = await _addMembersSpacePort.ExecuteAsync(spaceId, MembersEmails);
+
+            return responseRepository;
+        }
+    }
+}

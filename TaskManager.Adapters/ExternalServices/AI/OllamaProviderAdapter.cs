@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using TaskManager.Core.DTOs;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.AI;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Adapters.ExternalServices.AI
 {

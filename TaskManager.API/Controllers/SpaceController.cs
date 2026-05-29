@@ -96,9 +96,9 @@ namespace TaskManager.API.Controllers
 
 
         [HttpDelete("delete/{id}")]
-        public async Task<IActionResult> DeleteSpace([FromRoute] Guid id)
+        public async Task<IActionResult> DeleteSpace([FromRoute] Guid idSpace)
         {
-            var Response = await _spaceUseCaseFacade.delete.ExecuteAsync(id);
+            var Response = await _spaceUseCaseFacade.delete.ExecuteAsync(idSpace);
 
             switch (Response.Status)
             {
@@ -123,10 +123,9 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpPatch("leave/{id}")]
-        public async Task<IActionResult> LeaveSpace([FromRoute] Guid id, [FromBody] UpdateSpaceModel space)
+        public async Task<IActionResult> LeaveSpace([FromRoute] Guid idSpace)
         {
-
-            //
+            var Response = await _spaceUseCaseFacade.leave.ExecuteAsync(idSpace);
 
             switch (Response.Status)
             {
@@ -151,9 +150,9 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpPatch("remove-member")]
-        public async Task<IActionResult> RemoveMemberFromSpace([FromBody] MemberSpaceModel model)
+        public async Task<IActionResult> RemoveMemberFromSpace([FromBody] MembersRemovedModel model)
         {
-            var Response = await _spaceUseCaseFacade.removeMember.ExecuteAsync(model);
+            var Response = await _spaceUseCaseFacade.removeMembers.ExecuteAsync(model.SpaceId, model.MembersEmails);
             switch (Response.Status)
             {
                 case ResponseStatusEnum.Error:
@@ -169,7 +168,28 @@ namespace TaskManager.API.Controllers
                 default:
                     return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado.");
             }
+        }
 
+        [HttpPatch("add-member")]
+        public async Task<IActionResult> RemoveMemberFromSpace([FromBody] AddMembersModel model)
+        {
+            var Response = await _spaceUseCaseFacade.addMembers.ExecuteAsync(model.spaceId, model.membersEmails);
+
+            switch (Response.Status)
+            {
+                case ResponseStatusEnum.Error:
+                    return BadRequest(Response);
+                case ResponseStatusEnum.NotFound:
+                    return NotFound(Response);
+                case ResponseStatusEnum.Success:
+                    return Ok(Response);
+                case ResponseStatusEnum.Unauthorized:
+                    return Unauthorized(Response);
+                case ResponseStatusEnum.CriticalError:
+                    return BadRequest(Response);
+                default:
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Erro inesperado.");
+            }
         }
 
         [HttpPut("update/{id}")]

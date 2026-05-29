@@ -10,7 +10,7 @@ using TaskManager.Adapters.Persistence;
 using TaskManager.Core.DTOs;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.ReadServices;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Adapters.Adapters.ReadServices
 {
@@ -58,84 +58,7 @@ namespace TaskManager.Adapters.Adapters.ReadServices
             }
         }
 
-        public async Task<ResponseModel<IEnumerable<Guid>>> GetUserSpacesAsync(Guid userId)
-        {
-            var Response = new ResponseModel<IEnumerable<Guid>>();
-            try
-            {
-                if (userId == Guid.Empty)
-                {
-                    Response.Status = ResponseStatusEnum.Error;
-                    Response.Message = "O ID do usuário não pode ser vazio.";
-                    return Response;
-                }
-
-                var userSpaces = await _context.SpaceMember
-                    .Where(x => x.UserId == userId)
-                    .Select(x => x.SpaceId)
-                    .ToListAsync() ?? new List<Guid>();
-
-                if (userSpaces == null || !userSpaces.Any())
-                {
-                    Response.Status = ResponseStatusEnum.NotFound;
-                    Response.Message = "Nenhum espaço encontrado para o usuário especificado.";
-                    return Response;
-                }
-
-                Response.Content = userSpaces;
-                Response.Status = ResponseStatusEnum.Success;
-                return Response;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Ocorreu um erro inesperado.");
-                Debug.Assert(false, ex.Message);
-            }
-        }
-
-
-        public async Task<ResponseModel<IEnumerable<SpaceDTO>>> GetUserSpacesDetailsAsync(Guid userId)
-        {
-            var Response = new ResponseModel<IEnumerable<SpaceDTO>>();
-            try
-            {
-                if (userId == Guid.Empty)
-                {
-                    Response.Status = ResponseStatusEnum.Error;
-                    Response.Message = "O ID do usuário não pode ser vazio.";
-                    return Response;
-                }
-
-                var userSpacesDetails = await _context.SpaceMember
-                    .Where(x => x.UserId == userId)
-                    .Select(x => new SpaceDTO
-                    {
-                        Id = x.Space.Id,
-                        Name = x.Space.Name,
-                        Tasks = x.Space.Tasks.Select(t => new TaskDTO
-                        {
-                            Id = t.Id,
-                            Title = t.Title,
-                            Description = t.Description ?? string.Empty,
-                            Status = t.StatusEnum.ToString(),
-                            CreatedAt = t.CreatedAt,
-                            UpdatedAt = t.UpdatedAt
-                        }).ToList(),
-                        CreatedAt = x.Space.CreatedAt,
-                        UpdatedAt = x.Space.UpdatedAt
-                    })
-                    .ToListAsync() ?? new List<SpaceDTO>();
-                
-                Response.Content = userSpacesDetails;
-                Response.Status = ResponseStatusEnum.Success;
-                return Response;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Ocorreu um erro inesperado.");
-                Debug.Assert(false, ex.Message);
-            }
-        }
+      
 
         public async Task<ResponseModel<bool>> IsUserMemberAsync(Guid userId, Guid spaceId)
         {

@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Core.DTOs;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.Entities;
+using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Core.Ports.Persistence.Space
 {
     public interface IGetUserSpacesDetailsPort
     {
-        Task<ResponseModel<SpaceDTO>> ExecuteAsync(Guid userId);
+        Task<ResponseModel<SpaceEntity>> ExecuteAsync(Guid userId, Guid spaceId);
     }
 }

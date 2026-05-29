@@ -1,5 +1,5 @@
 ﻿using TaskManager.Core.DTOs;
-using TaskManager.Core.ResposePattern;
+using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Core.Ports.ReadServices
 {
