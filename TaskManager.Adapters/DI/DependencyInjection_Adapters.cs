@@ -6,10 +6,10 @@ using TaskManager.Adapters.Adapters.Space;
 using TaskManager.Adapters.Adapters.Task;
 using TaskManager.Adapters.Adapters.TaskCategory;
 using TaskManager.Adapters.Adapters.User;
-using TaskManager.Adapters.Adapters.User.TaskManager.Adapters.Persistence.User;
 using TaskManager.Adapters.Auth;
 using TaskManager.Adapters.ExternalServices.AI;
 using TaskManager.Adapters.Persistence;
+using TaskManager.Adapters.Persistence.User;
 using TaskManager.Adapters.Security;
 using TaskManager.Core.Ports.AI;
 using TaskManager.Core.Ports.Persistence.Space;
@@ -64,6 +64,7 @@ namespace TaskManager.Adapters.DI
 
             services.AddScoped<IUserQueryPort, UserQueryAdapter>();
             services.AddScoped<ISpaceMembershipQueryPort, SpaceMembershipQueryAdapter>();
+            services.AddScoped<IGetUsersBySpaceIdPort, GetUsersBySpaceIdAdapter>();
 
             services.AddHttpClient<IOllamaProviderPort, OllamaProviderAdapter>(client =>
             {
