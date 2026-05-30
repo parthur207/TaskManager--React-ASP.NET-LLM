@@ -33,9 +33,6 @@ namespace TaskManager.Adapters.Adapters.TaskCategory
                     return Response;
                 }
 
-                // Verifica duplicidade pelo nome e usuário: o usuário será associado no UseCase via port que passa o userId.
-                // Aqui assumimos que o model já foi validado quanto ao usuário ou que o usecase chama o port com contexto correto.
-
                 var entity = TaskCategoryMapper.ModelToEntity(model, userId);
 
                 if (entity is null)

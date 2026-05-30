@@ -34,7 +34,7 @@ namespace TaskManager.Adapters.Adapters.TaskCategory
                 var taskCategoryEntity = await _dbContext
                     .TaskCategory
                     .FirstOrDefaultAsync(x=>x.Id == model.TaskCategoryId 
-                    && x.UserId == userId);
+                    && x.OwnerId == userId);
                 
                 if (taskCategoryEntity is null)
                 {

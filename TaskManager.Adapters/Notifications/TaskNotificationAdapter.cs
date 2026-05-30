@@ -3,7 +3,7 @@ using TaskManager.Core.DTOs;
 using TaskManager.Core.Ports.Notifications;
 using TaskManager.API.Hubs;
 
-namespace TaskManager.Adapters.Adapters.Notifications
+namespace TaskManager.Adapters.Notifications
 {
     public class TaskNotificationAdapter : ITaskNotificationPort
     {

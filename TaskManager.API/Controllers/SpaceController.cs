@@ -48,9 +48,9 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpGet("space/{id}")]
-        public async Task<IActionResult> GetSpaceById([FromRoute] Guid SpaceId)
+        public async Task<IActionResult> GetSpaceById([FromRoute] Guid id)
         {
-            var Response = await _spaceUseCaseFacade.getSpaceById.ExecuteAsync(SpaceId);
+            var Response = await _spaceUseCaseFacade.getSpaceById.ExecuteAsync(id);
 
             switch (Response.Status)
             {

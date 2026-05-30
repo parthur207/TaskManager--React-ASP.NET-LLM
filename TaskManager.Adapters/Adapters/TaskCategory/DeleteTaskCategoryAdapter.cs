@@ -34,7 +34,7 @@ namespace TaskManager.Adapters.Adapters.TaskCategory
                 }
 
                 var taskCategory = await _context.TaskCategory.FirstOrDefaultAsync(x => x.Id == taskCategoryId
-                && x.UserId == userId);
+                && x.OwnerId == userId);
 
                 if (taskCategory is null)
                 {
@@ -50,8 +50,8 @@ namespace TaskManager.Adapters.Adapters.TaskCategory
             }
             catch (Exception ex)
             {
-                throw new Exception("Ocorreu um erro inesperado.");
                 Debug.Assert(false, ex.Message);
+                throw new Exception("Ocorreu um erro inesperado.");
             }
         }
     }
