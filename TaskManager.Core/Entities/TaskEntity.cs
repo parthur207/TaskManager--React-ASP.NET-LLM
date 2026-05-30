@@ -19,6 +19,7 @@ namespace TaskManager.Core.Entities
             SpaceId = spaceId;
             OwnerId = ownerId;
             ResponsibleUserId = responsibleUserId;
+            TaskChildrens = [];
             StatusEnum = TaskStatusEnum.NotStarted;
             Term = term;
             CreatedAt = DateTime.UtcNow;
@@ -35,6 +36,7 @@ namespace TaskManager.Core.Entities
         public TaskCategoryEntity? Category { get; private set; }
         public Guid SpaceId { get; private set; }
         public SpaceEntity Space { get;private set; }
+        public IList<TaskChildrenEntity>? TaskChildrens { get; private set; }
         public TaskStatusEnum StatusEnum { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }

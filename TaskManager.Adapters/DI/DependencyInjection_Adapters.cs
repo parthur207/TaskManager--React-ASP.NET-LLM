@@ -1,6 +1,4 @@
-﻿
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TaskManager.Adapters.Adapters.ReadServices;
@@ -29,41 +27,44 @@ namespace TaskManager.Adapters.DI
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            //Database
             services.AddDbContext<DbContextTaskManager>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            //Security 
             services.AddScoped<ICurrentUserPort, HttpCurrentUserAdapter>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IJwtGeneratorPort, JwtGenerator>();
 
-            //User persistence
             services.AddScoped<ICreateUserPort, CreateUserAdapter>();
             services.AddScoped<ILoginUserPort, LoginUserAdapter>();
             services.AddScoped<IUpdateUserPasswordPort, UpdateUserPasswordAdapter>();
             services.AddScoped<IDeleteUserPort, DeleteUserAdapter>();
+            services.AddScoped<IGetDataUserProfilePort, GetDataUserProfileAdapter>();
 
-            //Task persistence
             services.AddScoped<ICreateTaskPort, CreateTaskAdapter>();
             services.AddScoped<IUpdateTaskDetailsPort, UpdateTaskDetailsAdapter>();
             services.AddScoped<IDeleteTaskPort, DeleteTaskAdapter>();
             services.AddScoped<IGetTaskByIdPort, GetTaskByIdAdapter>();
             services.AddScoped<ISearchTaskPort, SearchTaskAdapter>();
 
-            //TaskCategory persistence
             services.AddScoped<ICreateTaskCategoryPort, CreateTaskCategoryAdapter>();
             services.AddScoped<IUpdateTaskCategoryPort, UpdateTaskCategoryAdapter>();
             services.AddScoped<IDeleteTaskCategoryPort, DeleteTaskCategoryAdapter>();
+            services.AddScoped<IGetAllTaskCategoryPort, GetAllTaskCategoryPort>();
 
-            //Space persistence 
             services.AddScoped<ICreateSpacePort, CreateSpaceAdapter>();
+            services.AddScoped<IDeleteSpacePort, DeleteSpaceAdapter>();
+            services.AddScoped<IGetSpaceDataSideBarPort, GetSpaceDataSideBarAdapter>();
+            services.AddScoped<IGetSpaceDetailsByIdPort, GetSpaceDetailsByIdAdapter>();
+            services.AddScoped<IGetUserSpacesDetailsPort, GetUserSpacesDetailsAdapter>();
+            services.AddScoped<IAddMembersSpacePort, AddMembersSpaceAdapter>();
 
-            //Read services (query)
+            services.AddScoped<IRemoveMembersSpacePort, RemoveMembersSpacerAdapter>();
+            services.AddScoped<ILeaveSpacePort, LeaveSpaceAdapter>();
+            services.AddScoped<IUpdateSpacePort, UpdateSpaceAdapter>();
+
             services.AddScoped<IUserQueryPort, UserQueryAdapter>();
             services.AddScoped<ISpaceMembershipQueryPort, SpaceMembershipQueryAdapter>();
 
-            //External service
             services.AddHttpClient<IOllamaProviderPort, OllamaProviderAdapter>(client =>
             {
                 var baseUrl = configuration["Ollama:BaseUrl"] ?? "http://localhost:11434/";

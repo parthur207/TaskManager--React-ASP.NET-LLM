@@ -20,15 +20,9 @@ namespace TaskManager.Adapters.Persistence
             modelBuilder.Entity<UserEntity>(entity =>
             {
                 entity.ToTable("Users");
-
                 entity.HasKey(u => u.Id);
-
-                entity.Property(u => u.Id)
-                      .ValueGeneratedNever();
-
-                entity.Property(u => u.Name)
-                      .HasMaxLength(100)
-                      .IsRequired(false);
+                entity.Property(u => u.Id).ValueGeneratedNever();
+                entity.Property(u => u.Name).HasMaxLength(100).IsRequired(false);
 
                 entity.OwnsOne(u => u.Email, email =>
                 {
@@ -46,21 +40,10 @@ namespace TaskManager.Adapters.Persistence
                        .IsRequired();
                 });
 
-                entity.Property(u => u.Role)
-                      .HasConversion<string>()
-                      .HasMaxLength(30)
-                      .IsRequired();
-
-                entity.Property(u => u.Status)
-                      .HasConversion<string>()
-                      .HasMaxLength(30)
-                      .IsRequired();
-
-                entity.Property(u => u.CreatedAt)
-                      .IsRequired();
-
-                entity.Property(u => u.UpdatedDate)
-                      .IsRequired(false);
+                entity.Property(u => u.Role).HasConversion<string>().HasMaxLength(30).IsRequired();
+                entity.Property(u => u.Status).HasConversion<string>().HasMaxLength(30).IsRequired();
+                entity.Property(u => u.CreatedAt).IsRequired();
+                entity.Property(u => u.UpdatedDate).IsRequired(false);
             });
             #endregion
 
@@ -68,18 +51,10 @@ namespace TaskManager.Adapters.Persistence
             modelBuilder.Entity<SpaceEntity>(entity =>
             {
                 entity.ToTable("Spaces");
-
                 entity.HasKey(s => s.Id);
-
-                entity.Property(s => s.Id)
-                      .ValueGeneratedNever();
-
-                entity.Property(s => s.Name)
-                      .HasMaxLength(60)
-                      .IsRequired();
-
-                entity.Property(s => s.OwnerId)
-                      .IsRequired();
+                entity.Property(s => s.Id).ValueGeneratedNever();
+                entity.Property(s => s.Name).HasMaxLength(60).IsRequired();
+                entity.Property(s => s.OwnerId).IsRequired();
 
                 entity.HasOne(s => s.Owner)
                       .WithMany()
@@ -92,15 +67,9 @@ namespace TaskManager.Adapters.Persistence
             modelBuilder.Entity<SpaceMemberEntity>(entity =>
             {
                 entity.ToTable("SpaceMembers");
-
                 entity.HasKey(sm => new { sm.SpaceId, sm.UserId });
-
-                entity.Property(sm => sm.JoinedAt)
-                      .IsRequired();
-
-                entity.Property(sm => sm.IsAdmin)
-                      .IsRequired()
-                      .HasDefaultValue(false);
+                entity.Property(sm => sm.JoinedAt).IsRequired();
+                entity.Property(sm => sm.IsAdmin).IsRequired().HasDefaultValue(false);
 
                 entity.HasOne(sm => sm.Space)
                       .WithMany(s => s.Members)
@@ -118,26 +87,21 @@ namespace TaskManager.Adapters.Persistence
             modelBuilder.Entity<TaskCategoryEntity>(entity =>
             {
                 entity.ToTable("TaskCategories");
-
                 entity.HasKey(tc => tc.Id);
+                entity.Property(tc => tc.Id).ValueGeneratedNever();
+                entity.Property(tc => tc.Name).HasMaxLength(100).IsRequired();
+                entity.Property(tc => tc.CreatedAt).IsRequired();
+                entity.Property(tc => tc.UpdatedAt).IsRequired(false);
 
-                entity.Property(tc => tc.Id)
-                      .ValueGeneratedNever();
-
-                entity.Property(tc => tc.Name)
-                      .HasMaxLength(100)
-                      .IsRequired();
-
-                entity.Property(tc => tc.CreatedAt)
-                      .IsRequired();
-
-                entity.Property(tc => tc.UpdatedAt)
-                      .IsRequired(false);
-
-                entity.HasOne(tc => tc.User)
+                entity.HasOne(tc => tc.UserOwner)
                       .WithMany()
-                      .HasForeignKey(tc => tc.UserId)
+                      .HasForeignKey(tc => tc.OwnerId)
                       .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(tc => tc.Space)
+                      .WithMany(s => s.TaskCategories)
+                      .HasForeignKey(tc => tc.SpaceId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
             #endregion
 
@@ -145,33 +109,14 @@ namespace TaskManager.Adapters.Persistence
             modelBuilder.Entity<TaskEntity>(entity =>
             {
                 entity.ToTable("Tasks");
-
                 entity.HasKey(t => t.Id);
-
-                entity.Property(t => t.Id)
-                      .ValueGeneratedNever();
-
-                entity.Property(t => t.Title)
-                      .HasMaxLength(200)
-                      .IsRequired();
-
-                entity.Property(t => t.Description)
-                      .HasMaxLength(1000)
-                      .IsRequired(false);
-
-                entity.Property(t => t.StatusEnum)
-                      .HasConversion<string>()
-                      .HasMaxLength(30)
-                      .IsRequired();
-
-                entity.Property(t => t.Term)
-                      .IsRequired();
-
-                entity.Property(t => t.CreatedAt)
-                      .IsRequired();
-
-                entity.Property(t => t.UpdatedAt)
-                      .IsRequired(false);
+                entity.Property(t => t.Id).ValueGeneratedNever();
+                entity.Property(t => t.Title).HasMaxLength(200).IsRequired();
+                entity.Property(t => t.Description).HasMaxLength(1000).IsRequired(false);
+                entity.Property(t => t.StatusEnum).HasConversion<string>().HasMaxLength(30).IsRequired();
+                entity.Property(t => t.Term).IsRequired();
+                entity.Property(t => t.CreatedAt).IsRequired();
+                entity.Property(t => t.UpdatedAt).IsRequired(false);
 
                 entity.HasOne(t => t.OwnerUser)
                       .WithMany(u => u.Tasks)
@@ -197,7 +142,25 @@ namespace TaskManager.Adapters.Persistence
             });
             #endregion
 
+            #region TaskChildrenEntity
+            modelBuilder.Entity<TaskChildrenEntity>(entity =>
+            {
+                entity.ToTable("TaskChildren");
+                entity.HasKey(tc => tc.Id);
+                entity.Property(tc => tc.Id).ValueGeneratedNever();
+                entity.Property(tc => tc.Title).HasMaxLength(200).IsRequired();
+                entity.Property(tc => tc.Description).HasMaxLength(1000).IsRequired(false);
+                entity.Property(tc => tc.StatusEnum).HasConversion<string>().HasMaxLength(30).IsRequired();
+                entity.Property(tc => tc.Term).IsRequired();
+
+                entity.HasOne(tc => tc.ParentTask)
+                      .WithMany()
+                      .HasForeignKey(tc => tc.ParentTaskId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+            #endregion
+
             base.OnModelCreating(modelBuilder);
         }
     }
-    }
+}

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,15 +60,10 @@ namespace TaskManager.Adapters.Adapters.Task
                 Response.Message = "Tarefa atualizada com sucesso.";
                 return Response;
             }
-            catch (ArgumentException ex)
-            {
-                Response.Status = ResponseStatusEnum.Error;
-                Response.Message = ex.Message;
-                return Response;
-            }
             catch (Exception ex)
             {
-                throw new Exception($"Ocorreu um erro inesperado: {ex.Message}");
+                Debug.Assert(false, "Erro:" + ex.Message);
+                throw new Exception("Ocorreu um erro inesperado.");
             }
         }
     }

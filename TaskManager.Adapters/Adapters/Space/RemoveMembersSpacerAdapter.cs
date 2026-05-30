@@ -1,17 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
+using TaskManager.Core.Ports.Persistence.Space;
 using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Adapters.Adapters.Space
 {
-    public class RemoveMembersSpacerAdapter
+    public class RemoveMembersSpacerAdapter : IRemoveMembersSpacePort
     {
         private readonly DbContextTaskManager _context;
 
@@ -20,49 +16,58 @@ namespace TaskManager.Adapters.Adapters.Space
             _context = context;
         }
 
-        public async Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, ICollection<string> Members)
+        public async Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, ICollection<string> members)
         {
-            var Response = new SimpleResponseModel();
+            var response = new SimpleResponseModel();
             try
             {
-                var MembersIds = new HashSet<Guid>();
-
-                if (Members is null || !Members.Any())
+                if (members is null || !members.Any())
                 {
-                    Response.Message= "Nenhum membro para remover.";
-                    Response.Status = ResponseStatusEnum.Error;    
-                    return Response;
+                    response.Message = "Nenhum membro para remover.";
+                    response.Status = ResponseStatusEnum.Error;
+                    return response;
                 }
 
                 if (!await _context.Space.AnyAsync(s => s.Id == spaceId))
                 {
-                    Response.Message = "Espaço não encontrado.";
-                    Response.Status = ResponseStatusEnum.Error;
-                    return Response;
+                    response.Message = "Espaço não encontrado.";
+                    response.Status = ResponseStatusEnum.NotFound;
+                    return response;
                 }
 
-                MembersIds = await _context.User
-                    .Where(x => Members.Contains(x.Email.Value)
-                    && x.Spaces.Any(s => s.SpaceId == spaceId))
+                var normalizedEmails = members
+                    .Select(e => e.Trim().ToLower())
+                    .Distinct()
+                    .ToList();
+
+                var memberIds = await _context.User
+                    .Where(x => normalizedEmails.Contains(x.Email.Value)
+                                && x.Spaces.Any(s => s.SpaceId == spaceId))
                     .Select(u => u.Id)
                     .ToHashSetAsync();
 
-                _context.SpaceMember.RemoveRange(
-                    await _context.SpaceMember
-                    .Where(sm => sm.SpaceId == spaceId 
-                    && MembersIds.Contains(sm.UserId))
-                    .ToListAsync());
+                if (!memberIds.Any())
+                {
+                    response.Message = "Nenhum dos e-mails informados corresponde a membros deste espaço.";
+                    response.Status = ResponseStatusEnum.NotFound;
+                    return response;
+                }
 
+                var toRemove = await _context.SpaceMember
+                    .Where(sm => sm.SpaceId == spaceId && memberIds.Contains(sm.UserId))
+                    .ToListAsync();
+
+                _context.SpaceMember.RemoveRange(toRemove);
                 await _context.SaveChangesAsync();
 
-                Response.Status = ResponseStatusEnum.Success;
-                Response.Message = "Membros removidos com sucesso.";
-                return Response;
+                response.Status = ResponseStatusEnum.Success;
+                response.Message = "Membros removidos com sucesso.";
+                return response;
             }
             catch (Exception ex)
             {
-                Debug.Assert(false, "Erro: " + ex.Message);
-                throw new Exception(ex.Message);
+                Debug.Assert(false, $"Erro: {ex.Message}");
+                throw new Exception("Ocorreu um erro ao remover os membros do espaço.");
             }
         }
     }

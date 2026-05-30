@@ -1,11 +1,5 @@
-﻿using Azure;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.Persistence.Space;
@@ -16,6 +10,7 @@ namespace TaskManager.Adapters.Adapters.Space
     public class LeaveSpaceAdapter : ILeaveSpacePort
     {
         private readonly DbContextTaskManager _context;
+
         public LeaveSpaceAdapter(DbContextTaskManager context)
         {
             _context = context;
@@ -23,36 +18,44 @@ namespace TaskManager.Adapters.Adapters.Space
 
         public async Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, Guid userId)
         {
-            var Response = new SimpleResponseModel();
+            var response = new SimpleResponseModel();
             try
             {
                 if (!await _context.Space.AnyAsync(x => x.Id == spaceId))
                 {
-                    Response.Status = ResponseStatusEnum.Error;
-                    Response.Message = "Espaço não encontrado.";
-                    return Response;
+                    response.Status = ResponseStatusEnum.NotFound;
+                    response.Message = "Espaço não encontrado.";
+                    return response;
                 }
 
-                if (await _context.Space.AnyAsync(x=>x.OwnerId==userId))
+                if (await _context.Space.AnyAsync(x => x.Id == spaceId && x.OwnerId == userId))
                 {
-                    Response.Message= "O proprietário do espaço não pode sair do espaço. Considere excluir o espaço ou transferir a propriedade para outro usuário.";
-                    Response.Status = ResponseStatusEnum.Error;
-                    return Response;
+                    response.Message = "O proprietário do espaço não pode sair. Considere excluir o espaço ou transferir a propriedade.";
+                    response.Status = ResponseStatusEnum.Error;
+                    return response;
                 }
 
-                var userleave = await _context.SpaceMember.FirstOrDefaultAsync(x => x.UserId == userId);
+                var membership = await _context.SpaceMember
+                    .FirstOrDefaultAsync(x => x.UserId == userId && x.SpaceId == spaceId);
 
-                _context.SpaceMember.Remove(userleave);
+                if (membership is null)
+                {
+                    response.Status = ResponseStatusEnum.NotFound;
+                    response.Message = "Você não é membro deste espaço.";
+                    return response;
+                }
+
+                _context.SpaceMember.Remove(membership);
                 await _context.SaveChangesAsync();
 
-                Response.Message= "Você saiu do espaço!";
-                Response.Status = ResponseStatusEnum.Success;
-                return Response;
+                response.Message = "Você saiu do espaço com sucesso.";
+                response.Status = ResponseStatusEnum.Success;
+                return response;
             }
             catch (Exception ex)
             {
-                Debug.Assert(false, "Erro: "+ex.Message);
-                throw new Exception("Ocorreu um erro inesperado.");
+                Debug.Assert(false, $"Erro: {ex.Message}");
+                throw new Exception("Ocorreu um erro inesperado ao sair do espaço.");
             }
         }
     }

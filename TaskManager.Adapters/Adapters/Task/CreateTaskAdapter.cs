@@ -1,4 +1,5 @@
-﻿using TaskManager.Adapters.Persistence;
+﻿using System.Diagnostics;
+using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.Persistence.Task;
@@ -38,7 +39,8 @@ namespace TaskManager.Adapters.Adapters.Task
             }
             catch (Exception ex)
             {
-                throw new Exception($"Ocorreu um erro inesperado: {ex.Message}");
+                Debug.Assert(false, "Erro:" + ex.Message);
+                throw new Exception("Ocorreu um erro inesperado.");
             }
         }
     }

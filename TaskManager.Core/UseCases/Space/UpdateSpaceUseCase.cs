@@ -23,7 +23,7 @@ namespace TaskManager.Core.UseCases.Space
             _currentUserPort = currentUserPort;
         }
 
-        public async Task<SimpleResponseModel> ExecuteAsync(UpdateSpaceModel model)
+        public async Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, UpdateSpaceModel model)
         {
             var Response = new SimpleResponseModel();
 
@@ -42,7 +42,7 @@ namespace TaskManager.Core.UseCases.Space
             }
 
             var responseRepository = await _updateSpacePort
-                .ExecuteAsync(model.Id, model.NewName);
+                .ExecuteAsync(spaceId, model.NewName);
            
             return responseRepository;
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.Persistence.Task;
@@ -39,6 +40,7 @@ namespace TaskManager.Adapters.Adapters.Task
             }
             catch (Exception ex)
             {
+                Debug.Assert(false, "Erro:"+ex.Message);
                 throw new Exception("Ocorreu um erro inesperado.");
             }
         }

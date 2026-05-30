@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskManager.Core.DTOs;
+﻿using TaskManager.Core.DTOs;
 
 namespace TaskManager.Core.Ports.Notifications
 {
@@ -12,5 +7,6 @@ namespace TaskManager.Core.Ports.Notifications
         Task TaskCreated(TaskDTO task);
         Task TaskUpdated(TaskDTO task);
         Task TaskDeleted(Guid taskId);
+        Task SpaceUpdated(Guid spaceId);
     }
 }

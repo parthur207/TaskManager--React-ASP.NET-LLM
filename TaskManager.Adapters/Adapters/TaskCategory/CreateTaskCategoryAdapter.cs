@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskManager.Core.Models.TaskCategory;
-using TaskManager.Core.Ports.Persistence.TaskCategory;
+using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Mappers;
-using TaskManager.Adapters.Persistence;
+using TaskManager.Core.Models.TaskCategory;
+using TaskManager.Core.Ports.Persistence.TaskCategory;
 using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Adapters.Adapters.TaskCategory
@@ -51,7 +52,8 @@ namespace TaskManager.Adapters.Adapters.TaskCategory
             }
             catch (Exception ex)
             {
-                throw new Exception($"Ocorreu um erro inesperado: {ex.Message}");
+                Debug.Assert(false, "Erro:" + ex.Message);
+                throw new Exception("Ocorreu um erro inesperado.");
             }
         }
     }

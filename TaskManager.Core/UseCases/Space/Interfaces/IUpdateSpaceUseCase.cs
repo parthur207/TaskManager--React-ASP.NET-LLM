@@ -10,6 +10,6 @@ namespace TaskManager.Core.UseCases.Space.Interfaces
 {
     public interface IUpdateSpaceUseCase
     {
-        Task<SimpleResponseModel> ExecuteAsync(UpdateSpaceModel model);
+        Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, UpdateSpaceModel model);
     }
 }

@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.Persistence.TaskCategory;
@@ -15,6 +10,7 @@ namespace TaskManager.Adapters.Adapters.TaskCategory
     public class DeleteTaskCategoryAdapter : IDeleteTaskCategoryPort
     {
         private readonly DbContextTaskManager _context;
+
         public DeleteTaskCategoryAdapter(DbContextTaskManager context)
         {
             _context = context;
@@ -22,36 +18,37 @@ namespace TaskManager.Adapters.Adapters.TaskCategory
 
         public async Task<SimpleResponseModel> ExecuteAsync(Guid taskCategoryId, Guid userId)
         {
+            var response = new SimpleResponseModel();
             try
             {
-                var Response= new SimpleResponseModel();
-
-                if (taskCategoryId.Equals(Guid.Empty))
+                if (taskCategoryId == Guid.Empty)
                 {
-                    Response.Message = "Operação inválida.";
-                    Response.Status = ResponseStatusEnum.Error;
-                    return Response;
+                    response.Message = "Operação inválida.";
+                    response.Status = ResponseStatusEnum.Error;
+                    return response;
                 }
 
-                var taskCategory = await _context.TaskCategory.FirstOrDefaultAsync(x => x.Id == taskCategoryId
-                && x.OwnerId == userId);
+                var taskCategory = await _context.TaskCategory
+                    .FirstOrDefaultAsync(x => x.Id == taskCategoryId && x.OwnerId == userId);
 
                 if (taskCategory is null)
                 {
-                    Response.Status = ResponseStatusEnum.Unauthorized;
-                    Response.Message = "Operação inválida.";
-                    return Response;
+                    response.Status = ResponseStatusEnum.Unauthorized;
+                    response.Message = "Categoria não encontrada ou sem permissão para excluí-la.";
+                    return response;
                 }
 
-                 _context.TaskCategory.Remove(taskCategory);
+                _context.TaskCategory.Remove(taskCategory);
                 await _context.SaveChangesAsync();
 
-                return Response;
+                response.Status = ResponseStatusEnum.Success;
+                response.Message = "Categoria excluída com sucesso.";
+                return response;
             }
             catch (Exception ex)
             {
                 Debug.Assert(false, ex.Message);
-                throw new Exception("Ocorreu um erro inesperado.");
+                throw new Exception("Ocorreu um erro inesperado ao excluir a categoria.");
             }
         }
     }

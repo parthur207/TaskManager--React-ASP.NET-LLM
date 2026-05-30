@@ -6,14 +6,20 @@ using NSwag.Generation.Processors.Security;
 using TaskManager.Adapters.DI;
 using TaskManager.API.Facades.DI;
 using TaskManager.API.Hubs;
+using TaskManager.API.Notifications;
 using TaskManager.Core.DI;
+using TaskManager.Core.Ports.Notifications;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddSignalR();
+
+builder.Services.AddScoped<ISpaceNotifier, SignalRSpaceNotifier>();
 
 builder.Services.AddOpenApiDocument(options =>
 {
@@ -52,7 +58,6 @@ builder.Services.AddAuthentication(options =>
             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
     };
 
-    // Permite que o SignalR receba o token via query string
     options.Events = new JwtBearerEvents
     {
         OnMessageReceived = context =>
@@ -76,10 +81,10 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins(
                 builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
-                ?? ["http://localhost:5173"])      // Vite dev server padrão
+                ?? ["http://localhost:5173"])
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials(); // Necessário para SignalR
+              .AllowCredentials(); 
     });
 });
 

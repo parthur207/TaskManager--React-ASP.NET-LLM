@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
@@ -39,6 +40,7 @@ namespace TaskManager.Adapters.Adapters.Task
                     .Include(t => t.ResponsibleUser)
                     .Include(t => t.Category)
                     .Include(t => t.Space)
+                    .Include(x=>x.TaskChildrens)
                     .FirstOrDefaultAsync(t => t.Id == TaskId);
 
                 if (task is null)
@@ -61,9 +63,8 @@ namespace TaskManager.Adapters.Adapters.Task
             }
             catch (Exception ex)
             {
-                Response.Status = ResponseStatusEnum.Error;
-                Response.Message = $"Ocorreu um erro inesperado: {ex.Message}";
-                return Response;
+                Debug.Assert(false, "Erro:" + ex.Message);
+                throw new Exception("Ocorreu um erro inesperado.");
             }
         }
     }

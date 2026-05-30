@@ -14,7 +14,11 @@ namespace TaskManager.Adapters.Adapters.User
         private readonly DbContextTaskManager _context;
         private readonly IJwtGeneratorPort _jwtGenerator;
         private readonly IPasswordHasher _passwordHasher;
-        public LoginUserAdapter(DbContextTaskManager context, IJwtGeneratorPort jwtGenerator, IPasswordHasher passwordHasher)
+
+        public LoginUserAdapter(
+            DbContextTaskManager context,
+            IJwtGeneratorPort jwtGenerator,
+            IPasswordHasher passwordHasher)
         {
             _context = context;
             _jwtGenerator = jwtGenerator;
@@ -23,40 +27,48 @@ namespace TaskManager.Adapters.Adapters.User
 
         public async Task<ResponseModel<string>> ExecuteAsync(LoginRequestModel model)
         {
-            var Response= new ResponseModel<string>();
+            var response = new ResponseModel<string>();
             try
             {
-                var mapped = UserMapper.LoginModelToEntity(model);
-
-                if (mapped is null || await _context.User
-                    .AnyAsync(x => x.Email.Value != mapped.Email.Value))
+                if (model is null
+                    || string.IsNullOrWhiteSpace(model.Email)
+                    || string.IsNullOrWhiteSpace(model.Password))
                 {
-                    Response.Status = ResponseStatusEnum.Error;
-                    Response.Message = "Erro. Login inválido.";
-                    return Response;
+                    response.Status = ResponseStatusEnum.Error;
+                    response.Message = "Erro. Login inválido.";
+                    return response;
                 }
 
                 var dataUser = await _context.User
-                    .Where(x=>x.Status.Equals(UserStatusEnum.Active))
-                     .FirstOrDefaultAsync(x => x.Email.Value.Equals(mapped.Email.Value)
-                     && _passwordHasher.Verify(model.Password, x.PasswordHash.Value));
+                    .Where(x => x.Status == UserStatusEnum.Active
+                                && x.Email.Value == model.Email.Trim().ToLowerInvariant())
+                    .FirstOrDefaultAsync();
 
-                if(dataUser == null || dataUser?.Status!=UserStatusEnum.Active)
+                if (dataUser is null)
                 {
-                    Response.Status = ResponseStatusEnum.Error;
-                    Response.Message = "Erro. Login inválido.";
-                    return Response;
+                    response.Status = ResponseStatusEnum.Error;
+                    response.Message = "Erro. Login inválido.";
+                    return response;
                 }
 
-                Response.Status = ResponseStatusEnum.Success;
-                Response.Content = _jwtGenerator.GenerateToken(dataUser.Id, dataUser.Email.Value, dataUser.Role);
-                Response.Message = "Login efetuado com sucesso.";
+                if (!_passwordHasher.Verify(model.Password, dataUser.PasswordHash.Value))
+                {
+                    response.Status = ResponseStatusEnum.Error;
+                    response.Message = "Erro. Login inválido.";
+                    return response;
+                }
+
+                response.Status = ResponseStatusEnum.Success;
+                response.Content = _jwtGenerator.GenerateToken(dataUser.Id, dataUser.Email.Value, dataUser.Role);
+                response.Message = "Login efetuado com sucesso.";
+                return response;
             }
             catch (Exception ex)
             {
-
+                response.Status = ResponseStatusEnum.CriticalError;
+                response.Message = $"Erro crítico ao efetuar login: {ex.Message}";
+                return response;
             }
-            return Response;
         }
     }
 }

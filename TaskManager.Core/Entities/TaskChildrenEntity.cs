@@ -26,8 +26,5 @@ namespace TaskManager.Core.Entities
         public DateOnly Term { get; set; }
         public Guid ParentTaskId { get; set; }
         public TaskEntity ParentTask { get; set; }
-
- 
-
     }
 }

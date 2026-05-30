@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using TaskManager.Adapters.Persistence;
+using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.Persistence.Space;
 using TaskManager.Core.ResponsePattern;
@@ -19,15 +20,11 @@ namespace TaskManager.Adapters.Adapters.Space
         public async Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, ICollection<string> members)
         {
             var response = new SimpleResponseModel();
-
             try
             {
-                var spaceExists = await _context.Space
-                    .AnyAsync(x => x.Id == spaceId);
-
-                if (!spaceExists)
+                if (!await _context.Space.AnyAsync(x => x.Id == spaceId))
                 {
-                    response.Status = ResponseStatusEnum.Error;
+                    response.Status = ResponseStatusEnum.NotFound;
                     response.Message = "Espaço não encontrado.";
                     return response;
                 }
@@ -35,7 +32,7 @@ namespace TaskManager.Adapters.Adapters.Space
                 if (members == null || !members.Any())
                 {
                     response.Status = ResponseStatusEnum.Error;
-                    response.Message = "Nenhum membro fornecido para atualização.";
+                    response.Message = "Nenhum membro fornecido para adição.";
                     return response;
                 }
 
@@ -45,43 +42,45 @@ namespace TaskManager.Adapters.Adapters.Space
                     .ToList();
 
                 var users = await _context.User
-                    .Where(u => normalizedEmails.Contains(u.Email.Value))
-                    .Select(u => new
-                    {
-                        u.Id,
-                        Email = u.Email.Value
-                    })
+                    .Where(u => normalizedEmails.Contains(u.Email.Value)
+                                && u.Status == UserStatusEnum.Active)
+                    .Select(u => new { u.Id, Email = u.Email.Value })
                     .ToListAsync();
 
-                var foundEmails = users
-                    .Select(x => x.Email)
-                    .ToHashSet();
+                var foundEmails = users.Select(x => x.Email).ToHashSet();
 
-                var membersEmailInexistent = normalizedEmails
-                    .Where(email => !foundEmails.Contains(email))
+                var notFoundEmails = normalizedEmails
+                    .Where(e => !foundEmails.Contains(e))
                     .ToList();
 
-                var membersIds = users
-                    .Select(x => x.Id)
-                    .ToHashSet();
+                // Identifica membros que já pertencem ao space para não duplicar
+                var existingMemberIds = await _context.SpaceMember
+                    .Where(sm => sm.SpaceId == spaceId)
+                    .Select(sm => sm.UserId)
+                    .ToHashSetAsync();
 
-                // Aqui você adiciona os membros ao espaço
+                var newMembers = users
+                    .Where(u => !existingMemberIds.Contains(u.Id))
+                    .Select(u => new SpaceMemberEntity(spaceId, u.Id))
+                    .ToList();
 
-                // Aqui você pode disparar o envio de e-mail em background (ASYNC)
-
-                response.Message = membersEmailInexistent.Any()
-                    ? $"Os seguintes e-mails não foram encontrados: {string.Join(", ", membersEmailInexistent)}."
-                    : "Todos os membros foram adicionados com sucesso.";
+                if (newMembers.Any())
+                {
+                    await _context.SpaceMember.AddRangeAsync(newMembers);
+                    await _context.SaveChangesAsync();
+                }
 
                 response.Status = ResponseStatusEnum.Success;
+                response.Message = notFoundEmails.Any()
+                    ? $"Membros adicionados. Os seguintes e-mails não foram encontrados: {string.Join(", ", notFoundEmails)}."
+                    : "Todos os membros foram adicionados com sucesso.";
 
                 return response;
             }
             catch (Exception ex)
             {
                 Debug.Assert(false, ex.Message);
-
-                throw new Exception("Ocorreu um erro ao atualizar os membros do espaço.");
+                throw new Exception("Ocorreu um erro ao adicionar os membros ao espaço.");
             }
         }
     }

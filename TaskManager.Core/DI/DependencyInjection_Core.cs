@@ -14,13 +14,18 @@ namespace TaskManager.Core.DI
     {
         public static IServiceCollection AddCore(this IServiceCollection services)
         {
-            //Space 
+            // Space
             services.AddScoped<ICreateSpaceUseCase, CreateSpaceUseCase>();
             services.AddScoped<IDeleteSpaceUseCase, DeleteSpaceUseCase>();
             services.AddScoped<IAddMembersSpaceUseCase, AddMembersSpaceUseCase>();
             services.AddScoped<IRemoveMembersSpaceUseCase, RemoveMembersSpaceUseCase>();
+            services.AddScoped<ILeaveSpaceUseCase, LeaveSpaceUseCase>();
+            services.AddScoped<IUpdateSpaceUseCase, UpdateSpaceUseCase>();
+            services.AddScoped<IGetSpaceDataSideBarUseCase, GetSpaceDataSideBarUseCase>();
+            services.AddScoped<IGetSpaceDetailsByIdUseCase, GetSpaceDetailsByIdUseCase>();
+            services.AddScoped<IGetUsersBySpaceIdUseCase, GetUsersBySpaceIdUseCase>();
 
-            //Task
+            // Task
             services.AddScoped<ICreateTaskUseCase, CreateTaskUseCase>();
             services.AddScoped<IUpdateTaskDetailsUseCase, UpdateTaskDetailsUseCase>();
             services.AddScoped<IDeleteTaskUseCase, DeleteTaskUseCase>();
@@ -28,16 +33,18 @@ namespace TaskManager.Core.DI
             services.AddScoped<ISearchTaskUseCase, SearchTaskUseCase>();
             services.AddScoped<IGetTasksBySpaceUseCase, GetTasksBySpace>();
 
-            //TaskCategory
+            // TaskCategory
             services.AddScoped<ICreateTaskCategoryUseCase, CreateTaskCategoryUseCase>();
             services.AddScoped<IUpdateTaskCategoryUseCase, UpdateTaskCategoryUseCase>();
             services.AddScoped<IDeleteTaskCategoryUseCase, DeleteTaskCategoryUseCase>();
+            services.AddScoped<IGetAllTaskCategoryUseCase, GetAllTaskCategoryUseCase>();
 
-            //User
+            // User
             services.AddScoped<ICreateUserUseCase, CreateUserUseCase>();
             services.AddScoped<ILoginUserUseCase, LoginUserUseCase>();
             services.AddScoped<IUpdateUserPasswordUseCase, UpdateUserPasswordUseCase>();
             services.AddScoped<IDeleteUserUseCase, DeleteUserUseCase>();
+            services.AddScoped<IGetDataUserProfileUseCase, GetDataUserProfileUseCase>();
 
             return services;
         }
