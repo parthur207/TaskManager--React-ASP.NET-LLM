@@ -14,9 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddSignalR();
 
 builder.Services.AddScoped<ISpaceNotifier, SignalRSpaceNotifier>();
@@ -58,6 +56,7 @@ builder.Services.AddAuthentication(options =>
             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
     };
 
+    // Permite que o SignalR receba o token via query string
     options.Events = new JwtBearerEvents
     {
         OnMessageReceived = context =>
@@ -65,9 +64,7 @@ builder.Services.AddAuthentication(options =>
             var accessToken = context.Request.Query["access_token"];
             var path = context.HttpContext.Request.Path;
             if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs"))
-            {
                 context.Token = accessToken;
-            }
             return Task.CompletedTask;
         }
     };
@@ -84,7 +81,7 @@ builder.Services.AddCors(options =>
                 ?? ["http://localhost:5173"])
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials(); 
+              .AllowCredentials();
     });
 });
 
@@ -93,6 +90,8 @@ builder.Services.AddAdapters(builder.Configuration);
 builder.Services.AddFacades();
 
 var app = builder.Build();
+
+app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
 
 if (app.Environment.IsDevelopment())
 {
@@ -109,7 +108,6 @@ app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
 app.MapHub<TaskHub>("/hubs/tasks");
 
 app.Run();
