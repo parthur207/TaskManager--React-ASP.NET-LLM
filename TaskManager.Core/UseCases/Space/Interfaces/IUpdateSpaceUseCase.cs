@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Core.Models.Space;
 using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Core.UseCases.Space.Interfaces
 {
     public interface IUpdateSpaceUseCase
     {
-        Task<SimpleResponseModel> ExecuteAsync(Guid SpaceId);
+        Task<SimpleResponseModel> ExecuteAsync(UpdateSpaceModel model);
     }
 }

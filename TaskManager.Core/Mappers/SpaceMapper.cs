@@ -21,6 +21,8 @@ namespace TaskManager.Core.Mappers
                 Id = entity.Id,
                 Name = entity.Name,
                 Tasks = entity.Tasks?.Select(TaskMapper.EntityToDTO),
+                TaskCategories = entity.TaskCategories?.Select(TaskCategoryMapper.EntityToDTO),
+                Members = entity.Members?.Select(x => UserMapper.EntityToUserMemberSpaceDTO(x.User)),
                 CreatedAt = entity.CreatedAt,
                 UpdatedAt = entity.UpdatedAt
             };

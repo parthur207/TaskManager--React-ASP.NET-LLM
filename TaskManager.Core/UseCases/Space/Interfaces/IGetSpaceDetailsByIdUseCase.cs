@@ -10,6 +10,6 @@ namespace TaskManager.Core.UseCases.Space.Interfaces
 {
     public interface IGetSpaceDetailsByIdUseCase
     {
-        Task<ResponseModel<SpaceDTO>> GetSpaceDetailsById(int spaceId);
+        Task<ResponseModel<SpaceDTO>> ExecuteAsync(Guid spaceId);
     }
 }

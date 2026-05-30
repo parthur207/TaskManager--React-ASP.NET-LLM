@@ -5,15 +5,13 @@ namespace TaskManager.API.Facades
     public class SpaceUseCaseFacade
     {
         public SpaceUseCaseFacade(ICreateSpaceUseCase create, IDeleteSpaceUseCase delete, IGetUsersBySpaceIdUseCase getUsersBySpaceId, 
-            IGetSpaceDetailsByIdUseCase getSpaceById, IGetSpaceDataSideBarUseCase getSpaceDataSideBar, IUpdateMembersSpaceUseCase updateMembers, IUpdateNameSpaceUseCase updateNameSpace)
+            IGetSpaceDetailsByIdUseCase getSpaceById, IGetSpaceDataSideBarUseCase getSpaceDataSideBar)
         {
             this.create = create;
             this.delete = delete;
             this.getUsersBySpaceId = getUsersBySpaceId;
             this.getSpaceById = getSpaceById;
             this.getSpaceDataSideBar = getSpaceDataSideBar;
-            this.updateMembers = updateMembers;
-            this.updateNameSpace = updateNameSpace;
         }
 
         public ICreateSpaceUseCase create { get; set; }
@@ -24,6 +22,7 @@ namespace TaskManager.API.Facades
         public IAddMembersSpaceUseCase addMembers { get; set; }
         public IRemoveMembersSpaceUseCase removeMembers { get; set; }
         public ILeaveSpaceUseCase leave { get; set; }
+        public IUpdateSpaceUseCase updateName { get; set; }
 
     }
 }

@@ -12,7 +12,7 @@ namespace TaskManager.Core.Mappers
 {
     public class UserMapper
     {
-        public static UserProfileDTO ListEntityToListProfileDTO(UserEntity entity)
+        public static UserProfileDTO EntityToUserProfileDTO(UserEntity entity)
         {
             return new UserProfileDTO
             {
@@ -30,7 +30,7 @@ namespace TaskManager.Core.Mappers
                         ?? Enumerable.Empty<SpaceEntity>())
             } ?? new UserProfileDTO();
         }
-        
+
         public static UserEntity ModelToEntity(CreateUserModel model)
         {
             return new UserEntity
@@ -68,5 +68,16 @@ namespace TaskManager.Core.Mappers
             if (entities is null) return new List<UserDTO>();
             return entities.Select(EntityToDTO).ToList();
         }
+
+        public static UserMemberSpaceDTO EntityToUserMemberSpaceDTO(UserEntity entity)
+        {
+            return new UserMemberSpaceDTO
+            {
+                Name = entity.Name,
+                Email = entity.Email.Value,
+                Status = entity.Status
+            };
+        }
     }
 }
+

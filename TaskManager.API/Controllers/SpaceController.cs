@@ -47,7 +47,6 @@ namespace TaskManager.API.Controllers
             }
         }
 
-
         [HttpGet("space/{id}")]
         public async Task<IActionResult> GetSpaceById([FromRoute] Guid SpaceId)
         {
@@ -93,7 +92,6 @@ namespace TaskManager.API.Controllers
                     return new ObjectResult(createdSpace) { StatusCode = 500 };
             }
         }
-
 
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteSpace([FromRoute] Guid idSpace)
@@ -195,7 +193,7 @@ namespace TaskManager.API.Controllers
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateSpace([FromRoute] Guid id, [FromBody] UpdateSpaceModel space)
         {
-            var Response = await _spaceUseCaseFacade.update.ExecuteAsync(id, space.NewName);
+            var Response = await _spaceUseCaseFacade.updateName.ExecuteAsync(space);
 
             switch (Response.Status)
             {
