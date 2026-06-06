@@ -14,6 +14,6 @@ namespace TaskManager.Core.DTOs
         public IEnumerable<TaskCategoryDTO>? TaskCategories { get; set; }
         public IEnumerable<UserMemberSpaceDTO>? Members { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }

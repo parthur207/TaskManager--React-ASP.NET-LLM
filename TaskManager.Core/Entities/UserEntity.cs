@@ -11,6 +11,7 @@ namespace TaskManager.Core.Entities
 {
     public class UserEntity
     {
+        protected UserEntity() { }
 
         public UserEntity(string name, string email, string passwordHash)
         {
@@ -40,7 +41,7 @@ namespace TaskManager.Core.Entities
         public IEnumerable<TaskEntity>? Tasks { get; private set; }
         public IList<SpaceMemberEntity>? Spaces { get; private set; }
         public DateTime CreatedAt { get; private set; }
-        public DateTime UpdatedDate { get; private set; }
+        public DateTime? UpdatedDate { get; private set; }
        
        public void SetPassword(string newPasswordHash, string oldPasswordHash)
        {

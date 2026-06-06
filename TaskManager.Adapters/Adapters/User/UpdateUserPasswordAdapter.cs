@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Models.User;
 using TaskManager.Core.Ports.Persistence.User;
 using TaskManager.Core.Ports.Security;
 using TaskManager.Core.ResponsePattern;
 
-namespace TaskManager.Adapters.Persistence.User
+namespace TaskManager.Adapters.Adapters.User
 {
     public class UpdateUserPasswordAdapter : IUpdateUserPasswordPort
     {

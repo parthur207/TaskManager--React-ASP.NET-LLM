@@ -9,8 +9,10 @@ namespace TaskManager.Core.Entities
 {
     public sealed class TaskEntity
     {
+        protected TaskEntity() { }
+
         public TaskEntity(string title, string? description, 
-            Guid? categoryId, Guid spaceId, Guid ownerId, Guid responsibleUserId, DateOnly term)
+            Guid? categoryId, Guid spaceId, Guid ownerId, Guid? responsibleUserId, DateOnly term)
         {
             Id = Guid.NewGuid();
             Title = title;
@@ -39,7 +41,7 @@ namespace TaskManager.Core.Entities
         public IList<TaskChildrenEntity>? TaskChildrens { get; private set; }
         public TaskStatusEnum StatusEnum { get; private set; }
         public DateTime CreatedAt { get; private set; }
-        public DateTime UpdatedAt { get; private set; }
+        public DateTime? UpdatedAt { get; private set; }
         public DateOnly Term { get; private set; }
 
         public void UpdateTitleOrDescription(string newTitle = null, string newDescription = null)

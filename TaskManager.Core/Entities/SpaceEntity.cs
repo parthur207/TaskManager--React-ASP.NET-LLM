@@ -9,6 +9,7 @@ namespace TaskManager.Core.Entities
 {
     public class SpaceEntity
     {
+        protected SpaceEntity() { } 
 
         public SpaceEntity(string name, DateTime createdAt)
         { 
@@ -37,7 +38,7 @@ namespace TaskManager.Core.Entities
         public IList<SpaceMemberEntity>? Members { get; set; }
         public IList<TaskCategoryEntity>? TaskCategories { get; set; }
         public DateTime CreatedAt { get; private set; } 
-        public DateTime UpdatedAt { get; private set; }
+        public DateTime? UpdatedAt { get; private set; }
 
         public void AddMember(UserEntity user)
         {

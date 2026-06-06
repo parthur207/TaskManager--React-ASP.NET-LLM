@@ -9,6 +9,7 @@ namespace TaskManager.Core.ValueObjects
 {
     public class EmailVO
     {
+        protected EmailVO() { }
         public string Value { get;}
         private static readonly Regex EmailRegex = new(@"^[^@\s]+@[^@\s]+\.[^@\s]+$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);

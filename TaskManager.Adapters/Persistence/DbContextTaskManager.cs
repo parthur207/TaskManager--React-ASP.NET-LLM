@@ -39,11 +39,6 @@ namespace TaskManager.Adapters.Persistence
                        .HasMaxLength(500)
                        .IsRequired();
                 });
-
-                entity.Property(u => u.Role).HasConversion<string>().HasMaxLength(30).IsRequired();
-                entity.Property(u => u.Status).HasConversion<string>().HasMaxLength(30).IsRequired();
-                entity.Property(u => u.CreatedAt).IsRequired();
-                entity.Property(u => u.UpdatedDate).IsRequired(false);
             });
             #endregion
 
@@ -130,10 +125,10 @@ namespace TaskManager.Adapters.Persistence
                       .OnDelete(DeleteBehavior.SetNull);
 
                 entity.HasOne(t => t.Category)
-                      .WithMany(x => x.Tasks)
-                      .HasForeignKey(t => t.CategoryId)
-                      .IsRequired(false)
-                      .OnDelete(DeleteBehavior.SetNull);
+                  .WithMany(x => x.Tasks)
+                  .HasForeignKey(t => t.CategoryId)
+                  .IsRequired(false)
+                  .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(t => t.Space)
                       .WithMany(s => s.Tasks)

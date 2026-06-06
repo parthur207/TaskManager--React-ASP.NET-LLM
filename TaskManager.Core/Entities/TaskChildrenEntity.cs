@@ -9,6 +9,8 @@ namespace TaskManager.Core.Entities
 {
     public class TaskChildrenEntity
     {
+        protected TaskChildrenEntity() { }
+
         public TaskChildrenEntity(string title, string? description, DateOnly term, Guid parentTaskId)
         {
             Id = Guid.NewGuid();

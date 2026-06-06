@@ -8,6 +8,8 @@ namespace TaskManager.Core.Entities
 {
     public sealed class TaskCategoryEntity
     {
+        protected TaskCategoryEntity() { }
+
         public TaskCategoryEntity(Guid ownerId, Guid spaceId, string name)
         {
             Id = Guid.NewGuid();
@@ -21,7 +23,7 @@ namespace TaskManager.Core.Entities
         public Guid Id { get; private set; }
         public string Name { get; private set; }
         public DateTime CreatedAt { get; private set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
         public Guid OwnerId { get; private set; }
         public UserEntity? UserOwner { get; private set; }
         public IList<TaskEntity> Tasks { get; private set; }
@@ -49,6 +51,7 @@ namespace TaskManager.Core.Entities
                 throw new InvalidOperationException("A tarefa já está atribuída a esta categoria.");
             }
             Tasks.Add(newTask);
+            UpdatedAt = DateTime.UtcNow;
         }
     }
 }

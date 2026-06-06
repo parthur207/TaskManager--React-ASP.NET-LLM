@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
@@ -57,7 +58,7 @@ namespace TaskManager.Adapters.Adapters.Space
                 var existingMemberIds = await _context.SpaceMember
                     .Where(sm => sm.SpaceId == spaceId)
                     .Select(sm => sm.UserId)
-                    .ToHashSetAsync();
+                    .ToListAsync();
 
                 var newMembers = users
                     .Where(u => !existingMemberIds.Contains(u.Id))

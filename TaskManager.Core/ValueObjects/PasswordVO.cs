@@ -2,6 +2,8 @@
 {
     public class PasswordVO
     {
+
+        protected PasswordVO() { }
         public string Value { get; }
 
         public PasswordVO(string password, bool isLogin)

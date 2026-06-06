@@ -44,7 +44,7 @@ namespace TaskManager.Adapters.Adapters.Space
                     .Where(x => normalizedEmails.Contains(x.Email.Value)
                                 && x.Spaces.Any(s => s.SpaceId == spaceId))
                     .Select(u => u.Id)
-                    .ToHashSetAsync();
+                    .ToListAsync();
 
                 if (!memberIds.Any())
                 {

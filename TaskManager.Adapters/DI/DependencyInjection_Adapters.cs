@@ -9,7 +9,6 @@ using TaskManager.Adapters.Adapters.User;
 using TaskManager.Adapters.Auth;
 using TaskManager.Adapters.ExternalServices.AI;
 using TaskManager.Adapters.Persistence;
-using TaskManager.Adapters.Persistence.User;
 using TaskManager.Adapters.Security;
 using TaskManager.Core.Ports.AI;
 using TaskManager.Core.Ports.Persistence.Space;

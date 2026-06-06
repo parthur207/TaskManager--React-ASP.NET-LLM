@@ -8,6 +8,8 @@ namespace TaskManager.Core.Entities
 {
     public class SpaceMemberEntity
     {
+        protected SpaceMemberEntity() { }
+
         public Guid SpaceId { get; private set; }
         public SpaceEntity Space { get; private set; }
 

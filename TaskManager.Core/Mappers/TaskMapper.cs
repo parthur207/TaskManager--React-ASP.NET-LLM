@@ -9,7 +9,7 @@ namespace TaskManager.Core.Mappers
         public static TaskEntity ModelToEntity(
             CreateTaskModel model,
             Guid ownerId,
-            Guid responsibleUserId)
+            Guid? responsibleUserId)
         {
             return new TaskEntity(
                 model.Name,
