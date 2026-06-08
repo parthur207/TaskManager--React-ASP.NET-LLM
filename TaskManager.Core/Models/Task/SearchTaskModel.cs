@@ -9,13 +9,6 @@ namespace TaskManager.Core.Models.Task
 {
     public class SearchTaskModel
     {
-        public SearchTaskModel(string? category, TaskStatusEnum? statusEnum, DateTime? from, DateTime? to)
-        {
-            Category = category;
-            StatusEnum = statusEnum;
-            From = from;
-            To = to;
-        }
 
         public string? Category { get; set; }
         public TaskStatusEnum? StatusEnum { get; set; }

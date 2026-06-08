@@ -11,5 +11,6 @@ namespace TaskManager.Core.Enums
         Finished = 1,
         InProgress = 2,
         NotStarted = 3,
+        InImpediment=4
     }
 }

@@ -26,6 +26,13 @@ namespace TaskManager.Core.UseCases.User
                 return Response;
             }
 
+            if (model.Password != model.PasswordConfirmation)
+            {
+                Response.Message = "Erro. As senhas informadas não se correspondem.";
+                Response.Status = ResponseStatusEnum.Error;
+                return Response;
+            }
+
             var resultRepository= await _createUserPort.ExecuteAsync(model);
 
             if (resultRepository.Status!=ResponseStatusEnum.Success)

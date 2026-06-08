@@ -24,10 +24,10 @@ namespace TaskManager.Core.UseCases.User
         {
             var Response = new ResponseModel<string>();
             
-            if (model is null)
+            if (model.Email is null || model.Password is null)
             {
                 Response.Status = ResponseStatusEnum.Error;
-                Response.Message = "O modelo é nulo.";
+                Response.Message = "Erro. O email ou senha se encontram nulos.";
                 return Response;
             }
 
