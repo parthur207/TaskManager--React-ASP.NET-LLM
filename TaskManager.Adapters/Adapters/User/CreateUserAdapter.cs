@@ -6,11 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Adapters.Persistence;
+using TaskManager.Adapters.Security;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Mappers;
 using TaskManager.Core.Models.User;
 using TaskManager.Core.Ports.Persistence.User;
+using TaskManager.Core.Ports.Security;
 using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Adapters.Adapters.User
@@ -18,9 +20,11 @@ namespace TaskManager.Adapters.Adapters.User
     public class CreateUserAdapter : ICreateUserPort
     {
         private readonly DbContextTaskManager _context;
-        public CreateUserAdapter(DbContextTaskManager context)
+        private readonly IPasswordHasher _passwordHasher;
+        public CreateUserAdapter(DbContextTaskManager context, IPasswordHasher passwordHasher = null)
         {
-           _context = context;
+            _context = context;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<SimpleResponseModel> ExecuteAsync(CreateUserModel model)
@@ -28,6 +32,7 @@ namespace TaskManager.Adapters.Adapters.User
             var Response = new SimpleResponseModel();
             try
             {
+                model.Password = _passwordHasher.Hash(model.Password);
                 var entityMapper = UserMapper.ModelToEntity(model);
 
                 if (entityMapper is null)
@@ -54,7 +59,7 @@ namespace TaskManager.Adapters.Adapters.User
             catch (Exception ex)
             {
                 Response.Status = ResponseStatusEnum.CriticalError;
-                Response.Message = $"Erro crítico ao criar usuário: {ex.Message}";
+                Response.Message = $"Ocorreu um erro inesperado.{ex.Message}";
             }
             return Response;
         }

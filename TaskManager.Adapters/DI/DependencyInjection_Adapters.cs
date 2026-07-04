@@ -7,6 +7,7 @@ using TaskManager.Adapters.Adapters.Task;
 using TaskManager.Adapters.Adapters.TaskCategory;
 using TaskManager.Adapters.Adapters.User;
 using TaskManager.Adapters.Auth;
+using TaskManager.Adapters.Caching;
 using TaskManager.Adapters.ExternalServices.AI;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Adapters.Security;
@@ -64,6 +65,9 @@ namespace TaskManager.Adapters.DI
             services.AddScoped<IUserQueryPort, UserQueryAdapter>();
             services.AddScoped<ISpaceMembershipQueryPort, SpaceMembershipQueryAdapter>();
             services.AddScoped<IGetUsersBySpaceIdPort, GetUsersBySpaceIdAdapter>();
+
+            services.AddScoped<ICachingService, CachingService>();
+            services.AddStackExchangeRedisCache();
 
             services.AddHttpClient<IOllamaProviderPort, OllamaProviderAdapter>(client =>
             {

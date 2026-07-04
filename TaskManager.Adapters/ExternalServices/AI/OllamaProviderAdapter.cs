@@ -39,7 +39,7 @@ namespace TaskManager.Adapters.ExternalServices.AI
 
             if (!response.IsSuccessStatusCode)
             {
-                Response.Message = $"Erro ao se comunicar com o Ollama: {response.ReasonPhrase}";
+                Response.Message = $"Ocorreu um erro inesperado ao se comunicar com o Ollama: {response.ReasonPhrase}";
                 Response.Status = ResponseStatusEnum.CriticalError;
                 return Response;
             }

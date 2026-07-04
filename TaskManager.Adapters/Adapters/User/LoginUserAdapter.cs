@@ -66,7 +66,7 @@ namespace TaskManager.Adapters.Adapters.User
             catch (Exception ex)
             {
                 response.Status = ResponseStatusEnum.CriticalError;
-                response.Message = $"Erro crítico ao efetuar login: {ex.Message}";
+                response.Message = $"Ocorreu um erro inesperado. {ex.Message}";
                 return response;
             }
         }
