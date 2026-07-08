@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Adapters.Caching;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
@@ -17,9 +18,12 @@ namespace TaskManager.Adapters.Adapters.Task
     public class SearchTaskAdapter : ISearchTaskPort
     {
         private readonly DbContextTaskManager _context;
-        public SearchTaskAdapter(DbContextTaskManager context)
+        private readonly ICachingPort _cachingPort;
+
+        public SearchTaskAdapter(DbContextTaskManager context, ICachingPort cachingPort)
         {
             _context = context;
+            _cachingPort = cachingPort;
         }
 
         public async Task<ResponseModel<List<TaskEntity>>> ExecuteAsync(SearchTaskModel model, Guid UserId)
@@ -27,6 +31,15 @@ namespace TaskManager.Adapters.Adapters.Task
             var Response = new ResponseModel<List<TaskEntity>>();
             try
             {
+                var responseCache= await _cachingPort.GetAsync<List<TaskEntity>>($"searchTasks_{UserId}");
+
+                if (responseCache != null)
+                {
+                    Response.Content = responseCache;
+                    Response.Status = ResponseStatusEnum.Success;
+                    return Response;
+                }
+
                 var query = _context.Task
                     .Include(t => t.OwnerUser)
                     .Include(t => t.ResponsibleUser)
@@ -62,6 +75,8 @@ namespace TaskManager.Adapters.Adapters.Task
                 query = query.Where(t => userSpaces.Contains(t.SpaceId));
 
                 var results = await query.ToListAsync();
+
+                await _cachingPort.SetAsync($"searchTasks_{UserId}", results, TimeSpan.FromMinutes(5));
 
                 if (results == null || !results.Any())
                 {

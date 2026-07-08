@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Adapters.Caching;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.Persistence.Space;
@@ -15,10 +16,12 @@ namespace TaskManager.Adapters.Adapters.User
     public class GetUsersBySpaceIdAdapter : IGetUsersBySpaceIdPort
     {
         private readonly DbContextTaskManager _dbContextTaskManager;
+        private readonly ICachingPort _cachingPort;
 
-        public GetUsersBySpaceIdAdapter(DbContextTaskManager dbContextTaskManager)
+        public GetUsersBySpaceIdAdapter(DbContextTaskManager dbContextTaskManager, ICachingPort cachingPort)
         {
             _dbContextTaskManager = dbContextTaskManager;
+            _cachingPort = cachingPort;
         }
 
         public async Task<ResponseModel<IEnumerable<string>>> ExecuteAsync(Guid spaceId)
@@ -33,6 +36,15 @@ namespace TaskManager.Adapters.Adapters.User
                     return Response;
                 }
 
+                var responseCache = await _cachingPort.GetAsync<IEnumerable<string>>($"users_{spaceId}");
+
+                if (responseCache != null)
+                {
+                    Response.Status = ResponseStatusEnum.Success;
+                    Response.Content = responseCache;
+                    return Response;
+                }
+
                 var users =await _dbContextTaskManager.SpaceMember.Where(u => u.SpaceId == spaceId).Select(u => u.User.Email.Value).ToListAsync();
 
                 if (users is null || !users.Any())
@@ -41,6 +53,8 @@ namespace TaskManager.Adapters.Adapters.User
                     Response.Status = ResponseStatusEnum.Error;
                     return Response;
                 }
+
+                await _cachingPort.SetAsync($"users_{spaceId}", users, TimeSpan.FromMinutes(10));
 
                 Response.Content = users;
                 Response.Status = ResponseStatusEnum.Success;

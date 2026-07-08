@@ -54,7 +54,6 @@ namespace TaskManager.Adapters.Adapters.Space
                     .Where(e => !foundEmails.Contains(e))
                     .ToList();
 
-                // Identifica membros que já pertencem ao space para não duplicar
                 var existingMemberIds = await _context.SpaceMember
                     .Where(sm => sm.SpaceId == spaceId)
                     .Select(sm => sm.UserId)

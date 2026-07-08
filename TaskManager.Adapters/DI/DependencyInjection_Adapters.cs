@@ -66,8 +66,15 @@ namespace TaskManager.Adapters.DI
             services.AddScoped<ISpaceMembershipQueryPort, SpaceMembershipQueryAdapter>();
             services.AddScoped<IGetUsersBySpaceIdPort, GetUsersBySpaceIdAdapter>();
 
-            services.AddScoped<ICachingService, CachingService>();
-            services.AddStackExchangeRedisCache();
+            services.AddScoped<ICachingPort, CachingService>();
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration =
+                    configuration["Redis:ConnectionString"] ?? "http://localhost:/6379";
+
+                options.InstanceName =
+                    configuration["Redis:InstanceName"];
+            });
 
             services.AddHttpClient<IOllamaProviderPort, OllamaProviderAdapter>(client =>
             {

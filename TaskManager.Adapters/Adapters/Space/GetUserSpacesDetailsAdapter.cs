@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Adapters.Caching;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.DTOs;
 using TaskManager.Core.Entities;
@@ -18,9 +19,11 @@ namespace TaskManager.Adapters.Adapters.Space
     public class GetUserSpacesDetailsAdapter : IGetUserSpacesDetailsPort
     {
         private readonly DbContextTaskManager _context;
-        public GetUserSpacesDetailsAdapter(DbContextTaskManager context)
+        private readonly ICachingPort _cachingPort;
+        public GetUserSpacesDetailsAdapter(DbContextTaskManager context, ICachingPort cachingPort)
         {
             _context = context;
+            _cachingPort = cachingPort;
         }
 
         public async Task<ResponseModel<SpaceEntity>> ExecuteAsync(Guid userId, Guid spaceId)
@@ -44,12 +47,23 @@ namespace TaskManager.Adapters.Adapters.Space
                     return Response;
                 }
 
+                var responseCache = await _cachingPort.GetAsync<SpaceEntity>($"spaceUser_{spaceId}_{userId}");
+
+                if (responseCache != null)
+                {
+                    Response.Content = responseCache;
+                    Response.Status = ResponseStatusEnum.Success;
+                    return Response;
+                }
+
                 var space= await _context.Space
                     .Include(x => x.Tasks)
                     .Include(x => x.Members)
                     .Include(x => x.TaskCategories)
                     .Where(x => x.Id == spaceId)
                     .FirstOrDefaultAsync();
+
+                await _cachingPort.SetAsync($"spaceUser_{spaceId}_{userId}", space, TimeSpan.FromMinutes(5));
 
                 Response.Content = space;
                 Response.Status = ResponseStatusEnum.Success;

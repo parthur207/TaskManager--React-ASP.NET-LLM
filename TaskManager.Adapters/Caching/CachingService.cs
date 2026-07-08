@@ -1,21 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.Caching.Distributed;
+using System.Text.Json;
 
-namespace TaskManager.Adapters.Caching
+namespace TaskManager.Adapters.Caching;
+
+public class CachingService : ICachingPort
 {
-    public class CachingService : ICachingService
-    {
-        public Task<string> GetAsync(string Key)
-        {
-            throw new NotImplementedException();
-        }
+    private readonly IDistributedCache _cache;
 
-        public Task SetAsync(string Key, string value)
-        {
-            throw new NotImplementedException();
-        }
+    public CachingService(IDistributedCache cache)
+    {
+        _cache = cache;
+    }
+
+    public async Task<T?> GetAsync<T>(string key)
+    {
+        var value = await _cache.GetStringAsync(key);
+
+        if (string.IsNullOrEmpty(value))
+            return default;
+
+        return JsonSerializer.Deserialize<T>(value);
+    }
+
+    public async Task SetAsync<T>(
+        string key,
+        T value,
+        TimeSpan? expiration = null)
+    {
+        var options = new DistributedCacheEntryOptions();
+
+        if (expiration.HasValue)
+            options.AbsoluteExpirationRelativeToNow = expiration;
+
+        var json = JsonSerializer.Serialize(value);
+
+        await _cache.SetStringAsync(
+            key,
+            json,
+            options);
     }
 }

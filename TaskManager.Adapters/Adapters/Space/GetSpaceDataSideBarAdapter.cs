@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Adapters.Caching;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
@@ -18,9 +19,11 @@ namespace TaskManager.Adapters.Adapters.Space
     public class GetSpaceDataSideBarAdapter : IGetSpaceDataSideBarPort
     {
         private readonly DbContextTaskManager _context;
-        public GetSpaceDataSideBarAdapter(DbContextTaskManager context)
+        private readonly ICachingPort _cachingPort;
+        public GetSpaceDataSideBarAdapter(DbContextTaskManager context, ICachingPort cachingPort = null)
         {
             _context = context;
+            _cachingPort = cachingPort;
         }
 
         public async Task<ResponseModel<IEnumerable<SpaceEntity>>> ExecuteAsync(Guid userId)
@@ -42,11 +45,21 @@ namespace TaskManager.Adapters.Adapters.Space
                     return Response;
                 }
 
+                var responseCache = await _cachingPort.GetAsync<IEnumerable<SpaceEntity>>($"spacesUser_{userId}");
+
+                if (responseCache!=null)
+                {
+                    Response.Content = responseCache;
+                    Response.Status = ResponseStatusEnum.Success;
+                    return Response;
+                }
+
                 var spaces= await _context.Space
                     .Where(x=>x.Members
                     .Any(x=>x.UserId==userId))
                     .ToListAsync();
 
+                await _cachingPort.SetAsync($"spacesUser_{userId}", spaces, TimeSpan.FromMinutes(5));
 
                 Response.Content= spaces;
                 Response.Status = ResponseStatusEnum.Success;

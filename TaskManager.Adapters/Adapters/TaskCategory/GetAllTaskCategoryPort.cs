@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Adapters.Caching;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
@@ -20,10 +21,13 @@ namespace TaskManager.Adapters.Adapters.TaskCategory
     {
         private readonly DbContextTaskManager _context;
         private readonly ISpaceMembershipQueryPort _spaceMembershipQueryPort;
-        public GetAllTaskCategoryPort(DbContextTaskManager context, ISpaceMembershipQueryPort spaceMembershipQueryPort)
+        private readonly ICachingPort _cachingPort;
+
+        public GetAllTaskCategoryPort(DbContextTaskManager context, ISpaceMembershipQueryPort spaceMembershipQueryPort, ICachingPort cachingPort)
         {
             _context = context;
             _spaceMembershipQueryPort = spaceMembershipQueryPort;
+            _cachingPort = cachingPort;
         }
 
         public async Task<ResponseModel<IEnumerable<TaskCategoryEntity>>> ExecuteAsync(Guid spaceId, Guid userId)
@@ -45,6 +49,16 @@ namespace TaskManager.Adapters.Adapters.TaskCategory
                     return Response;
                 }
 
+                var responseCache = await _cachingPort
+                    .GetAsync<IEnumerable<TaskCategoryEntity>>($"taskCategories_{spaceId}");
+
+                if (responseCache != null)
+                {
+                    Response.Status = ResponseStatusEnum.Success;
+                    Response.Content = responseCache;
+                    return Response;
+                }
+
                 var taskCategories = await _context.TaskCategory
                     .Where(x => x.SpaceId == spaceId)
                     .ToListAsync();
@@ -55,6 +69,8 @@ namespace TaskManager.Adapters.Adapters.TaskCategory
                     Response.Status = ResponseStatusEnum.NotFound;
                     return Response;
                 }
+
+                await _cachingPort.SetAsync($"taskCategories_{spaceId}", taskCategories, TimeSpan.FromMinutes(5));
 
                 Response.Status= ResponseStatusEnum.Success;
                 Response.Content = taskCategories;

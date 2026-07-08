@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Adapters.Caching;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.DTOs;
 using TaskManager.Core.Entities;
@@ -17,14 +18,15 @@ namespace TaskManager.Adapters.Adapters.Space
     public class GetSpaceDetailsByIdAdapter : IGetSpaceDetailsByIdPort
     {
         private readonly DbContextTaskManager _context;
-        public GetSpaceDetailsByIdAdapter(DbContextTaskManager context)
+        private readonly ICachingPort _cachingPort;
+        public GetSpaceDetailsByIdAdapter(DbContextTaskManager context, ICachingPort cachingPort)
         {
             _context = context;
+            _cachingPort = cachingPort;
         }
         public async Task<ResponseModel<SpaceEntity>> ExecuteAsync(Guid userId, Guid spaceId)
         {
             var Response = new ResponseModel<SpaceEntity>();
-
             try
             {
                 if (!await _context.Space.AnyAsync(x=>x.Id == spaceId))
@@ -41,12 +43,23 @@ namespace TaskManager.Adapters.Adapters.Space
                     return Response;
                 }
 
+                var responseCache = await _cachingPort.GetAsync<SpaceEntity?>($"space_{spaceId}");
+
+                if (responseCache != null)
+                {
+                    Response.Content = responseCache;
+                    Response.Status = ResponseStatusEnum.Success;
+                    return Response;
+                }
+
                 var space = await _context.Space
                     .Include(x => x.Tasks)
                     .Include(x=>x.TaskCategories)
                     .Include(x=>x.Members)
                         .ThenInclude(x=>x.User)
                     .FirstOrDefaultAsync(x => x.Id == spaceId);
+
+                await _cachingPort.SetAsync($"space_{spaceId}", space, TimeSpan.FromMinutes(5));
 
                 Response.Content = space;
                 Response.Status = ResponseStatusEnum.Success;

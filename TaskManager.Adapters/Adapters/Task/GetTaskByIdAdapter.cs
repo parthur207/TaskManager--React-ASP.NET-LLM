@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Adapters.Caching;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
@@ -17,10 +18,12 @@ namespace TaskManager.Adapters.Adapters.Task
     public class GetTaskByIdAdapter : IGetTaskByIdPort
     {
         private readonly DbContextTaskManager _context;
+        private readonly ICachingPort _cachingPort;
 
-        public GetTaskByIdAdapter(DbContextTaskManager context)
+        public GetTaskByIdAdapter(DbContextTaskManager context, ICachingPort cachingPort = null)
         {
             _context = context;
+            _cachingPort = cachingPort;
         }
 
         public async Task<ResponseModel<TaskEntity>> ExecuteAsync(Guid TaskId, Guid UserId)
@@ -32,6 +35,16 @@ namespace TaskManager.Adapters.Adapters.Task
                 {
                     Response.Status = ResponseStatusEnum.Error;
                     Response.Message = "ID da tarefa inválido.";
+                    return Response;
+                }
+
+                var responseCache = await _cachingPort
+                    .GetAsync<TaskEntity?>($"task_{TaskId}");
+                
+                if (responseCache != null)
+                {
+                    Response.Content = responseCache;
+                    Response.Status = ResponseStatusEnum.Success;
                     return Response;
                 }
 
@@ -56,6 +69,8 @@ namespace TaskManager.Adapters.Adapters.Task
                     Response.Message = "Usuário sem permissão para visualizar esta tarefa.";
                     return Response;
                 }
+
+                await _cachingPort.SetAsync($"task_{TaskId}", task, TimeSpan.FromMinutes(5));
 
                 Response.Status = ResponseStatusEnum.Success;
                 Response.Content = task;

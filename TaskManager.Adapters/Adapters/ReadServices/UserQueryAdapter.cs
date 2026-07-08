@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Adapters.Caching;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
@@ -17,9 +18,11 @@ namespace TaskManager.Adapters.Adapters.ReadServices
     public class UserQueryAdapter : IUserQueryPort
     {
         private readonly DbContextTaskManager _context;
-        public UserQueryAdapter(DbContextTaskManager context)
+        private readonly ICachingPort _cachingPort;
+        public UserQueryAdapter(DbContextTaskManager context, ICachingPort cachingPort)
         {
             _context = context;
+            _cachingPort = cachingPort;
         }
 
         public async Task<ResponseModel<UserEntity?>> GetUserByEmailAsync(string email)
@@ -35,6 +38,15 @@ namespace TaskManager.Adapters.Adapters.ReadServices
                 }
                 var emailVo = new EmailVO(email);
 
+                var responseCache = await _cachingPort.GetAsync<UserEntity?>(emailVo.Value);
+
+                if (responseCache != null)
+                {
+                    Response.Status = ResponseStatusEnum.Success;
+                    Response.Content = responseCache;
+                    return Response;
+                }
+
                 var user = await _context.User.Where(x => x.Status.Equals(UserStatusEnum.Active))
                     .FirstOrDefaultAsync(u => u.Email == emailVo);
 
@@ -44,6 +56,8 @@ namespace TaskManager.Adapters.Adapters.ReadServices
                     Response.Message = "Nenhum usuario encontrado com o email informado.";
                     return Response;
                 }
+
+                await _cachingPort.SetAsync(emailVo.Value, user);
 
                 Response.Status = ResponseStatusEnum.Success;
                 Response.Content = user;
