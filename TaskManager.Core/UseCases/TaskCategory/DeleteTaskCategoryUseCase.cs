@@ -24,7 +24,7 @@ namespace TaskManager.Core.UseCases.TaskCategory
             if (!_currentUserPort.IsAuthenticated)
             {
                 Response.Message = "Login expirado.";
-                Response.Status = Enums.ResponseStatusEnum.Error;
+                Response.Status = Enums.ResponseStatusEnum.Unauthorized;
                 return Response;
             }
           
