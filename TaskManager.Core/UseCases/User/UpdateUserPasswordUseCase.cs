@@ -4,6 +4,7 @@ using TaskManager.Core.Ports.Persistence.User;
 using TaskManager.Core.Ports.Security;
 using TaskManager.Core.ResponsePattern;
 using TaskManager.Core.UseCases.User.Interfaces;
+using TaskManager.Core.ValueObjects;
 
 namespace TaskManager.Core.UseCases.User
 {
@@ -47,10 +48,13 @@ namespace TaskManager.Core.UseCases.User
 
             if (model.OldPassword.Equals(model.NewPassword))
             {
-                response.Message = "A nova senha deve ser diferente da senha atual.";
+                response.Message = "A nova senha deve ser diferente da senha atual informada.";
                 response.Status = ResponseStatusEnum.Error;
                 return response;
             }
+
+            var newPassword = new PasswordVO(model.NewPassword, false, true);
+            model.NewPassword = newPassword.Value;
 
             return await _updateUserPasswordPort.ExecuteAsync(_currentUserPort.UserId, model);
         }

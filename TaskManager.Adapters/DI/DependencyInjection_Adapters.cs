@@ -70,7 +70,7 @@ namespace TaskManager.Adapters.DI
             services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration =
-                    configuration["Redis:ConnectionString"] ?? "http://localhost:/6379";
+                    configuration["Redis:ConnectionString"] ?? "http://localhost:6379";
 
                 options.InstanceName =
                     configuration["Redis:InstanceName"];

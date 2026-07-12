@@ -6,7 +6,7 @@
         protected PasswordVO() { }
         public string Value { get; }
 
-        public PasswordVO(string password, bool isLogin)
+        public PasswordVO(string password, bool isLogin=false, bool isResetPassword=false)
         {
             if (isLogin)
             {
@@ -18,17 +18,53 @@
             else
             {
                 if (string.IsNullOrWhiteSpace(password))
-                    throw new ArgumentException("A senha não pode ser vazia.");
-
+                {
+                    if (isResetPassword)
+                    {
+                        throw new ArgumentException("A nova senha não pode ser vazia.");
+                    }
+                    else
+                    {
+                        throw new ArgumentException("A senha não pode ser vazia.");
+                    }
+                }
                 if (password.Length < 6)
-                    throw new ArgumentException("A senha deve conter no mínimo 6 caracteres.");
+                {
+                    if (isResetPassword)
+                    {
+                        throw new ArgumentException("A nova senha deve conter no mínimo 6 caracteres.");
+                    }
+                    else
+                    {
+                        throw new ArgumentException("A senha deve conter no mínimo 6 caracteres.");
+                    }
+                }
 
-                if (!password.Any(char.IsUpper))
-                    throw new ArgumentException("A senha deve conter ao menos uma letra maiúscula.");
+                if (!password.Any(char.IsUpper)) 
+                {
+                    if (isResetPassword)
+                    {
+                        throw new ArgumentException("A nova senha deve conter ao menos uma letra maiúscula.");
+                    }
+                    else
+                    {
+                        throw new ArgumentException("A  senha deve conter ao menos uma letra maiúscula.");
+                    }
+                }
 
                 if (!password.Any(IsSpecialCharacter))
-                    throw new ArgumentException("A senha deve conter ao menos um caractere especial.");
+                {
+                    if (isResetPassword)
+                    {
+                        throw new ArgumentException("A nova senha deve conter ao menos um caractere especial.");
+                    }
+                    else
+                    {
+                        throw new ArgumentException("A senha deve conter ao menos um caractere especial.");
+                    }
+                }
             }
+
             Value = password;
         }
 
