@@ -25,7 +25,7 @@ namespace TaskManager.Adapters.Adapters.User
             _cachingPort = cachingPort;
         }
 
-        public async Task<ResponseModel<UserEntity>> GetDataUserProfileAsync(Guid userId)
+        public async Task<ResponseModel<UserEntity>> ExecuteAsync(Guid userId)
         {
             var Response= new ResponseModel<UserEntity>();
             try

@@ -17,7 +17,7 @@ namespace TaskManager.Core.UseCases.Space
         private readonly IDeleteSpacePort _deleteSpacePort;
         private readonly ICurrentUserPort _currentUserPort;
         private readonly ISignalRNotifier _notifier;
-        public DeleteSpaceUseCase(IDeleteSpacePort deleteSpacePort, ICurrentUserPort currentUserPort, ISignalRNotifier notifier = null)
+        public DeleteSpaceUseCase(IDeleteSpacePort deleteSpacePort, ICurrentUserPort currentUserPort, ISignalRNotifier notifier)
         {
             _deleteSpacePort = deleteSpacePort;
             _currentUserPort = currentUserPort;
@@ -36,7 +36,8 @@ namespace TaskManager.Core.UseCases.Space
 
             Response = await _deleteSpacePort.ExecuteAsync(spaceId, _currentUserPort.UserId);
 
-            await _notifier.NotifySpaceUpdated(spaceId);
+            if(Response.Status == ResponseStatusEnum.Success)
+                await _notifier.NotifySpaceUpdated(spaceId);
 
             return Response;
         }

@@ -40,8 +40,10 @@ namespace TaskManager.Core.UseCases.Task
             }
 
             var repositoryResponse = await _deleteTaskPort.ExecuteAsync(model, _currentUserPort.UserId);
+            
+            if(repositoryResponse.Status == ResponseStatusEnum.Success)
+                await _notifier.NotifyTaskDeleted(model.SpaceId, model.TaskId);
 
-            await _notifier.NotifyTaskDeleted(model.SpaceId, model.TaskId);
             return repositoryResponse;
         }
     }

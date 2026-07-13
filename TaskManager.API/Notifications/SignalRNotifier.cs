@@ -5,16 +5,11 @@ using TaskManager.Core.Ports.Notifications;
 
 namespace TaskManager.API.Notifications
 {
-    /// <summary>
-    /// Implementação de ISpaceNotifier usando SignalR.
-    /// Fica na camada API (único lugar que conhece TaskHub),
-    /// permitindo que Core e Adapters nunca referenciem o Hub diretamente.
-    /// </summary>
-    public class SignalRSpaceNotifier : ISignalRNotifier
+    public class SignalRNotifier : ISignalRNotifier
     {
-        private readonly IHubContext<TaskHub, ITaskHubClient> _hub;
+        private readonly IHubContext<TaskManagerHub, ITaskManagerHubClient> _hub;
 
-        public SignalRSpaceNotifier(IHubContext<TaskHub, ITaskHubClient> hub)
+        public SignalRNotifier(IHubContext<TaskManagerHub, ITaskManagerHubClient> hub)
             => _hub = hub;
 
         public Task NotifyTaskCreated(Guid spaceId, TaskDTO task)

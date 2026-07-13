@@ -17,7 +17,7 @@ namespace TaskManager.Core.UseCases.Space
         private readonly ICurrentUserPort _currentUserPort;
         private readonly ILeaveSpacePort _leaveSpacePort;
         private readonly ISignalRNotifier _notifier;
-        public LeaveSpaceUseCase(ICurrentUserPort currentUserPort, ILeaveSpacePort leaveSpacePort, ISignalRNotifier notifier = null)
+        public LeaveSpaceUseCase(ICurrentUserPort currentUserPort, ILeaveSpacePort leaveSpacePort, ISignalRNotifier notifier)
         {
             _currentUserPort = currentUserPort;
             _leaveSpacePort = leaveSpacePort;
@@ -35,7 +35,8 @@ namespace TaskManager.Core.UseCases.Space
             }
 
             var responseRepository = await _leaveSpacePort.ExecuteAsync(SpaceId, _currentUserPort.UserId);
-
+            
+            if(responseRepository.Status==ResponseStatusEnum.Success)
             await _notifier.NotifySpaceUpdated(SpaceId);
 
             return responseRepository;

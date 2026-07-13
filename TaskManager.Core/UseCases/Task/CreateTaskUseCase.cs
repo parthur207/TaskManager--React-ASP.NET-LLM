@@ -93,9 +93,12 @@ namespace TaskManager.Core.UseCases.Task
 
             var entity = TaskMapper.ModelToEntity(model, _currentUserPort.UserId, responsibleUserId);
 
-            await _notifier.NotifyTaskCreated(model.SpaceId, TaskMapper.EntityToDTO(entity));
+            var responseRepository= await _createTaskPort.ExecuteAsync(entity);
 
-            return await _createTaskPort.ExecuteAsync(entity);
+            if(responseRepository.Status == ResponseStatusEnum.Success)
+                await _notifier.NotifyTaskCreated(model.SpaceId, TaskMapper.EntityToDTO(entity));
+
+            return responseRepository;
         }
     }
 }

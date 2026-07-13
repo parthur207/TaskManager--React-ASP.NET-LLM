@@ -33,7 +33,7 @@ namespace TaskManager.Core.UseCases.User
             }
 
             var repositoryResponse = await _getDataUserProfilePort
-                .GetDataUserProfileAsync(_currentUserPort.UserId);
+                .ExecuteAsync(_currentUserPort.UserId);
 
             if (repositoryResponse.Status != ResponseStatusEnum.Success
                 || repositoryResponse.Content is null)

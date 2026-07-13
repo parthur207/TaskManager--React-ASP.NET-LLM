@@ -1,0 +1,47 @@
+name: TaskManager_DataBases
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: TaskManager_SqlServer
+    environment:
+      SA_PASSWORD: "TaskManager@2024"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P TaskManager@2024 -Q 'SELECT 1' -No"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - databases
+
+  redis:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: TaskManager_Redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - databases
+
+networks:
+  databases:
+    name: taskmanager_databases
+    driver: bridge
+
+volumes:
+  sqlserver_data:
+  redis_data:

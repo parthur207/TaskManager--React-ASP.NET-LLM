@@ -17,7 +17,7 @@ namespace TaskManager.Core.UseCases.Space
         private readonly IRemoveMembersSpacePort _removeMembersSpacePort;
         private readonly ICurrentUserPort _currentUserPort;
         private readonly ISignalRNotifier _notifier;
-        public RemoveMembersSpaceUseCase(IRemoveMembersSpacePort removeMembersSpacePort, ICurrentUserPort currentUserPort, ISignalRNotifier notifier = null)
+        public RemoveMembersSpaceUseCase(IRemoveMembersSpacePort removeMembersSpacePort, ICurrentUserPort currentUserPort, ISignalRNotifier notifier)
         {
             _removeMembersSpacePort = removeMembersSpacePort;
             _currentUserPort = currentUserPort;
@@ -45,7 +45,8 @@ namespace TaskManager.Core.UseCases.Space
 
             var responseRepository = await _removeMembersSpacePort.ExecuteAsync(spaceId,MembersEmails);
 
-            await _notifier.NotifySpaceUpdated(spaceId);
+            if(responseRepository.Status == ResponseStatusEnum.Success)
+                await _notifier.NotifySpaceUpdated(spaceId);
 
             return responseRepository;
         }

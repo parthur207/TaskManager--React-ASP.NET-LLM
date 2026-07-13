@@ -2,7 +2,7 @@
 
 namespace TaskManager.Core.Ports.Notifications
 {
-    public interface ITaskHubClient
+    public interface ITaskManagerHubClient
     {
         Task TaskCreated(TaskDTO task);
         Task TaskUpdated(TaskDTO task);

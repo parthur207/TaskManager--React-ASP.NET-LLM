@@ -31,7 +31,8 @@ namespace TaskManager.Core.UseCases.Space
 
             var responseRepository = await _addMembersSpacePort.ExecuteAsync(spaceId, MembersEmails);
             
-            await _notifier.NotifySpaceUpdated(spaceId);
+            if(responseRepository.Status == ResponseStatusEnum.Success)
+                await _notifier.NotifySpaceUpdated(spaceId);
 
             return responseRepository;
         }

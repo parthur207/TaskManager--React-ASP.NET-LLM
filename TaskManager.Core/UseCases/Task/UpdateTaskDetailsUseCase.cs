@@ -97,8 +97,13 @@ namespace TaskManager.Core.UseCases.Task
                         taskResponse.Content.AssignResponsibleUser(userResponse.Content.Id);
                 }
 
-            await _notifier.NotifyTaskUpdated(model.SpaceId, TaskMapper.EntityToDTO(taskResponse.Content));
-            return await _updateTaskDetailsPort.ExecuteAsync(_currentUserPort.UserId, taskResponse.Content);
+            var responseRepository = await _updateTaskDetailsPort
+                .ExecuteAsync(_currentUserPort.UserId, taskResponse.Content);
+
+            if(responseRepository.Status == ResponseStatusEnum.Success)
+                await _notifier.NotifyTaskUpdated(model.SpaceId, TaskMapper.EntityToDTO(taskResponse.Content));
+
+            return responseRepository;
         }
     }
 }

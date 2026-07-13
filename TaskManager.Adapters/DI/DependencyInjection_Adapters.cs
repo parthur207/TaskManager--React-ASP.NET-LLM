@@ -9,9 +9,12 @@ using TaskManager.Adapters.Adapters.User;
 using TaskManager.Adapters.Auth;
 using TaskManager.Adapters.Caching;
 using TaskManager.Adapters.ExternalServices.AI;
+using TaskManager.Adapters.ExternalServices.Messaging;
+using TaskManager.Adapters.ExternalServices.Messaging.RabbitMQ;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Adapters.Security;
 using TaskManager.Core.Ports.AI;
+using TaskManager.Core.Ports.Messaging;
 using TaskManager.Core.Ports.Persistence.Space;
 using TaskManager.Core.Ports.Persistence.Task;
 using TaskManager.Core.Ports.Persistence.TaskCategory;
@@ -66,11 +69,14 @@ namespace TaskManager.Adapters.DI
             services.AddScoped<ISpaceMembershipQueryPort, SpaceMembershipQueryAdapter>();
             services.AddScoped<IGetUsersBySpaceIdPort, GetUsersBySpaceIdAdapter>();
 
+            services.AddSingleton<RabbitMqConnectionProvider>();
+            services.AddScoped<IMessagePublisherPort, RabbitMqPublisherAdapter>();
+
             services.AddScoped<ICachingPort, CachingService>();
             services.AddStackExchangeRedisCache(options =>
             {
-                options.Configuration =
-                    configuration["Redis:ConnectionString"] ?? "http://localhost:6379";
+                options.Configuration = 
+                configuration["Redis:ConnectionString"] ?? "localhost:6379";
 
                 options.InstanceName =
                     configuration["Redis:InstanceName"];

@@ -10,6 +10,6 @@ namespace TaskManager.Core.Ports.Persistence.User
 {
     public interface IGetDataUserProfilePort
     {
-        Task<ResponseModel<UserEntity>> GetDataUserProfileAsync(Guid userId);
+        Task<ResponseModel<UserEntity>> ExecuteAsync(Guid userId);
     }
 }
