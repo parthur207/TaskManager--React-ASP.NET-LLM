@@ -108,6 +108,6 @@ app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.MapHub<TaskHub>("/hubs/tasks");
+app.MapHub<TaskManagerHub>("/hubs/tasks");
 
 app.Run();

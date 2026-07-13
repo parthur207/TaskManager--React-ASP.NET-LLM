@@ -6,4 +6,5 @@
 **/*.user
 **/*.suo
 **/node_modules
+**/.env
 Docker/LLM
