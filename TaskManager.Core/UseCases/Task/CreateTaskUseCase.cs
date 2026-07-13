@@ -1,6 +1,8 @@
-﻿using TaskManager.Core.Enums;
+﻿using TaskManager.Core.DTOs;
+using TaskManager.Core.Enums;
 using TaskManager.Core.Mappers;
 using TaskManager.Core.Models.Task;
+using TaskManager.Core.Ports.Notifications;
 using TaskManager.Core.Ports.Persistence.Task;
 using TaskManager.Core.Ports.ReadServices;
 using TaskManager.Core.Ports.Security;
@@ -15,17 +17,20 @@ namespace TaskManager.Core.UseCases.Task
         private readonly ICurrentUserPort _currentUserPort;
         private readonly IUserQueryPort _userQuery;
         private readonly ISpaceMembershipQueryPort _membership;
+        private readonly ISpaceNotifier _notifier;
 
         public CreateTaskUseCase(
             ICreateTaskPort createTaskPort,
             IUserQueryPort userQuery,
             ISpaceMembershipQueryPort membership,
-            ICurrentUserPort currentUserPort)
+            ICurrentUserPort currentUserPort,
+            ISpaceNotifier notifier)
         {
             _createTaskPort = createTaskPort;
             _userQuery = userQuery;
             _membership = membership;
             _currentUserPort = currentUserPort;
+            _notifier = notifier;
         }
 
         public async Task<SimpleResponseModel> ExecuteAsync(CreateTaskModel model)
@@ -87,6 +92,8 @@ namespace TaskManager.Core.UseCases.Task
             }
 
             var entity = TaskMapper.ModelToEntity(model, _currentUserPort.UserId, responsibleUserId);
+
+            await _notifier.NotifyTaskCreated(model.SpaceId, TaskMapper.EntityToDTO(entity));
 
             return await _createTaskPort.ExecuteAsync(entity);
         }

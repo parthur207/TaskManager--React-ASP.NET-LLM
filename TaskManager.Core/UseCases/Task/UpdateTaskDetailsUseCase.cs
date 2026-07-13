@@ -1,5 +1,6 @@
 ﻿using TaskManager.Core.Enums;
 using TaskManager.Core.Models.Task;
+using TaskManager.Core.Ports.Notifications;
 using TaskManager.Core.Ports.Persistence.Task;
 using TaskManager.Core.Ports.ReadServices;
 using TaskManager.Core.Ports.Security;
@@ -15,19 +16,22 @@ namespace TaskManager.Core.UseCases.Task
         private readonly ICurrentUserPort _currentUserPort;
         private readonly IUserQueryPort _userQuery;
         private readonly ISpaceMembershipQueryPort _membership;
+        private readonly ISpaceNotifier _notifier;
 
         public UpdateTaskDetailsUseCase(
             IUpdateTaskDetailsPort updateTaskDetailsPort,
             IGetTaskByIdPort getTaskByIdPort,
             ICurrentUserPort currentUserPort,
             IUserQueryPort userQuery,
-            ISpaceMembershipQueryPort membership)
+            ISpaceMembershipQueryPort membership,
+            ISpaceNotifier notifier)
         {
             _updateTaskDetailsPort = updateTaskDetailsPort;
             _getTaskByIdPort = getTaskByIdPort;
             _currentUserPort = currentUserPort;
             _userQuery = userQuery;
             _membership = membership;
+            _notifier = notifier;
         }
 
         public async Task<SimpleResponseModel> ExecuteAsync(UpdateTaskModel model)
@@ -85,7 +89,7 @@ namespace TaskManager.Core.UseCases.Task
                     if (taskResponse.Content.ResponsibleUserId != userResponse.Content.Id)
                         taskResponse.Content.AssignResponsibleUser(userResponse.Content.Id);
                 }
-
+            await _notifier.NotifyTaskUpdated(model.s);
             return await _updateTaskDetailsPort.ExecuteAsync(_currentUserPort.UserId, taskResponse.Content);
         }
     }

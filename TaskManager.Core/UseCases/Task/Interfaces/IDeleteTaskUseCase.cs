@@ -4,6 +4,6 @@ namespace TaskManager.Core.UseCases.Task.Interfaces
 {
     public interface IDeleteTaskUseCase
     {
-        Task<SimpleResponseModel> ExecuteAsync(Guid taskId);
+        Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, Guid taskId);
     }
 }
