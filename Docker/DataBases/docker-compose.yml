@@ -1,11 +1,11 @@
-name: TaskManager_DataBases
+name: DataBase
 
 services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: TaskManager_SqlServer
     environment:
-      SA_PASSWORD: "TaskManager@2024"
+      SA_PASSWORD: "${DB_PASSWORD}"
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Developer"
     ports:

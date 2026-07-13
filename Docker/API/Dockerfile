@@ -13,7 +13,6 @@ COPY ["TaskManager.Core/TaskManager.Core.csproj",         "TaskManager.Core/"]
 
 RUN dotnet restore "TaskManager.API/TaskManager.API.csproj"
 
-# Copia o restante do código
 COPY . .
 
 WORKDIR "/src/TaskManager.API"

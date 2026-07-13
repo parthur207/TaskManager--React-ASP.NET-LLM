@@ -15,10 +15,10 @@ services:
         Server=sqlserver,1433;
         Database=TaskManagerDb;
         User Id=sa;
-        Password=TaskManager@2024;
+        Password="${DB_PASSWORD}";
         TrustServerCertificate=True;
       Redis__ConnectionString: "redis:6379"
-      Jwt__Key: "7Fj9Kp2Lm8Qx4Vz1Nc6Rb3Hy5Tw7Ds0A"
+      Jwt__Key: "${JWT_KEY}"
       Jwt__Issuer: "TaskManager.API"
       Jwt__Audience: "TaskManager.Client"
       Jwt__ExpirationInMinutes: "60"
