@@ -12,9 +12,9 @@ namespace TaskManager.Core.UseCases.Task
     {
         private readonly IDeleteTaskPort _deleteTaskPort;
         private readonly ICurrentUserPort _currentUserPort;
-        private readonly ISpaceNotifier _notifier;
+        private readonly ISignalRNotifier _notifier;
 
-        public DeleteTaskUseCase(IDeleteTaskPort deleteTaskPort, ICurrentUserPort currentUserPort, ISpaceNotifier notifier)
+        public DeleteTaskUseCase(IDeleteTaskPort deleteTaskPort, ICurrentUserPort currentUserPort, ISignalRNotifier notifier)
         {
             _deleteTaskPort = deleteTaskPort;
             _currentUserPort = currentUserPort;

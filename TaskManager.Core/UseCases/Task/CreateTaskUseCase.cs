@@ -17,14 +17,14 @@ namespace TaskManager.Core.UseCases.Task
         private readonly ICurrentUserPort _currentUserPort;
         private readonly IUserQueryPort _userQuery;
         private readonly ISpaceMembershipQueryPort _membership;
-        private readonly ISpaceNotifier _notifier;
+        private readonly ISignalRNotifier _notifier;
 
         public CreateTaskUseCase(
             ICreateTaskPort createTaskPort,
             IUserQueryPort userQuery,
             ISpaceMembershipQueryPort membership,
             ICurrentUserPort currentUserPort,
-            ISpaceNotifier notifier)
+            ISignalRNotifier notifier)
         {
             _createTaskPort = createTaskPort;
             _userQuery = userQuery;

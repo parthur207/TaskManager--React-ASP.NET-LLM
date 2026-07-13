@@ -17,7 +17,7 @@ namespace TaskManager.Core.UseCases.Task
         private readonly ICurrentUserPort _currentUserPort;
         private readonly IUserQueryPort _userQuery;
         private readonly ISpaceMembershipQueryPort _membership;
-        private readonly ISpaceNotifier _notifier;
+        private readonly ISignalRNotifier _notifier;
 
         public UpdateTaskDetailsUseCase(
             IUpdateTaskDetailsPort updateTaskDetailsPort,
@@ -25,7 +25,7 @@ namespace TaskManager.Core.UseCases.Task
             ICurrentUserPort currentUserPort,
             IUserQueryPort userQuery,
             ISpaceMembershipQueryPort membership,
-            ISpaceNotifier notifier)
+            ISignalRNotifier notifier)
         {
             _updateTaskDetailsPort = updateTaskDetailsPort;
             _getTaskByIdPort = getTaskByIdPort;

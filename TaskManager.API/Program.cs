@@ -17,7 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSignalR();
 
-builder.Services.AddScoped<ISpaceNotifier, SignalRSpaceNotifier>();
+builder.Services.AddScoped<ISignalRNotifier, SignalRSpaceNotifier>();
 
 builder.Services.AddOpenApiDocument(options =>
 {
