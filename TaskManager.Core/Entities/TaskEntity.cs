@@ -47,7 +47,7 @@ namespace TaskManager.Core.Entities
         public void UpdateTitleOrDescription(string newTitle = null, string newDescription = null)
         {
             if (string.IsNullOrEmpty(newTitle) &&
-                string.IsNullOrEmpty(Description))
+                string.IsNullOrEmpty(newDescription))
             {
                 throw new ArgumentNullException("Erro. Nome e descrição nulos.");
             }
