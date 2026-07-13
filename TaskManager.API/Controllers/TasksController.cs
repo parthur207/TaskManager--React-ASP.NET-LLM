@@ -68,9 +68,9 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpDelete("delete")]
-        public async Task<IActionResult> DeleteTask([FromQuery] Guid taskId, Guid spaceId)
+        public async Task<IActionResult> DeleteTask([FromQuery] DeleteTaskModel model)
         {
-            var Response = await _taskUseCaseFacade.Delete.ExecuteAsync(spaceId, taskId);
+            var Response = await _taskUseCaseFacade.Delete.ExecuteAsync(model);
             switch (Response.Status)
             {
                 case ResponseStatusEnum.Error:

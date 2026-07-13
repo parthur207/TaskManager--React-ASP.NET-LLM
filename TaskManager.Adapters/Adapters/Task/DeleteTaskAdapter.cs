@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
+using TaskManager.Core.Models.Task;
 using TaskManager.Core.Ports.Persistence.Task;
 using TaskManager.Core.ResponsePattern;
 
@@ -15,14 +16,15 @@ namespace TaskManager.Adapters.Adapters.Task
             _contextTask = contextTask;
         }
 
-        public async Task<SimpleResponseModel> ExecuteAsync(Guid IdTask, Guid IdUser)
+        public async Task<SimpleResponseModel> ExecuteAsync(DeleteTaskModel model, Guid userId)
         {
             var Response= new SimpleResponseModel();
             try
             {
                 var entity = await _contextTask.Task
-                    .FirstOrDefaultAsync(x => x.Id == IdTask
-                    && x.OwnerId == IdUser);
+                    .FirstOrDefaultAsync(x => x.Id == model.TaskId 
+                    && x.SpaceId == model.SpaceId
+                    && x.OwnerId == userId);
                 
                 if(entity is null)
                 {

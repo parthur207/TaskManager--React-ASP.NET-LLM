@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Core.Enums;
+using TaskManager.Core.Ports.Notifications;
 using TaskManager.Core.Ports.Persistence.Space;
 using TaskManager.Core.Ports.Security;
 using TaskManager.Core.ResponsePattern;
@@ -15,10 +16,12 @@ namespace TaskManager.Core.UseCases.Space
     {
         private readonly IDeleteSpacePort _deleteSpacePort;
         private readonly ICurrentUserPort _currentUserPort;
-        public DeleteSpaceUseCase(IDeleteSpacePort deleteSpacePort, ICurrentUserPort currentUserPort)
+        private readonly ISignalRNotifier _notifier;
+        public DeleteSpaceUseCase(IDeleteSpacePort deleteSpacePort, ICurrentUserPort currentUserPort, ISignalRNotifier notifier = null)
         {
             _deleteSpacePort = deleteSpacePort;
             _currentUserPort = currentUserPort;
+            _notifier = notifier;
         }
         public async Task<SimpleResponseModel> ExecuteAsync(Guid spaceId)
         {
@@ -32,6 +35,8 @@ namespace TaskManager.Core.UseCases.Space
             }
 
             Response = await _deleteSpacePort.ExecuteAsync(spaceId, _currentUserPort.UserId);
+
+            await _notifier.NotifySpaceUpdated(spaceId);
 
             return Response;
         }

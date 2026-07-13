@@ -7,7 +7,7 @@ using TaskManager.Core.DTOs;
 
 namespace TaskManager.Core.Ports.Notifications
 {
-    public interface ISpaceNotifier
+    public interface ISignalRNotifier
     {
         Task NotifyTaskCreated(Guid spaceId, TaskDTO task);
         Task NotifyTaskUpdated(Guid spaceId, TaskDTO task);

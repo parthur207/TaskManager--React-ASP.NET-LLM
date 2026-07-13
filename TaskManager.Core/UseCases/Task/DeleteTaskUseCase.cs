@@ -1,4 +1,5 @@
 ﻿using TaskManager.Core.Enums;
+using TaskManager.Core.Models.Task;
 using TaskManager.Core.Ports.Notifications;
 using TaskManager.Core.Ports.Persistence.Task;
 using TaskManager.Core.Ports.Security;
@@ -20,7 +21,7 @@ namespace TaskManager.Core.UseCases.Task
             _notifier = notifier;
         }
 
-        public async Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, Guid taskId)
+        public async Task<SimpleResponseModel> ExecuteAsync(DeleteTaskModel model)
         {
             var response = new SimpleResponseModel();
 
@@ -31,16 +32,16 @@ namespace TaskManager.Core.UseCases.Task
                 return response;
             }
 
-            if (taskId == Guid.Empty)
+            if (model is null)
             {
-                response.Message = "ID da tarefa inválido.";
+                response.Message = "Erro. Dados nulos ou inválidos.";
                 response.Status = ResponseStatusEnum.Error;
                 return response;
             }
 
-            var repositoryResponse = await _deleteTaskPort.ExecuteAsync(taskId, _currentUserPort.UserId);
+            var repositoryResponse = await _deleteTaskPort.ExecuteAsync(model, _currentUserPort.UserId);
 
-            await _notifier.NotifyTaskDeleted(spaceId,taskId);
+            await _notifier.NotifyTaskDeleted(model.SpaceId, model.TaskId);
             return repositoryResponse;
         }
     }

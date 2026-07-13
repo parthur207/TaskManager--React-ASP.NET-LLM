@@ -71,6 +71,15 @@ namespace TaskManager.Core.Entities
             StatusEnum = newStatus;
         }
 
+        public void UpdateTerm(DateOnly newTerm)
+        {
+            if (Term.Equals(newTerm))
+            {
+                throw new ArgumentException($"O prazo '{newTerm.ToString()}' já se encontra definido.");
+            }
+            Term = newTerm;
+        }
+
         public void AssignResponsibleUser(Guid responsibleUserId)
         {
             if (ResponsibleUserId.Equals(responsibleUserId))

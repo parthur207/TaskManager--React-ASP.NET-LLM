@@ -10,7 +10,7 @@ namespace TaskManager.API.Notifications
     /// Fica na camada API (único lugar que conhece TaskHub),
     /// permitindo que Core e Adapters nunca referenciem o Hub diretamente.
     /// </summary>
-    public class SignalRSpaceNotifier : ISpaceNotifier
+    public class SignalRSpaceNotifier : ISignalRNotifier
     {
         private readonly IHubContext<TaskHub, ITaskHubClient> _hub;
 

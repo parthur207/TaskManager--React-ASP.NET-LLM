@@ -11,5 +11,7 @@ namespace TaskManager.Core.Models.Task
         public Guid? CategoryId { get; set; }
         public TaskStatusEnum? Status { get; set; }
         public DateOnly? Term { get; set; }
+
+        public Guid SpaceId { get; set; }
     }
 }

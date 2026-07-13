@@ -1,4 +1,5 @@
 ﻿using TaskManager.Core.Enums;
+using TaskManager.Core.Mappers;
 using TaskManager.Core.Models.Task;
 using TaskManager.Core.Ports.Notifications;
 using TaskManager.Core.Ports.Persistence.Task;
@@ -65,8 +66,14 @@ namespace TaskManager.Core.UseCases.Task
             
             taskResponse.Content.UpdateTitleOrDescription(newTitle, newDesc);
 
-            if (model.Status.HasValue && model.Status.Value != taskResponse.Content.StatusEnum)
-                taskResponse.Content.UpdateStatusTask(model.Status.Value);
+            if (model.Status.HasValue 
+                && model.Status.Value != taskResponse.Content.StatusEnum)
+                    taskResponse.Content.UpdateStatusTask(model.Status.Value);
+
+            if (model.Term.HasValue
+                && model.Term.Value != taskResponse.Content.Term)
+                    taskResponse.Content.UpdateTerm(model.Term.Value);
+            
 
                 if (!string.IsNullOrWhiteSpace(model.ResponsibleUserEmail))
                 {
@@ -89,7 +96,8 @@ namespace TaskManager.Core.UseCases.Task
                     if (taskResponse.Content.ResponsibleUserId != userResponse.Content.Id)
                         taskResponse.Content.AssignResponsibleUser(userResponse.Content.Id);
                 }
-            await _notifier.NotifyTaskUpdated(model.s);
+
+            await _notifier.NotifyTaskUpdated(model.SpaceId, TaskMapper.EntityToDTO(taskResponse.Content));
             return await _updateTaskDetailsPort.ExecuteAsync(_currentUserPort.UserId, taskResponse.Content);
         }
     }
