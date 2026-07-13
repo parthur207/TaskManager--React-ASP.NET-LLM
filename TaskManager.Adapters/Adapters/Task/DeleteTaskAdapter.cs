@@ -22,7 +22,7 @@ namespace TaskManager.Adapters.Adapters.Task
             {
                 var entity = await _contextTask.Task
                     .FirstOrDefaultAsync(x => x.Id == IdTask
-                    && x.OwnerId == IdUser || x.ResponsibleUserId == IdUser);
+                    && x.OwnerId == IdUser);
                 
                 if(entity is null)
                 {
