@@ -2,9 +2,10 @@
 using System.Text.Json;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
+using TaskManager.Adapters.ExternalServices.Messaging;
 using TaskManager.Core.Ports.Messaging;
 
-namespace TaskManager.Adapters.ExternalServices.Messaging.RabbitMQ
+namespace TaskManager.Adapters.Adapters.Messaging
 {
     public class RabbitMqPublisherAdapter : IMessagePublisherPort
     {

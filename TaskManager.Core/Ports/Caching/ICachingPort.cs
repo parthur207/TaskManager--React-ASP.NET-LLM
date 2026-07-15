@@ -1,4 +1,4 @@
-﻿namespace TaskManager.Adapters.Caching
+﻿namespace TaskManager.Core.Ports.Caching
 {
     public interface ICachingPort
     {

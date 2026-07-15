@@ -5,9 +5,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskManager.Adapters.Caching;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
+using TaskManager.Core.Ports.Caching;
 using TaskManager.Core.Ports.Persistence.Space;
 using TaskManager.Core.ResponsePattern;
 
@@ -54,7 +54,7 @@ namespace TaskManager.Adapters.Adapters.User
                     return Response;
                 }
 
-                await _cachingPort.SetAsync($"users_{spaceId}", users, TimeSpan.FromMinutes(5));
+                await _cachingPort.SetAsync(GenerateSearchCacheKey(), users, TimeSpan.FromMinutes(5));
 
                 Response.Content = users;
                 Response.Status = ResponseStatusEnum.Success;

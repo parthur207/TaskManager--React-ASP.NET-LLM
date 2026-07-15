@@ -46,16 +46,17 @@ namespace TaskManager.Core.Entities
 
         public void UpdateTitleOrDescription(string newTitle = null, string newDescription = null)
         {
-            if (string.IsNullOrEmpty(newTitle) &&
-                string.IsNullOrEmpty(newDescription))
-            {
-                throw new ArgumentNullException("Erro. Nome e descrição nulos.");
-            }
-            Title = newTitle;
-            Description = newDescription;
-            UpdatedAt = DateTime.UtcNow;
-        }
+            if (string.IsNullOrEmpty(newTitle) && string.IsNullOrEmpty(newDescription))
+                throw new ArgumentNullException("Erro. Título e descrição não podem ser ambos vazios.");
 
+            if (!string.IsNullOrEmpty(newTitle))
+                Title = newTitle;
+                UpdatedAt = DateTime.UtcNow;
+
+            if (!string.IsNullOrEmpty(newDescription))
+                Description = newDescription;
+                UpdatedAt = DateTime.UtcNow;
+        }
         public void UpdateStatusTask(TaskStatusEnum newStatus)
         {
             if (StatusEnum.Equals(newStatus))

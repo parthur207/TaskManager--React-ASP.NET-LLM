@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TaskManager.Adapters.Adapters.Messaging;
 using TaskManager.Adapters.Adapters.ReadServices;
 using TaskManager.Adapters.Adapters.Space;
 using TaskManager.Adapters.Adapters.Task;
@@ -10,10 +11,10 @@ using TaskManager.Adapters.Auth;
 using TaskManager.Adapters.Caching;
 using TaskManager.Adapters.ExternalServices.AI;
 using TaskManager.Adapters.ExternalServices.Messaging;
-using TaskManager.Adapters.ExternalServices.Messaging.RabbitMQ;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Adapters.Security;
 using TaskManager.Core.Ports.AI;
+using TaskManager.Core.Ports.Caching;
 using TaskManager.Core.Ports.Messaging;
 using TaskManager.Core.Ports.Persistence.Space;
 using TaskManager.Core.Ports.Persistence.Task;
@@ -79,8 +80,11 @@ namespace TaskManager.Adapters.DI
                 configuration["Redis:ConnectionString"] ?? "localhost:6379";
 
                 options.InstanceName =
-                    configuration["Redis:InstanceName"];
+                    configuration["Redis:InstanceName"] ?? "TaskManager";
             });
+
+            services.Configure<RabbitMqSettings>(
+                configuration.GetSection("RabbitMq"));
 
             services.AddHttpClient<IOllamaProviderPort, OllamaProviderAdapter>(client =>
             {

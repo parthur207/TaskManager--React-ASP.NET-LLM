@@ -6,10 +6,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskManager.Adapters.Caching;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
+using TaskManager.Core.Ports.Caching;
 using TaskManager.Core.Ports.Persistence.TaskCategory;
 using TaskManager.Core.Ports.ReadServices;
 using TaskManager.Core.ResponsePattern;
@@ -42,7 +42,9 @@ namespace TaskManager.Adapters.Adapters.TaskCategory
                     return Response;
                 }
 
-                if (!_spaceMembershipQueryPort.IsUserMemberAsync(userId, spaceId).Result.Content)
+                var IsMemberResponse = await _spaceMembershipQueryPort.IsUserMemberAsync(userId, spaceId);
+
+                if (!IsMemberResponse.Content)
                 {
                     Response.Message = "Você não possui permissão para este espaço.";
                     Response.Status = ResponseStatusEnum.Unauthorized;

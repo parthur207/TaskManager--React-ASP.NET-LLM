@@ -6,11 +6,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskManager.Adapters.Caching;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.DTOs;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
+using TaskManager.Core.Ports.Caching;
 using TaskManager.Core.Ports.Persistence.Space;
 using TaskManager.Core.ResponsePattern;
 
