@@ -11,7 +11,7 @@ namespace TaskManager.Core.Entities
 {
     public class UserEntity
     {
-        protected UserEntity() { }
+        public UserEntity() { }
 
         public UserEntity(string name, string email, string passwordHash)
         {

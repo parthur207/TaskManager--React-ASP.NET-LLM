@@ -11,6 +11,7 @@ using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Ports.Persistence.User;
 using TaskManager.Core.ResponsePattern;
+using TaskManager.Core.ValueObjects;
 
 namespace TaskManager.Adapters.Adapters.User
 {
@@ -54,7 +55,7 @@ namespace TaskManager.Adapters.Adapters.User
                     .FirstOrDefaultAsync();
 
                 await _cachingPort
-                    .SetAsync($"userProfile_{userId}", user, TimeSpan.FromMinutes(30));
+                    .SetAsync($"userProfile_{userId}", user, TimeSpan.FromMinutes(5));
 
                 Response.Content = user;
                 Response.Status = ResponseStatusEnum.Success;

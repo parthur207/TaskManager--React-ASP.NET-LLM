@@ -9,7 +9,7 @@ namespace TaskManager.Core.Entities
 {
     public class SpaceEntity
     {
-        protected SpaceEntity() { } 
+        public SpaceEntity() { } 
 
         public SpaceEntity(string name, DateTime createdAt)
         { 

@@ -9,7 +9,7 @@ namespace TaskManager.Core.Entities
 {
     public sealed class TaskEntity
     {
-        protected TaskEntity() { }
+        public TaskEntity() { }
 
         public TaskEntity(string title, string? description, 
             Guid? categoryId, Guid spaceId, Guid ownerId, Guid? responsibleUserId, DateOnly term)

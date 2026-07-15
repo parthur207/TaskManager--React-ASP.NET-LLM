@@ -8,7 +8,7 @@ namespace TaskManager.Core.Entities
 {
     public sealed class TaskCategoryEntity
     {
-        protected TaskCategoryEntity() { }
+        public TaskCategoryEntity() { }
 
         public TaskCategoryEntity(Guid ownerId, Guid spaceId, string name)
         {

@@ -35,7 +35,7 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSpaceById([FromQuery] Guid id)
+        public async Task<IActionResult> GetSpaceById([FromRoute] Guid id)
         {
             var response = await _spaceUseCaseFacade.getSpaceById.ExecuteAsync(id);
 
