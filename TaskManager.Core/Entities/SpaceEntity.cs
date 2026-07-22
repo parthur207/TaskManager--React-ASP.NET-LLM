@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -30,14 +31,31 @@ namespace TaskManager.Core.Entities
             CreatedAt= DateTime.Now;
         }
 
+        [JsonInclude]
         public Guid Id { get; private set; }
+
+        [JsonInclude]
         public IList<TaskEntity>? Tasks { get; set; }
+
+        [JsonInclude]
         public string Name { get;set; }
-        public Guid OwnerId { get; set; } 
+
+        [JsonInclude]
+        public Guid OwnerId { get; set; }
+
+        [JsonInclude]
         public UserEntity Owner { get; set; }
+
+        [JsonInclude]
         public IList<SpaceMemberEntity>? Members { get; set; }
+
+        [JsonInclude]
         public IList<TaskCategoryEntity>? TaskCategories { get; set; }
-        public DateTime CreatedAt { get; private set; } 
+
+        [JsonInclude]
+        public DateTime CreatedAt { get; private set; }
+
+        [JsonInclude]
         public DateTime? UpdatedAt { get; private set; }
 
         public void AddMember(UserEntity user)

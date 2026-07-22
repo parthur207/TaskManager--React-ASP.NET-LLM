@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using TaskManager.Core.Enums;
 using TaskManager.Core.ValueObjects;
@@ -32,15 +33,34 @@ namespace TaskManager.Core.Entities
             PasswordHash = new PasswordVO(password, true);
         }//Login
 
+        [JsonInclude]
         public Guid Id { get; private set; }
+
+        [JsonInclude]
         public string? Name { get; private set; }
+
+        [JsonInclude]
         public EmailVO Email { get; private set; }
+
+        [JsonIgnore]
         public PasswordVO PasswordHash { get; private set; }
+
+        [JsonInclude]
         public RoleUserEnum Role { get; private set; }
+
+        [JsonInclude]
         public UserStatusEnum Status { get; private set; }
+
+        [JsonInclude]
         public IEnumerable<TaskEntity>? Tasks { get; private set; }
+
+        [JsonInclude]
         public IList<SpaceMemberEntity>? Spaces { get; private set; }
+
+        [JsonInclude]
         public DateTime CreatedAt { get; private set; }
+
+        [JsonInclude]
         public DateTime? UpdatedDate { get; private set; }
        
        public void SetPassword(string newPasswordHash, string oldPasswordHash)

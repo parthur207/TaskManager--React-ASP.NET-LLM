@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TaskManager.Core.Entities
@@ -20,14 +21,32 @@ namespace TaskManager.Core.Entities
             SpaceId = spaceId;
         }//Criar
 
+
+        [JsonInclude]
         public Guid Id { get; private set; }
+
+        [JsonInclude]
         public string Name { get; private set; }
+
+        [JsonInclude]
         public DateTime CreatedAt { get; private set; }
-        public DateTime? UpdatedAt { get; set; }
+
+        [JsonInclude]
+        public DateTime? UpdatedAt { get; private set; }
+
+        [JsonInclude]
         public Guid OwnerId { get; private set; }
+
+        [JsonInclude]
         public UserEntity? UserOwner { get; private set; }
+
+        [JsonInclude]
         public IList<TaskEntity> Tasks { get; private set; }
+
+        [JsonInclude]
         public Guid SpaceId { get; private set; }
+
+        [JsonInclude]
         public SpaceEntity? Space { get; private set; }
 
         public void UpdateCategoryName(string newName)

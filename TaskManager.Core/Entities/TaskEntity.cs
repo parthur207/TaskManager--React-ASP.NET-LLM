@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using TaskManager.Core.Enums;
 
@@ -27,21 +28,52 @@ namespace TaskManager.Core.Entities
             CreatedAt = DateTime.UtcNow;
         }
 
+        [JsonInclude]
         public Guid Id { get; private set; }
+
+        [JsonInclude]
         public string Title { get; private set; }
+
+        [JsonInclude]
         public string? Description { get; private set; }
+
+        [JsonInclude]
         public Guid OwnerId { get; set; }
+
+        [JsonInclude]
         public UserEntity OwnerUser { get; private set; }
+
+        [JsonInclude]
         public Guid? ResponsibleUserId { get; private set; }
+
+        [JsonInclude]
         public UserEntity? ResponsibleUser { get; set; }
+
+        [JsonInclude]
         public Guid? CategoryId { get; private set; }
+
+        [JsonInclude]
         public TaskCategoryEntity? Category { get; private set; }
+
+        [JsonInclude]
         public Guid SpaceId { get; private set; }
+
+        [JsonInclude]
         public SpaceEntity Space { get;private set; }
+
+        [JsonInclude]
         public IList<TaskChildrenEntity>? TaskChildrens { get; private set; }
+
+        [JsonInclude]
         public TaskStatusEnum StatusEnum { get; private set; }
+
+        [JsonInclude]
         public DateTime CreatedAt { get; private set; }
+
+        [JsonInclude]
         public DateTime? UpdatedAt { get; private set; }
+
+        [JsonInclude]
         public DateOnly Term { get; private set; }
 
         public void UpdateTitleOrDescription(string newTitle = null, string newDescription = null)

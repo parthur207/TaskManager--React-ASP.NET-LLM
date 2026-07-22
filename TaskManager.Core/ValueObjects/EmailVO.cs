@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -10,7 +11,10 @@ namespace TaskManager.Core.ValueObjects
     public class EmailVO
     {
         protected EmailVO() { }
-        public string Value { get;}
+
+        [JsonInclude]
+        public string Value { get; init; }
+
         private static readonly Regex EmailRegex = new(@"^[^@\s]+@[^@\s]+\.[^@\s]+$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
