@@ -82,12 +82,16 @@ namespace TaskManager.Core.Entities
                 throw new ArgumentNullException("Erro. Título e descrição não podem ser ambos vazios.");
 
             if (!string.IsNullOrEmpty(newTitle))
+            {
                 Title = newTitle;
                 UpdatedAt = DateTime.UtcNow;
+            }
 
             if (!string.IsNullOrEmpty(newDescription))
+            {
                 Description = newDescription;
                 UpdatedAt = DateTime.UtcNow;
+            }
         }
         public void UpdateStatusTask(TaskStatusEnum newStatus)
         {
