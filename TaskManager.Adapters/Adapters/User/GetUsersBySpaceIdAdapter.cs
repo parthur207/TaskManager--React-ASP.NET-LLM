@@ -54,7 +54,7 @@ namespace TaskManager.Adapters.Adapters.User
                     return Response;
                 }
 
-                await _cachingPort.SetAsync(GenerateSearchCacheKey(), users, TimeSpan.FromMinutes(5));
+                await _cachingPort.SetAsync($"users_{spaceId}", users, TimeSpan.FromMinutes(5));
 
                 Response.Content = users;
                 Response.Status = ResponseStatusEnum.Success;

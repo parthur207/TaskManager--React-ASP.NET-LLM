@@ -20,7 +20,7 @@ namespace TaskManager.Adapters.Adapters.Messaging
             _settings = options.Value;
         }
 
-        public Task PublishAsync<T>(T message, string routingKey) where T : class
+        public Task<T> PublishAsync<T>(T message, string routingKey) where T : class
         {
             using var channel = _connectionProvider.Connection.CreateModel();
 
@@ -38,7 +38,7 @@ namespace TaskManager.Adapters.Adapters.Messaging
                 basicProperties: properties,
                 body: body);
 
-            return Task.CompletedTask;
+            return Task<T>.FromResult(message);
         }
     }
 }

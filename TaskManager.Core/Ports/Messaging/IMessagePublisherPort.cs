@@ -2,6 +2,6 @@
 {
     public interface IMessagePublisherPort
     {
-        Task PublishAsync<T>(T message, string routingKey) where T : class;
+        Task<T> PublishAsync<T>(T message, string routingKey) where T : class;
     }
 }
