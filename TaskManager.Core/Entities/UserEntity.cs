@@ -62,8 +62,17 @@ namespace TaskManager.Core.Entities
 
         [JsonInclude]
         public DateTime? UpdatedDate { get; private set; }
+        
+        [JsonIgnore]
+        public bool TwoFactores { get; private set; }
        
-       public void SetPassword(string newPasswordHash, string oldPasswordHash)
+        public void SetTwoFactores(bool twoFactores)
+        {
+            TwoFactores = twoFactores;
+            UpdatedDate = DateTime.Now;
+        }
+
+        public void SetPassword(string newPasswordHash, string oldPasswordHash)
        {
             if (string.IsNullOrWhiteSpace(newPasswordHash) 
                 || string.IsNullOrWhiteSpace(oldPasswordHash))

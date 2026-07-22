@@ -58,7 +58,6 @@ namespace TaskManager.Core.UseCases.Task
                 return response;
             }
 
-            // Verifica se o usuário atual é membro do space informado
             var membershipResponse = await _membership.IsUserMemberAsync(_currentUserPort.UserId, model.SpaceId);
             if (membershipResponse.Status != ResponseStatusEnum.Success || !membershipResponse.Content)
             {
@@ -69,7 +68,6 @@ namespace TaskManager.Core.UseCases.Task
 
             Guid responsibleUserId = _currentUserPort.UserId;
 
-            // Se foi informado um responsável diferente, valida se ele existe e é membro do space
             if (!string.IsNullOrWhiteSpace(model.ResponsibleEmail))
             {
                 var userResponse = await _userQuery.GetUserByEmailAsync(model.ResponsibleEmail);
