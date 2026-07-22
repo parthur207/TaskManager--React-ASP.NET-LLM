@@ -31,7 +31,6 @@ namespace TaskManager.Core.DI
             services.AddScoped<IDeleteTaskUseCase, DeleteTaskUseCase>();
             services.AddScoped<IGetTaskByIdUseCase, GetTaskByIdUseCase>();
             services.AddScoped<ISearchTaskUseCase, SearchTaskUseCase>();
-            services.AddScoped<IGetTasksBySpaceUseCase, GetTasksBySpace>();
 
             // TaskCategory
             services.AddScoped<ICreateTaskCategoryUseCase, CreateTaskCategoryUseCase>();

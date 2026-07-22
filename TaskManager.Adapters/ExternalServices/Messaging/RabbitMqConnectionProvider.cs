@@ -3,29 +3,47 @@ using RabbitMQ.Client;
 
 namespace TaskManager.Adapters.ExternalServices.Messaging
 {
-    public sealed class RabbitMqConnectionProvider : IDisposable
+    public sealed class RabbitMqConnectionProvider : IAsyncDisposable
     {
-        private readonly IConnection _connection;
+        private readonly ConnectionFactory _factory;
+        private IConnection? _connection;
+        private readonly SemaphoreSlim _lock = new(1, 1);
+
         public RabbitMqConnectionProvider(IOptions<RabbitMqSettings> options)
         {
             var settings = options.Value;
-
-            var factory = new ConnectionFactory
+            _factory = new ConnectionFactory
             {
                 HostName = settings.HostName,
                 Port = settings.Port,
                 UserName = settings.UserName,
                 Password = settings.Password,
                 VirtualHost = settings.VirtualHost,
-                DispatchConsumersAsync = true,
                 AutomaticRecoveryEnabled = true
             };
-
-            _connection = factory.CreateConnection();
         }
 
-        public IConnection Connection => _connection;
+        public async Task<IConnection> GetConnectionAsync(CancellationToken ct = default)
+        {
+            if (_connection is { IsOpen: true }) return _connection;
 
-        public void Dispose() => _connection?.Dispose();
+            await _lock.WaitAsync(ct);
+            try
+            {
+                if (_connection is { IsOpen: true }) return _connection;
+                _connection = await _factory.CreateConnectionAsync(ct);
+                return _connection;
+            }
+            finally
+            {
+                _lock.Release();
+            }
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            if (_connection is not null)
+                await _connection.DisposeAsync();
+        }
     }
 }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Models.TaskCategory;
+using TaskManager.Core.Ports.Caching;
 using TaskManager.Core.Ports.Persistence.TaskCategory;
 using TaskManager.Core.Ports.ReadServices;
 using TaskManager.Core.Ports.Security;
@@ -20,10 +21,12 @@ namespace TaskManager.Adapters.Adapters.TaskCategory
     {
         private readonly DbContextTaskManager _dbContext;
         private readonly ICurrentUserPort _currentUserPort;
-        public UpdateTaskCategoryAdapter(DbContextTaskManager dbContext, ICurrentUserPort currentUserPort)
+        private readonly ICachingPort _cachingPort;
+        public UpdateTaskCategoryAdapter(DbContextTaskManager dbContext, ICurrentUserPort currentUserPort, ICachingPort cachingPort)
         {
             _dbContext = dbContext;
             _currentUserPort = currentUserPort;
+            _cachingPort = cachingPort;
         }
         public async Task<SimpleResponseModel> ExecuteAsync(UpdateTaskCategoryModel model)
         {
@@ -47,6 +50,11 @@ namespace TaskManager.Adapters.Adapters.TaskCategory
                 taskCategoryEntity.UpdateCategoryName(model.newName);
                 _dbContext.Update(taskCategoryEntity);
                 await _dbContext.SaveChangesAsync();
+
+                await _cachingPort.RemoveAsync($"taskCategory_{taskCategoryEntity.Id}");
+                await _cachingPort.RemoveAsync($"taskCategories_{taskCategoryEntity.SpaceId}");
+                await _cachingPort.RemoveAsync($"Space_{taskCategoryEntity.SpaceId}");
+                await _cachingPort.RemoveAsync($"spaceMember_{userId}");
 
                 Response.Message = "O nome da categoria foi atualizado com sucesso.";
                 Response.Status = ResponseStatusEnum.Success;

@@ -9,6 +9,6 @@ namespace TaskManager.Core.Ports.Persistence.Space
 {
     public interface IAddMembersSpacePort
     {
-        Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, ICollection<string> Members);        
+        Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, Guid userId, ICollection<string> Members);        
     }
 }

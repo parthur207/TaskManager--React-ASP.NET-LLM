@@ -5,10 +5,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Channels;
-using TaskManager.Adapters.ExternalServices.Messaging;
-using TaskManager.Core.DTOs;
-using TaskManager.Core.Ports.Notifications;
+using TaskManager.Core.Ports.Emails;
 
 namespace TaskManager.Adapters.ExternalServices.Messaging
 {
@@ -69,19 +66,16 @@ namespace TaskManager.Adapters.ExternalServices.Messaging
                             {
                                 var emailSender = scope.ServiceProvider.GetRequiredService<IEmailSenderPort>();
 
-                                // Enviar email de 2FA
                                 await emailSender.Send2FAEmailAsync(
                                     twoFactorEvent.Email,
                                     twoFactorEvent.Code);
                             }
                         }
 
-                        // Acknowledge a mensagem
                         await _channel.BasicAckAsync(ea.DeliveryTag, false);
                     }
                     catch (Exception ex)
                     {
-                        // Log erro e reject a mensagem (com requeue)
                         await _channel.BasicNackAsync(ea.DeliveryTag, false, true);
                     }
                 };
@@ -92,17 +86,14 @@ namespace TaskManager.Adapters.ExternalServices.Messaging
                     consumerTag: "twoFactorEmailConsumer",
                     consumer: consumer);
 
-                // Aguardar até o cancellation
                 await Task.Delay(Timeout.Infinite, stoppingToken);
             }
             catch (OperationCanceledException)
             {
-                // Esperado quando o service é parado
             }
             catch (Exception ex)
             {
-                // Log crítico
-                throw;
+                throw new Exception("Ocorreu um erro inesperado: "+ex.Message);
             }
         }
 

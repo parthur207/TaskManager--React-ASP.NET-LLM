@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
+using TaskManager.Core.Ports.Caching;
 using TaskManager.Core.Ports.Persistence.Space;
 using TaskManager.Core.ResponsePattern;
 
@@ -17,10 +18,11 @@ namespace TaskManager.Adapters.Adapters.Space
     {
 
         private readonly DbContextTaskManager _context;
-
-        public DeleteSpaceAdapter(DbContextTaskManager context)
+        private readonly ICachingPort _cachingPort;
+        public DeleteSpaceAdapter(DbContextTaskManager context, ICachingPort cachingPort)
         {
             _context = context;
+            _cachingPort = cachingPort;
         }
 
         public async Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, Guid userId)
@@ -28,7 +30,6 @@ namespace TaskManager.Adapters.Adapters.Space
             var Response = new SimpleResponseModel();
             try
             {
-
                 var spaceExists = await _context.Space
                 .AnyAsync(x => x.Id == spaceId);
 
@@ -42,11 +43,15 @@ namespace TaskManager.Adapters.Adapters.Space
                 if (!await _context.Space.AnyAsync(x => x.Id == spaceId && x.OwnerId == userId))
                 {
                     Response.Status = ResponseStatusEnum.Unauthorized;
-                    Response.Message = "Erro ao efetuar a ação.";
+                    Response.Message = "Erro. Autorização necessária.";
                     return Response;
                 }
 
                 await _context.Space.Where(x => x.Id == spaceId).ExecuteDeleteAsync();
+                await _context.SaveChangesAsync();
+
+                await _cachingPort.RemoveAsync($"Space_{spaceId}");
+                await _cachingPort.RemoveAsync($"spacesUser_{userId}");
 
                 Response.Status = ResponseStatusEnum.Success;
                 Response.Message = "Espaço excluído com sucesso.";

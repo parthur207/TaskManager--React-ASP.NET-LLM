@@ -40,4 +40,10 @@ public class CachingService : ICachingPort
             json,
             options);
     }
+
+    public async Task RemoveAsync(string key)
+    {
+        if(_cache != null)
+            await _cache.RemoveAsync(key);
+    }
 }

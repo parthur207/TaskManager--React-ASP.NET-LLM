@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
+using TaskManager.Core.Ports.Caching;
 using TaskManager.Core.Ports.Persistence.TaskCategory;
 using TaskManager.Core.ResponsePattern;
 
@@ -10,10 +11,11 @@ namespace TaskManager.Adapters.Adapters.TaskCategory
     public class DeleteTaskCategoryAdapter : IDeleteTaskCategoryPort
     {
         private readonly DbContextTaskManager _context;
-
-        public DeleteTaskCategoryAdapter(DbContextTaskManager context)
+        private readonly ICachingPort _cachingPort;
+        public DeleteTaskCategoryAdapter(DbContextTaskManager context, ICachingPort cachingPort)
         {
             _context = context;
+            _cachingPort = cachingPort;
         }
 
         public async Task<SimpleResponseModel> ExecuteAsync(Guid taskCategoryId, Guid userId)
@@ -40,6 +42,11 @@ namespace TaskManager.Adapters.Adapters.TaskCategory
 
                 _context.TaskCategory.Remove(taskCategory);
                 await _context.SaveChangesAsync();
+
+                await _cachingPort.RemoveAsync($"taskCategory_{taskCategoryId}");
+                await _cachingPort.RemoveAsync($"taskCategories_{taskCategory.SpaceId}");
+                await _cachingPort.RemoveAsync($"Space_{taskCategory.SpaceId}");
+                await _cachingPort.RemoveAsync($"spaceMember_{userId}");
 
                 response.Status = ResponseStatusEnum.Success;
                 response.Message = "Categoria excluída com sucesso.";

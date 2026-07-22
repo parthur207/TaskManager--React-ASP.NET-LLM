@@ -3,6 +3,7 @@ using System.Diagnostics;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Models.Task;
+using TaskManager.Core.Ports.Caching;
 using TaskManager.Core.Ports.Persistence.Task;
 using TaskManager.Core.ResponsePattern;
 
@@ -11,9 +12,11 @@ namespace TaskManager.Adapters.Adapters.Task
     public class DeleteTaskAdapter : IDeleteTaskPort
     {
         private readonly DbContextTaskManager _contextTask;
-        public DeleteTaskAdapter(DbContextTaskManager contextTask)
+        private readonly ICachingPort _cachingPort;
+        public DeleteTaskAdapter(DbContextTaskManager contextTask, ICachingPort cachingPort)
         {
             _contextTask = contextTask;
+            _cachingPort = cachingPort;
         }
 
         public async Task<SimpleResponseModel> ExecuteAsync(DeleteTaskModel model, Guid userId)
@@ -35,6 +38,11 @@ namespace TaskManager.Adapters.Adapters.Task
                 
                 _contextTask.Task.Remove(entity);
                 await _contextTask.SaveChangesAsync();
+
+                await _cachingPort.RemoveAsync($"task_{entity.Id}");
+                await _cachingPort.RemoveAsync($"spacesUser_{entity.SpaceId}");
+                await _cachingPort.RemoveAsync($"Space_{entity.SpaceId}");
+
 
                 Response.Message = "Tarefa excluída com sucesso.";
                 Response.Status = ResponseStatusEnum.Success;

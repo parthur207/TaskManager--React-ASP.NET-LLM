@@ -45,7 +45,7 @@ namespace TaskManager.Core.UseCases.Space
             }
 
             var responseRepository = await _updateSpacePort
-                .ExecuteAsync(spaceId, model.NewName);
+                .ExecuteAsync(spaceId, _currentUserPort.UserId, model.NewName);
 
             if(responseRepository.Status == ResponseStatusEnum.Success)
                 await _notifier.NotifySpaceUpdated(spaceId);

@@ -1,18 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
+using TaskManager.Core.Ports.Caching;
 using TaskManager.Core.Ports.Persistence.User;
 using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Adapters.Adapters.User
 {
-    internal class DeleteUserAdapter : IDeleteUserPort
+    public class DeleteUserAdapter : IDeleteUserPort
     {
         private readonly DbContextTaskManager _context;
-
-        public DeleteUserAdapter(DbContextTaskManager context)
+        private readonly ICachingPort _cachingPort; 
+        public DeleteUserAdapter(DbContextTaskManager context, ICachingPort cachingPort)
         {
             _context = context;
+            _cachingPort = cachingPort;
         }
 
         public async Task<SimpleResponseModel> ExecuteAsync(Guid userId)
@@ -40,6 +42,8 @@ namespace TaskManager.Adapters.Adapters.User
                 user.Inactive();
                 _context.User.Update(user);
                 await _context.SaveChangesAsync();
+
+                await _cachingPort.RemoveAsync($"userProfile_{userId}");
 
                 response.Status = ResponseStatusEnum.Success;
                 response.Message = "Conta inativada com sucesso.";

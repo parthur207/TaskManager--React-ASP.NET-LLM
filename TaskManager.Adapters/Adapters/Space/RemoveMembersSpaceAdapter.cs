@@ -1,22 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using System.Diagnostics;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
+using TaskManager.Core.Ports.Caching;
 using TaskManager.Core.Ports.Persistence.Space;
 using TaskManager.Core.ResponsePattern;
 
 namespace TaskManager.Adapters.Adapters.Space
 {
-    public class RemoveMembersSpacerAdapter : IRemoveMembersSpacePort
+    public class RemoveMembersSpaceAdapter : IRemoveMembersSpacePort
     {
         private readonly DbContextTaskManager _context;
-
-        public RemoveMembersSpacerAdapter(DbContextTaskManager context)
+        private readonly ICachingPort _cachingPort;
+        public RemoveMembersSpaceAdapter(DbContextTaskManager context, ICachingPort cachingPort)
         {
             _context = context;
+            _cachingPort = cachingPort;
         }
-
-        public async Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, ICollection<string> members)
+        
+        public async Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, Guid userId,ICollection<string> members)
         {
             var response = new SimpleResponseModel();
             try
@@ -32,6 +35,13 @@ namespace TaskManager.Adapters.Adapters.Space
                 {
                     response.Message = "Espaço não encontrado.";
                     response.Status = ResponseStatusEnum.NotFound;
+                    return response;
+                }
+
+                if (!await _context.Space.AnyAsync(x=>x.OwnerId == userId))
+                {
+                    response.Message = "Erro. Autorização necessária.";
+                    response.Status = ResponseStatusEnum.Unauthorized;
                     return response;
                 }
 
@@ -59,6 +69,10 @@ namespace TaskManager.Adapters.Adapters.Space
 
                 _context.SpaceMember.RemoveRange(toRemove);
                 await _context.SaveChangesAsync();
+
+                await _cachingPort.RemoveAsync($"Space_{spaceId}");
+                await _cachingPort.RemoveAsync($"spacesUser_{userId}");
+                await _cachingPort.RemoveAsync($"users_{spaceId}");
 
                 response.Status = ResponseStatusEnum.Success;
                 response.Message = "Membros removidos com sucesso.";

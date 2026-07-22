@@ -4,6 +4,7 @@ using System.Diagnostics;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
+using TaskManager.Core.Ports.Caching;
 using TaskManager.Core.Ports.Persistence.Space;
 using TaskManager.Core.ResponsePattern;
 
@@ -12,13 +13,14 @@ namespace TaskManager.Adapters.Adapters.Space
     public class AddMembersSpaceAdapter : IAddMembersSpacePort
     {
         private readonly DbContextTaskManager _context;
-
-        public AddMembersSpaceAdapter(DbContextTaskManager context)
+        private readonly ICachingPort _cachingPort;
+        public AddMembersSpaceAdapter(DbContextTaskManager context, ICachingPort cachingPort)
         {
             _context = context;
+            _cachingPort = cachingPort;
         }
 
-        public async Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, ICollection<string> members)
+        public async Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, Guid userId, ICollection<string> members)
         {
             var response = new SimpleResponseModel();
             try
@@ -27,6 +29,13 @@ namespace TaskManager.Adapters.Adapters.Space
                 {
                     response.Status = ResponseStatusEnum.NotFound;
                     response.Message = "Espaço não encontrado.";
+                    return response;
+                }
+
+                if (!await _context.Space.AnyAsync(x=>x.OwnerId==userId))
+                {
+                    response.Status = ResponseStatusEnum.Unauthorized;
+                    response.Message = "Erro. Autorização necessária.";
                     return response;
                 }
 
@@ -68,6 +77,8 @@ namespace TaskManager.Adapters.Adapters.Space
                 {
                     await _context.SpaceMember.AddRangeAsync(newMembers);
                     await _context.SaveChangesAsync();
+                    await _cachingPort.RemoveAsync($"Space_{spaceId}"); 
+                    await _cachingPort.RemoveAsync($"spacesUser_{userId}");
                 }
 
                 response.Status = ResponseStatusEnum.Success;

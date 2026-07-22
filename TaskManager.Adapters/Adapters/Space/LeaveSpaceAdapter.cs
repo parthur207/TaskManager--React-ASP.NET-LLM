@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Enums;
+using TaskManager.Core.Ports.Caching;
 using TaskManager.Core.Ports.Persistence.Space;
 using TaskManager.Core.ResponsePattern;
 
@@ -10,10 +11,11 @@ namespace TaskManager.Adapters.Adapters.Space
     public class LeaveSpaceAdapter : ILeaveSpacePort
     {
         private readonly DbContextTaskManager _context;
-
-        public LeaveSpaceAdapter(DbContextTaskManager context)
+        private readonly ICachingPort _cachingPort;
+        public LeaveSpaceAdapter(DbContextTaskManager context, ICachingPort cachingPort)
         {
             _context = context;
+            _cachingPort = cachingPort;
         }
 
         public async Task<SimpleResponseModel> ExecuteAsync(Guid spaceId, Guid userId)
@@ -28,7 +30,7 @@ namespace TaskManager.Adapters.Adapters.Space
                     return response;
                 }
 
-                if (await _context.Space.AnyAsync(x => x.Id == spaceId && x.OwnerId == userId))
+                if (await _context.Space.AnyAsync(x =>x.OwnerId == userId))
                 {
                     response.Message = "O proprietário do espaço não pode sair. Considere excluir o espaço ou transferir a propriedade.";
                     response.Status = ResponseStatusEnum.Error;
@@ -47,6 +49,10 @@ namespace TaskManager.Adapters.Adapters.Space
 
                 _context.SpaceMember.Remove(membership);
                 await _context.SaveChangesAsync();
+
+                await _cachingPort.RemoveAsync($"Space_{spaceId}");
+                await _cachingPort.RemoveAsync($"spacesUser_{userId}");
+                await _cachingPort.RemoveAsync($"users_{spaceId}");
 
                 response.Message = "Você saiu do espaço com sucesso.";
                 response.Status = ResponseStatusEnum.Success;

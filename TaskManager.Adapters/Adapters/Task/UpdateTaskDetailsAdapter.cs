@@ -9,6 +9,7 @@ using TaskManager.Adapters.Persistence;
 using TaskManager.Core.Entities;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Models.Task;
+using TaskManager.Core.Ports.Caching;
 using TaskManager.Core.Ports.Persistence.Task;
 using TaskManager.Core.ResponsePattern;
 
@@ -17,9 +18,11 @@ namespace TaskManager.Adapters.Adapters.Task
     public class UpdateTaskDetailsAdapter : IUpdateTaskDetailsPort
     {
         private readonly DbContextTaskManager _context;
-        public UpdateTaskDetailsAdapter(DbContextTaskManager context)
+        private readonly ICachingPort _cachingPort;
+        public UpdateTaskDetailsAdapter(DbContextTaskManager context, ICachingPort cachingPort)
         {
             _context = context;
+            _cachingPort = cachingPort;
         }
 
         public async Task<SimpleResponseModel> ExecuteAsync(Guid userId, TaskEntity entity)
@@ -55,6 +58,10 @@ namespace TaskManager.Adapters.Adapters.Task
 
                 _context.Task.Update(existing);
                 await _context.SaveChangesAsync();
+
+                await _cachingPort.RemoveAsync($"task_{entity.Id}");
+                await _cachingPort.RemoveAsync($"spacesUser_{entity.SpaceId}");
+                await _cachingPort.RemoveAsync($"Space_{entity.SpaceId}");
 
                 Response.Status = ResponseStatusEnum.Success;
                 Response.Message = "Tarefa atualizada com sucesso.";

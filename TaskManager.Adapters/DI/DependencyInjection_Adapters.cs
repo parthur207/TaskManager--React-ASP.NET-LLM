@@ -62,13 +62,15 @@ namespace TaskManager.Adapters.DI
             services.AddScoped<IGetUserSpacesDetailsPort, GetUserSpacesDetailsAdapter>();
             services.AddScoped<IAddMembersSpacePort, AddMembersSpaceAdapter>();
 
-            services.AddScoped<IRemoveMembersSpacePort, RemoveMembersSpacerAdapter>();
+            services.AddScoped<IRemoveMembersSpacePort, RemoveMembersSpaceAdapter>();
             services.AddScoped<ILeaveSpacePort, LeaveSpaceAdapter>();
             services.AddScoped<IUpdateSpacePort, UpdateSpaceAdapter>();
 
             services.AddScoped<IUserQueryPort, UserQueryAdapter>();
             services.AddScoped<ISpaceMembershipQueryPort, SpaceMembershipQueryAdapter>();
             services.AddScoped<IGetUsersBySpaceIdPort, GetUsersBySpaceIdAdapter>();
+
+            services.AddHostedService<TwoFactorEmailConsumer>();
 
             services.AddSingleton<RabbitMqConnectionProvider>();
             services.AddScoped<IMessagePublisherPort, RabbitMqPublisherAdapter>();
