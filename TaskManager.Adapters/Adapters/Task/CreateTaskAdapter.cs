@@ -11,11 +11,9 @@ namespace TaskManager.Adapters.Adapters.Task
     public class CreateTaskAdapter : ICreateTaskPort
     {
         private readonly DbContextTaskManager _context;
-        private readonly ICurrentUserPort _currentUserPort;
         public CreateTaskAdapter(DbContextTaskManager context, ICurrentUserPort currentUserPort)
         {
             _context = context;
-            _currentUserPort = currentUserPort;
         }
 
         public async Task<SimpleResponseModel> ExecuteAsync(TaskEntity entity)
