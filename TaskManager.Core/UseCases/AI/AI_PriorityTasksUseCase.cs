@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskManager.Core.DTOs;
+﻿using TaskManager.Core.DTOs;
 using TaskManager.Core.Enums;
 using TaskManager.Core.Mappers;
 using TaskManager.Core.Ports.AI;
 using TaskManager.Core.Ports.Persistence.Space;
-using TaskManager.Core.Ports.Persistence.Task;
 using TaskManager.Core.Ports.Security;
 using TaskManager.Core.Prompts;
 using TaskManager.Core.ResponsePattern;
@@ -42,20 +36,20 @@ namespace TaskManager.Core.UseCases.AI
                 return Response;
             }
 
+            var responseRepository = await _getAllTasksBySpaceIdPort.ExecuteAsync(spaceId);
 
-            var ResponseRepository = await _getAllTasksBySpaceIdPort.ExecuteAsync(spaceId);
-
-
-            if (ResponseRepository.Status!= ResponseStatusEnum.Success)
+            if (responseRepository.Status != ResponseStatusEnum.Success)
             {
-                Response.Message = ResponseRepository.Message;
-                Response.Status = ResponseRepository.Status;
+                Response.Message = responseRepository.Message;
+                Response.Status = responseRepository.Status;
                 return Response;
             }
 
-            var prompt = _taskPriorityPrompt.PromptBuilder(TaskMapper.ListEntityToListDTO(ResponseRepository.Content));
+        
 
-            var ResponseIA = await _ollamaProviderPort.GenerateAsync<IEnumerable<AI_PriorityTasksDTO>>(prompt);
+            var ResponseIA = await _ollamaProviderPort
+                .GenerateAsync<IEnumerable<AI_PriorityTasksDTO>>(_taskPriorityPrompt
+                .PromptBuilder(TaskMapper.ListEntityToListDTO(responseRepository.Content)));
 
             if (ResponseIA.Status != ResponseStatusEnum.Success)
             {
@@ -64,8 +58,8 @@ namespace TaskManager.Core.UseCases.AI
                 return Response;
             }
 
-            Response.Content = ResponseIA.Content as IEnumerable<AI_PriorityTasksDTO> ?? Enumerable.Empty<AI_PriorityTasksDTO>();
             Response.Status = ResponseStatusEnum.Success;
+            Response.Content = ResponseIA.Content as IEnumerable<AI_PriorityTasksDTO> ?? Enumerable.Empty<AI_PriorityTasksDTO>();
             return Response;
         }
     }

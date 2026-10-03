@@ -58,8 +58,6 @@ namespace TaskManager.Core.UseCases.AI
                 return Response;
             }
 
-            
-
             Response.Content = ResponseIA.Content as string ?? string.Empty;
             Response.Status = ResponseStatusEnum.Success;
             return Response;
