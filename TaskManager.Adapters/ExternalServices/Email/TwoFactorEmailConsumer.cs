@@ -91,9 +91,11 @@ namespace TaskManager.Adapters.ExternalServices.Messaging
             }
             catch (OperationCanceledException)
             {
+                await StopAsync(stoppingToken);
             }
             catch (Exception ex)
             {
+                await StopAsync(stoppingToken);
                 throw new Exception("Ocorreu um erro inesperado: "+ex.Message);
             }
         }
